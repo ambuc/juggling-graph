@@ -33,3 +33,4 @@ The `render()` function takes a single argument, a string to be parsed. This str
  - better arrows / arrow handling w.r.t the aforementioned little colored boxes
  - arrows that change color when hovered over?
  - inherent validation engine
+ - better self-loops
