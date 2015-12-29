@@ -19,6 +19,7 @@ A minimal working example is presented below.
 	<input id="sequence" type="text">
 	<svg class='stage'></svg>
 
+	<script type="text/javascript" src="juggling-graph.js"></script>
 	<script type="text/javascript">
 		$('#sequence').keyup(function(){
 			var str = $('#sequence').val();
@@ -29,7 +30,6 @@ A minimal working example is presented below.
 The `render()` function takes a single argument, a string to be parsed. This string is usually a sequence of numbers, but can accept letter input, as parsed in base 36. It also accepts brackets. Sites within brackets are treated as a single synchornous event, and share a catch point.
 
 ##Todo
- - draw little colored boxes around multiplexes
  - better arrows / arrow handling w.r.t the aforementioned little colored boxes
  - arrows that change color when hovered over?
  - inherent validation engine
