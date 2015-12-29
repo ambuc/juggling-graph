@@ -1,0 +1,29 @@
+doctype html
+html(lang="en")
+	head
+		title= pageTitle
+		link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css')
+		style
+			include style.css
+		script(src="https://code.jquery.com/jquery-2.1.4.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js")
+		script(src="https://d3js.org/d3.v3.min.js" charset="utf-8")
+	body
+		.container
+			h4 Juggling Graph Demo
+			.row
+				.col.s12.m6
+					input(id="sequence",type="text",placeholder="13[57]31")
+				.col.s12.m6
+					Any valid combination of letters or numbers goes here
+			.row
+				.col.s12
+					svg.stage
+	script(src = 'script.js')
+	script(type='text/javascript').
+		window.onload = function(){
+			$('#sequence').focus();
+			$('#sequence').keyup(function(){
+				render( $('#sequence').val() );
+			});
+		}

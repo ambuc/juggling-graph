@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <style>svg{
+	border: solid 1px #eeeeee;
+	width: 100%;
+	min-height:400px;
+	height: 100%;
+}
+
+    </style>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h4>Juggling Graph Demo</h4>
+      <div class="row">
+        <div class="col s12 m6">
+          <input id="sequence" type="text" placeholder="13[57]31">
+        </div>
+        <div class="col s12 m6">
+          <Any>valid combination of letters or numbers goes here</Any>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <svg class="stage"></svg>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+  <script type="text/javascript">
+    window.onload = function(){
+    	$('#sequence').focus();
+    	$('#sequence').keyup(function(){
+    		render( $('#sequence').val() );
+    	});
+    }
+  </script>
+</html>
