@@ -3,8 +3,7 @@
 This is a visualization engine for [Siteswaps](https://en.wikipedia.org/wiki/Siteswap), a notation system used in juggling to represent patterns in space. It accepts input in the form of numbers `0-9`, letters `a-z`, and brackets `[`,`]`, which denote multiplexes, i.e. synchronous events. `juggling-graph` draws arrows from each valid throwable position to each valid catch position. Multiplexes throw from their contents, but recieve at their opening bracket.
 
 ##Example
-Input: `39[47]51`
-Output: [Image](image)
+![Alt text](example.png)
 
 ##Dependencies
 Requires [jQuery](https://jquery.com/) and [d3.js](d3js.org).
