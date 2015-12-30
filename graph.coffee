@@ -1,12 +1,36 @@
 svg = d3.select('.stage')
-frame = svg.attr('class','frame')
-height = frame.style('height').replace('px','')
-width  = frame.style('width' ).replace('px','')
+frame = height = width = null
 
 window.render = (str) ->
+	
+	frame = svg.attr('class','frame')
+	height = frame.style('height').replace('px','')
+	width  = frame.style('width' ).replace('px','')
 
 	svg.selectAll("*").remove()
 
+	writeDefs()
+
+	nodes = parseStr(str, 0)
+	nodes.pop() #gets rid of last null bit
+
+	#compile list of senders and receivers
+	senders = []
+	senders.push( index ) for node, index in nodes when node['throw']
+	recievers = []
+	recievers.push( index ) for node, index in nodes when node['catch']
+
+	len = str.length
+
+	drawRect( index, len) for node, index in nodes when node['inPlex'] is true
+
+	writeChar( index, char, len) for char, index in str
+	
+	calculateArrow(sender, nodes, senders, recievers, len) for sender in senders
+
+	null
+
+writeDefs = () ->
 	svg.append('defs').append('marker')
 		.attr({
 			'markerHeight'	: 5, 'markerWidth'	: 5,
@@ -21,46 +45,16 @@ window.render = (str) ->
 			'd': "M 0,0 m -5,-5 L 5,0 L -5,5 Z",
 			'fill': 'darkgrey'
 		})
-	
-
-	charheight = 20
-	charwidth = 10
-
-	nodes = parseStr(str, 0)
-	nodes.pop() #gets rid of last null bit
-
-	#console.log 'nodes:'
-	console.log nodes
-
-	#console.log node.unit for node in nodes	
-
-	#compile list of senders and receivers
-	senders = []
-	recievers = []
-	senders.push( index ) for node, index in nodes when node['throw']
-	recievers.push( index ) for node, index in nodes when node['catch']
-
-	#console.log nodes
-	console.log 'senders', senders
-	console.log 'recievers', recievers
-
-	len = str.length
-
-	drawRect( index, len) for node, index in nodes when node['inPlex'] is true
-
-	writeChar( index, char, len) for char, index in str
-	
-	calculateArrow(nodes, senders, recievers, sender, len) for sender in senders
-
 	null
 
 
+#recursive front-first parsing function, which creates an array of javascript objects containing useful semantic information about eech node's role and function. 
+#sadly, returns an array of the form [foo, ..., bar, undefined], and so must be trimmed with .pop() after
 parseStr = (str, index, inUnit = false, currUnit = 0) ->
 	if (str == "")
 		return
 	else
 		char = str[0]
-		console.log inUnit
 		node =
 			character: char
 			int: if char not in ['[',']'] then parseInt(char, 36)
@@ -77,6 +71,7 @@ parseStr = (str, index, inUnit = false, currUnit = 0) ->
 		currUnit = if inUnit then currUnit else currUnit+1
 		return [node].concat( parseStr( str[1..], index+1, inUnit, currUnit ) )
 
+#draws a rectangle on the canvas, given index and string length (subdivisions)
 drawRect = (i, len) ->
 	svg.append('rect')
 		.attr({
@@ -87,6 +82,7 @@ drawRect = (i, len) ->
 			'fill':'lightblue'
 		})
 
+#writes a character on the canvas
 writeChar = (i, char, len) ->
 	svg.append('text').text( char )
 		.style('text-anchor','middle')
@@ -97,7 +93,8 @@ writeChar = (i, char, len) ->
 		})
 	null
 
-calculateArrow = (nodes, senders, recievers, sender, len) ->
+#calculates the endpoints and height of an arrow from any given sender node
+calculateArrow = (sender, nodes, senders, recievers, len) ->
 	ob_i			= nodes[sender] #this node in the $nodes array
 	left_index		= ob_i['index']
 	larger_unit		= if ob_i['inPlex'] then ob_i['unit'] else left_index
@@ -108,13 +105,14 @@ calculateArrow = (nodes, senders, recievers, sender, len) ->
 	left_x			= width / (len+1) * ( left_index + 1)
 	right_x			= width / (len+1) * (right_index + 1)
 	pad				= 10
-	bMod			= if (left_x > right_x) then true else false
+	bMod			= if (left_x > right_x) then 1 else -1
 	y				= (height / 2.0) + (pad * bMod)
 	
 	drawArrow(svg,left_x,right_x,y)
 
 	null
 
+#draws an arrow between two nodes
 drawArrow = (svg, x1, x2, y) ->
 	r = 0.5*Math.abs(x2 - x1)
 	curvestring = "M#{x1},#{y} A #{r},#{r} 0 0,1 #{x2},#{y}"
