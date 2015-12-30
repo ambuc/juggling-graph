@@ -18,7 +18,7 @@ A minimal working example is presented below.
 	<input id="sequence" type="text">
 	<svg class='stage'></svg>
 
-	<script type="text/javascript" src="juggling-graph.js"></script>
+	<script type="text/javascript" src="graph.js"></script>
 	<script type="text/javascript">
 		$('#sequence').keyup(function(){
 			var str = $('#sequence').val();
