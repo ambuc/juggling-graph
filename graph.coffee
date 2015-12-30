@@ -11,8 +11,8 @@ window.render = (str) ->
 
 	writeDefs()
 
-	nodes = parseStr(str, 0)
-	nodes.pop() #gets rid of last null bit
+	nodes = Array.prototype.reduce.call(str, parse, [[],false,0])[0]
+	console.log nodes
 
 	#compile list of senders and receivers
 	senders = []
@@ -46,30 +46,29 @@ writeDefs = () ->
 			'fill': 'darkgrey'
 		})
 	null
-
-
+	
 #recursive front-first parsing function, which creates an array of javascript objects containing useful semantic information about eech node's role and function. 
 #sadly, returns an array of the form [foo, ..., bar, undefined], and so must be trimmed with .pop() after
-parseStr = (str, index, inUnit = false, currUnit = 0) ->
-	if (str == "")
-		return
-	else
-		char = str[0]
-		node =
-			character: char
-			int: if char not in ['[',']'] then parseInt(char, 36)
-			index: index
-			throw: if char not in ['[',']'] then true else false
-			catch: if not inUnit or char is '[' then true else false
-			inPlex: if ((char in ['[',']']) or inUnit) then true else false
-			inUnit: inUnit
-			unit: currUnit
-		switch char
-			when '[' then inUnit = true
-			when ']' then inUnit = false
-			else inUnit = inUnit
-		currUnit = if inUnit then currUnit else currUnit+1
-		return [node].concat( parseStr( str[1..], index+1, inUnit, currUnit ) )
+parse = (state, char, index) ->
+	[array, inUnit, currUnit] = state
+	console.log state
+	node =
+		character: char
+		int: if char not in ['[',']'] then parseInt(char, 36)
+		index: index
+		throw: if char not in ['[',']'] then true else false
+		catch: if not inUnit or char is '[' then true else false
+		inPlex: if ((char in ['[',']']) or inUnit) then true else false
+		inUnit: inUnit
+		unit: currUnit
+	#update inUnit if necessary
+	switch char
+		when '[' then inUnit = true
+		when ']' then inUnit = false
+		else inUnit = inUnit
+	#update currUnit if necessary
+	currUnit = if inUnit then currUnit else currUnit+1
+	return [array.concat( node ), inUnit, currUnit]
 
 #draws a rectangle on the canvas, given index and string length (subdivisions)
 drawRect = (i, len) ->
