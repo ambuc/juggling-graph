@@ -13,9 +13,9 @@ html(lang="en")
 			h4 Juggling Graph Demo
 			.row
 				.col.s12.m6
-					input(id="sequence",type="text",placeholder="13[57]31")
+					input(id="sequence",type="text",placeholder="45[15]41")
 				.col.s12.m6
-					p Enter a valid siteswap. A good one to try is <em> 13[57]31 </em>.
+					p Enter a valid siteswap. A good one to try is <em>45[15]41</em>.
 			.row
 				.col.s12
 					svg.stage
@@ -26,4 +26,5 @@ html(lang="en")
 			$('#sequence').keyup(function(){
 				render( $('#sequence').val() );
 			});
+			$('#sequence').val('45[15]41');
 		}

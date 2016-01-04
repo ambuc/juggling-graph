@@ -1,3 +1,5 @@
+# https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d#Curveto
+
 svg = d3.select('.stage')
 frame = height = width = null
 
@@ -22,13 +24,26 @@ window.render = (str) ->
 
 	len = str.length
 
-	drawRect( index, len) for node, index in nodes when node['inPlex'] is true
+	diffs = describeUnits(recievers, len)
+
+	drawRects(recievers, diffs, len)
 
 	writeChar( index, char, len) for char, index in str
 	
 	calculateArrow(sender, nodes, senders, recievers, len) for sender in senders
 
 	null
+
+describeUnits = (recievers, len) ->
+	edges = []
+	for val in recievers
+		edges.push(val)
+	edges.push(len)
+	diffs = []
+	for val, i in edges
+		if edges[i+1]?
+			diffs.push(edges[i+1] - edges[i])
+	diffs
 
 writeDefs = () ->
 	svg.append('defs').append('marker')
@@ -51,7 +66,6 @@ writeDefs = () ->
 #sadly, returns an array of the form [foo, ..., bar, undefined], and so must be trimmed with .pop() after
 parse = (state, char, index) ->
 	[array, inUnit, currUnit] = state
-	console.log state
 	node =
 		character: char
 		int: if char not in ['[',']'] then parseInt(char, 36)
@@ -71,15 +85,23 @@ parse = (state, char, index) ->
 	return [array.concat( node ), inUnit, currUnit]
 
 #draws a rectangle on the canvas, given index and string length (subdivisions)
-drawRect = (i, len) ->
+drawRects = (recievers, diffs, len) ->
+	console.log recievers
+	console.log diffs
+	drawRect(recievers[index], val, len) for val, index in diffs when val != 1
+	null
+
+drawRect = (i, fat, len) ->
+	console.log "i#{i} fat#{fat} len#{len}"
 	svg.append('rect')
 		.attr({
-			'x': width / (len+1) * (i+0.5) ,
+			'x': width / (len+1) * (i+0.5) + 5,
 			'y': height / 2 - 20,
-			'width': width / (len+1) * 1.01,
+			'width': width / (len+1) * 1.01 * fat - 10,
 			'height': 40,
 			'fill':'lightblue'
 		})
+	null
 
 #writes a character on the canvas
 writeChar = (i, char, len) ->
@@ -113,8 +135,16 @@ calculateArrow = (sender, nodes, senders, recievers, len) ->
 
 #draws an arrow between two nodes
 drawArrow = (svg, x1, x2, y) ->
-	r = 0.5*Math.abs(x2 - x1)
-	curvestring = "M#{x1},#{y} A #{r},#{r} 0 0,1 #{x2},#{y}"
+	if x1 == x2
+		#self-loop
+		b = 20 #width of self-loop
+		h = 20 #height of self-loop
+		curvestring = "M#{x1},#{y} c0,-#{h} #{b},-#{h} #{b},10 c0,#{h+10} -#{b},#{h+10} -#{b},10"
+	else
+		#regular arrow
+		r = 0.5*Math.abs(x2 - x1)
+		curvestring = "M#{x1},#{y} A #{r},#{r} 0 0,1 #{x2},#{y}"
+	
 	svg.append("path")
 		.attr({
 			'd':curvestring,
