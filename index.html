@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title></title>
+    <title>Siteswap Visualizer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
     <style>svg{
 	border: solid 1px #eeeeee;
@@ -17,7 +17,8 @@
   </head>
   <body>
     <div class="container">
-      <h4>Juggling Graph Demo</h4>
+      <h4>Siteswap Visualizer</h4>
+      <h6>See the<a href="http://jbuckland.com/juggling-graph-doc/"><span>explanation.</span></a></h6>
       <div class="row">
         <div class="col s12 m6">
           <input id="sequence" type="text" placeholder="45[15]41">
@@ -36,11 +37,11 @@
   <script src="graph.js"></script>
   <script type="text/javascript">
     window.onload = function(){
-    	$('#sequence').focus();
-    	$('#sequence').keyup(function(){
-    		render( $('#sequence').val() );
-    	});
-    	$('#sequence').val('45[15]41');
+      $('#sequence').focus();
+      $('#sequence').keyup(function(){
+        render( $('#sequence').val() );
+      });
+      $('#sequence').val('45[15]41');
     }
   </script>
 </html>
