@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Siteswap",
+    "comment": " Experimental package for visualizing siteswaps.\n\nThis library accepts a plaintext expression and returns a rendered siteswap\nnotation image of it. In the context of juggling notation, siteswap is a\nnotation used to encode juggling patterns.\n\n\n# renderExpr\n\n@docs renderExpr\n\n",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "renderExpr",
+        "comment": " Generates an svg of the given siteswap.\n\n    renderExpr <canvas width> <expression>\n    renderExpr 500 \"3[12][22]\"\n\n",
+        "type": "Int -> Lib.Expr -> Html.Html msg"
+      }
+    ],
+    "generated-with-elm-version": "0.18.0"
+  }
+]
