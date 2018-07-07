@@ -8362,6 +8362,18 @@ var _ambuc$juggling_graph$Lib$arrow_def = A2(
 			{ctor: '[]'}),
 		_1: {ctor: '[]'}
 	});
+var _ambuc$juggling_graph$Lib$toInt = function (c) {
+	return _elm_lang$core$Char$isDigit(c) ? A2(
+		_elm_lang$core$Result$withDefault,
+		0,
+		_elm_lang$core$String$toInt(
+			_elm_lang$core$String$fromChar(c))) : (_elm_lang$core$Char$isLower(c) ? ((_elm_lang$core$Char$toCode(c) - 97) + 10) : _elm_lang$core$Native_Utils.crash(
+		'Lib',
+		{
+			start: {line: 85, column: 9},
+			end: {line: 85, column: 18}
+		})('unimplemented'));
+};
 var _ambuc$juggling_graph$Lib$toCoordF = F2(
 	function (os, i) {
 		return (i * os.unit_w) + os.unit_w_2;
@@ -10501,10 +10513,7 @@ var _ambuc$juggling_graph$XVals$mkOuts = F2(
 					ctor: '_Tuple3',
 					_0: _p4,
 					_1: A2(_ambuc$juggling_graph$Lib$toCoordI, os, _p4) + os.h_off,
-					_2: A2(
-						_elm_lang$core$Result$withDefault,
-						0,
-						_elm_lang$core$String$toInt(_p3._1))
+					_2: _ambuc$juggling_graph$Lib$toInt(_p3._1)
 				};
 			},
 			A2(
@@ -10512,7 +10521,11 @@ var _ambuc$juggling_graph$XVals$mkOuts = F2(
 				function (_p5) {
 					var _p6 = _p5;
 					var _p7 = _p6._1;
-					return (!_elm_lang$core$Native_Utils.eq(_p7, ']')) && (!_elm_lang$core$Native_Utils.eq(_p7, '['));
+					return (!_elm_lang$core$Native_Utils.eq(
+						_p7,
+						_elm_lang$core$Native_Utils.chr(']'))) && (!_elm_lang$core$Native_Utils.eq(
+						_p7,
+						_elm_lang$core$Native_Utils.chr('[')));
 				},
 				A2(
 					_elm_lang$core$List$indexedMap,
@@ -10520,7 +10533,7 @@ var _ambuc$juggling_graph$XVals$mkOuts = F2(
 						function (v0, v1) {
 							return {ctor: '_Tuple2', _0: v0, _1: v1};
 						}),
-					A2(_elm_lang$core$String$split, '', expr))));
+					_elm_lang$core$String$toList(expr))));
 	});
 var _ambuc$juggling_graph$Siteswap$place_arrow = F3(
 	function (os, all_arrows, arr) {

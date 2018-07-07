@@ -1,5 +1,7 @@
 module Lib exposing (..)
 
+import Char
+import Debug as DBG
 import Svg as S
 import Svg.Attributes as SA
 
@@ -71,6 +73,16 @@ toCoordF os i =
 toCoordI : Opts -> Int -> Float
 toCoordI os i =
     toCoordF os (toFloat i)
+
+
+toInt : Char -> Int
+toInt c =
+    if Char.isDigit c then
+        Result.withDefault 0 <| String.toInt <| String.fromChar c
+    else if Char.isLower c then
+        Char.toCode c - 97 + 10
+    else
+        DBG.crash "unimplemented"
 
 
 

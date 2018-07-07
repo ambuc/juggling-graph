@@ -23,12 +23,12 @@ mkOuts os expr =
         (\( idx, chr ) ->
             ( idx
             , toCoordI os idx + os.h_off
-            , Result.withDefault 0 <| String.toInt chr
+            , toInt chr
             )
         )
     <|
-        List.filter (\( _, chr ) -> chr /= "]" && chr /= "[") <|
-            List.indexedMap (,) (String.split "" expr)
+        List.filter (\( _, chr ) -> chr /= ']' && chr /= '[') <|
+            List.indexedMap (,) (String.toList expr)
 
 
 
