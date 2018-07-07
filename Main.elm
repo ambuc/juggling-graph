@@ -15,7 +15,7 @@ import Siteswap
 
 default_expression : String
 default_expression =
-    "3[12][22]"
+    "1[22]2[23]"
 
 
 main =

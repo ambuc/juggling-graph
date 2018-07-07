@@ -16,6 +16,7 @@ notation used to encode juggling patterns.
 import Debug as DBG
 import Html exposing (..)
 import List.Extra as LE
+import Debug as DBG
 import Svg as S
 import Svg.Attributes as SA
 
@@ -41,7 +42,7 @@ place_block os chr coord =
 
 {-| Places all unit blocks, given the input expression.
 -}
-place_blocks : Opts -> Expr -> S.Svg msg
+place_blocks : Opts -> Expression -> S.Svg msg
 place_blocks os expr =
     S.g [] <|
         List.map2
@@ -66,7 +67,7 @@ place_blocks os expr =
 
 {-| Places the light blue multiplex boundaries on the canvas.
 -}
-place_multiplex_boundaries : Opts -> Expr -> S.Svg msg
+place_multiplex_boundaries : Opts -> Expression -> S.Svg msg
 place_multiplex_boundaries os expr =
     S.g [] <|
         List.map2
@@ -84,48 +85,95 @@ place_multiplex_boundaries os expr =
             (List.map toFloat <| String.indices "]" expr)
 
 
-{-| Places a single arrow from out_coord to its relative in_coord.
+
+------------------------------------------------------------------
+
+
+{-| Plans a single throw arrows. Returns a single descriptor.
 -}
-place_arrow : Opts -> List Float -> ( Float, Int ) -> S.Svg msg
-place_arrow os xins ( out_coord, jump_dist ) =
+plan_arrow : Opts -> List ( Index, Coord ) -> Float -> Int -> ArrowDescriptor
+plan_arrow os xins out_coord jump_dist =
     let
         -- multiplex-level index of the out position in xins
         out_idx : Int
         out_idx =
-            List.length <| Tuple.first <| LE.break ((<) out_coord) xins
+            (List.length <|
+                Tuple.first <|
+                    LE.break ((<) out_coord) <|
+                        List.map
+                            Tuple.second
+                            xins
+            )
+                - 1
 
         -- multiplex-level index of the in position in xins
         in_idx : Int
         in_idx =
-            (jump_dist + out_idx - 1) % (List.length xins)
+            (jump_dist + out_idx) % (List.length xins)
 
         -- cartesian coordinate of the in position
         in_coord : Float
         in_coord =
             case (LE.getAt in_idx xins) of
-                Just x ->
+                Just ( _, x ) ->
                     x
 
                 Nothing ->
                     DBG.crash "unreachable"
     in
-        if in_coord == out_coord then
-            self_arrow os in_coord
-        else if in_coord < out_coord then
-            throw_arrow in_coord out_coord <| os.cv_w_2 + os.v_off
+        { out_index = out_idx
+        , out_coord = out_coord
+        , in_index = in_idx
+        , in_coord = in_coord
+        }
+
+
+{-| Plans all throw arrows. Returns a list of descriptors.
+-}
+plan_arrows : Opts -> Expression -> List ArrowDescriptor
+plan_arrows os expr =
+    let
+        xins =
+            XVals.mkIns os expr
+    in
+        List.map (\( _, coord, value ) -> plan_arrow os xins coord value) <|
+            XVals.mkOuts os expr
+
+
+{-| Places one throw arrow, with context of all throw arrows, to avoid conflict.
+-}
+place_arrow : Opts -> List ArrowDescriptor -> ArrowDescriptor -> S.Svg msg
+place_arrow os all_arrows arr =
+    let
+        is_conflict =
+            not <|
+                List.isEmpty <|
+                    List.filter (\x -> arr.in_coord == x.out_coord) <|
+                        List.filter
+                            (\x ->
+                                bias x.out_coord x.in_coord
+                                    == bias arr.out_coord arr.in_coord
+                            )
+                        <|
+                            LE.remove arr all_arrows
+    in
+        if arr.out_coord == arr.in_coord then
+            self_arrow os arr.in_coord
+        else if arr.in_coord < arr.out_coord then
+            throw_arrow os arr (os.cv_w_2 + os.v_off) is_conflict
         else
-            throw_arrow in_coord out_coord <| os.cv_w_2 - os.unit_h
+            throw_arrow os arr (os.cv_w_2 - os.unit_h) is_conflict
 
 
 {-| Places all throw arrows.
 -}
-place_arrows : Opts -> Expr -> S.Svg msg
+place_arrows : Opts -> Expression -> S.Svg msg
 place_arrows os expr =
     let
-        xins =
-            XVals.mkXIns os expr
+        all_arrows =
+            DBG.log "all arrows:" <| plan_arrows os expr
     in
-        S.g [] <| List.map (place_arrow os xins) <| XVals.mkXOuts os expr
+        S.g [] <| List.map (place_arrow os all_arrows) <| all_arrows
 
 
 {-| Generates an svg of the given siteswap.
@@ -134,7 +182,7 @@ place_arrows os expr =
     renderExpr 500 "3[12][22]"
 
 -}
-renderExpr : Int -> Expr -> Html.Html msg
+renderExpr : Int -> Expression -> Html.Html msg
 renderExpr canvas_width expr =
     let
         num_blocks_ =
@@ -152,6 +200,7 @@ renderExpr canvas_width expr =
             , h_off = 4.0
             , self_arrow_w = 25
             , self_arrow_h = 35
+            , y_delt = 15
             }
     in
         S.svg

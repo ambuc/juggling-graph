@@ -17,11 +17,45 @@ type alias Opts =
     , h_off : Float -- the horizontal offset of a numeral w/in a block
     , self_arrow_w : Float -- the width of the self arc
     , self_arrow_h : Float -- the height of the self arc
+    , y_delt : Float
     }
 
 
-type alias Expr =
+type alias Expression =
     String
+
+
+type alias Coord =
+    Float
+
+
+type alias Index =
+    Int
+
+
+type alias JumpDistance =
+    Int
+
+
+type alias ArrowDescriptor =
+    { out_index : Index
+    , out_coord : Coord
+    , in_index : Index
+    , in_coord : Coord
+    }
+
+
+type Bias
+    = Above
+    | Below
+
+
+bias : Coord -> Coord -> Bias
+bias c1 c2 =
+    if c1 < c2 then
+        Above
+    else
+        Below
 
 
 {-| Given an expression-scale index, return its x-coordinate position on the
@@ -110,53 +144,77 @@ arrow_path d_path =
 
 {-| Returns a standard semicircular throwing arrow.
 -}
-throw_arrow : Float -> Float -> Float -> S.Svg msg
-throw_arrow x1 x2 base_y =
+throw_arrow : Opts -> ArrowDescriptor -> Float -> Bool -> S.Svg msg
+throw_arrow os arr y_base anticipate_conflict =
     let
+        x_from =
+            arr.out_coord
+
+        x_to =
+            arr.in_coord
+
         r =
-            abs <| (x2 - x1) / 2.0
+            abs <| (x_from - x_to) / 2.0
+
+        x_to_ =
+            if anticipate_conflict then
+                if x_from < x_to then
+                    (x_from + x_to) / 2.0 + (sqrt <| r ^ 2 - os.y_delt ^ 2)
+                else
+                    (x_from + x_to) / 2.0 - (sqrt <| r ^ 2 - os.y_delt ^ 2)
+            else
+                x_to
+
+        y_to_ =
+            if anticipate_conflict then
+                if x_from < x_to then
+                    y_base - os.y_delt
+                else
+                    y_base + os.y_delt
+            else
+                y_base
     in
         arrow_path <|
             String.concat
                 [ "M"
-                , toString x2
+                , toString x_from
                 , " "
-                , toString base_y
+                , toString y_base
                 , " A "
                 , toString r
                 , " "
                 , toString r
                 , " 0 0 1 "
-                , toString x1
+                , toString x_to_
                 , " "
-                , toString base_y
+                , toString y_to_
                 ]
 
 
 {-| Returns a specialized identity throwing arrow.
 -}
 self_arrow : Opts -> Float -> S.Svg msg
-self_arrow os base_x =
+self_arrow os x_base =
     let
-        base_y =
+        y_base =
             os.cv_w_2 - os.unit_h
     in
         arrow_path <|
             String.concat
                 [ "M"
-                , toString base_x
+                , toString x_base
                 , " "
-                , toString base_y
+                , toString y_base
                 , " C "
-                , toString <| base_x - os.self_arrow_w
+                , toString <| x_base - os.self_arrow_w
                 , " "
-                , toString <| base_y - os.self_arrow_h
+                , toString <| y_base - os.self_arrow_h
                 , ", "
-                , toString <| base_x + os.self_arrow_w
+                , toString <| x_base + os.self_arrow_w
                 , " "
-                , toString <| base_y - os.self_arrow_h
+                , toString <| y_base - os.self_arrow_h
                 , ", "
-                , toString base_x
+                , toString x_base
                 , " "
-                , toString base_y
+                , toString y_base
                 ]
