@@ -21,7 +21,7 @@ type alias Opts =
     }
 
 
-type alias Expression =
+type alias Expr =
     String
 
 

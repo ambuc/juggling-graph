@@ -42,7 +42,7 @@ place_block os chr coord =
 
 {-| Places all unit blocks, given the input expression.
 -}
-place_blocks : Opts -> Expression -> S.Svg msg
+place_blocks : Opts -> Expr -> S.Svg msg
 place_blocks os expr =
     S.g [] <|
         List.map2
@@ -67,7 +67,7 @@ place_blocks os expr =
 
 {-| Places the light blue multiplex boundaries on the canvas.
 -}
-place_multiplex_boundaries : Opts -> Expression -> S.Svg msg
+place_multiplex_boundaries : Opts -> Expr -> S.Svg msg
 place_multiplex_boundaries os expr =
     S.g [] <|
         List.map2
@@ -130,7 +130,7 @@ plan_arrow os xins out_coord jump_dist =
 
 {-| Plans all throw arrows. Returns a list of descriptors.
 -}
-plan_arrows : Opts -> Expression -> List ArrowDescriptor
+plan_arrows : Opts -> Expr -> List ArrowDescriptor
 plan_arrows os expr =
     let
         xins =
@@ -167,7 +167,7 @@ place_arrow os all_arrows arr =
 
 {-| Places all throw arrows.
 -}
-place_arrows : Opts -> Expression -> S.Svg msg
+place_arrows : Opts -> Expr -> S.Svg msg
 place_arrows os expr =
     let
         all_arrows =
@@ -182,7 +182,7 @@ place_arrows os expr =
     renderExpr 500 "3[12][22]"
 
 -}
-renderExpr : Int -> Expression -> Html.Html msg
+renderExpr : Int -> Expr -> Html.Html msg
 renderExpr canvas_width expr =
     let
         num_blocks_ =

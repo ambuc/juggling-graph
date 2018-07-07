@@ -17,7 +17,7 @@ type alias XOuts =
 
 {-| Returns a sorted list of all throw terminal coordinates.
 -}
-mkOuts : Opts -> Expression -> List ( Index, Coord, JumpDistance )
+mkOuts : Opts -> Expr -> List ( Index, Coord, JumpDistance )
 mkOuts os expr =
     List.map
         (\( idx, chr ) ->
@@ -37,7 +37,7 @@ mkOuts os expr =
 
 {-| Returns a sorted list of all catch terminal coordinates.
 -}
-mkIns : Opts -> Expression -> List ( Index, Coord )
+mkIns : Opts -> Expr -> List ( Index, Coord )
 mkIns os expr =
     List.sortBy (Tuple.second) <| mkIns_multi os expr ++ mkIns_non_multi os expr
 
@@ -51,7 +51,7 @@ mkIns_multi os expr =
 
 {-| Returns a list of all non-multiplex catch terminal coordinates.
 -}
-mkIns_non_multi : Opts -> Expression -> List ( Index, Coord )
+mkIns_non_multi : Opts -> Expr -> List ( Index, Coord )
 mkIns_non_multi os expr =
     let
         bounds =
