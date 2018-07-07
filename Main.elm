@@ -65,6 +65,7 @@ view model =
         , input
             [ placeholder default_expression
             , onInput Change
+            , maxlength 20
             ]
             []
         , br [] []
