@@ -7,7 +7,7 @@ import Html.Events exposing (onInput)
 
 --
 
-import Siteswap
+import Siteswap exposing (renderExpr)
 
 
 -- MAGIC CONSTANTS
@@ -63,12 +63,17 @@ view : Model -> Html Msg
 view model =
     div [ class "container" ]
         [ h1 [] [ text "juggling-graph" ]
-        , input
-            [ placeholder default_expression
-            , onInput Change
-            , maxlength 20
+        , Html.form []
+            [ label [ for "expr" ] [ text "Enter a siteswap" ]
+            , br [] []
+            , input
+                [ id "expr"
+                , placeholder default_expression
+                , onInput Change
+                , maxlength 20
+                ]
+                []
             ]
-            []
         , br [] []
         , Siteswap.renderExpr 600 model.expr
         ]

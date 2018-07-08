@@ -29,15 +29,36 @@ import XVals as XVals
 
 {-| Places a unit block, given a character and coordinate.
 -}
-place_block : Opts -> String -> Float -> S.Svg msg
-place_block os chr coord =
-    S.text_
-        [ SA.x <| toString <| coord - os.h_off
-        , SA.y <| toString os.cv_w_2
-        , SA.fontSize <| toString os.unit_h
-        , SA.fill "black"
-        ]
-        [ S.text chr ]
+place_block_letter : Opts -> String -> Float -> S.Svg msg
+place_block_letter os chr coord =
+    let
+        text_color =
+            if (is_valid chr) then
+                "black"
+            else
+                "red"
+
+        bg_color =
+            if (is_valid chr) then
+                "#eee"
+            else
+                "#f00"
+    in
+        S.g []
+            [ render_rect
+                ( coord, os.cv_w_2 - (os.unit_h / 2.0) + (os.v_off / 2.0) )
+                ( os.unit_w - 1.0, os.unit_h )
+                15
+                bg_color
+                0.4
+            , S.text_
+                [ SA.x <| toString <| coord - os.h_off
+                , SA.y <| toString os.cv_w_2
+                , SA.fontSize <| toString os.unit_h
+                , SA.fill text_color
+                ]
+                [ S.text chr ]
+            ]
 
 
 {-| Places all unit blocks, given the input expression.
@@ -46,19 +67,7 @@ place_blocks : Opts -> Expr -> S.Svg msg
 place_blocks os expr =
     S.g [] <|
         List.map2
-            (\chr coord ->
-                S.g []
-                    [ render_rect
-                        ( coord
-                        , os.cv_w_2 - (os.unit_h / 2.0) + (os.v_off / 2.0)
-                        )
-                        ( os.unit_w - 1.0, os.unit_h )
-                        15
-                        "#eee"
-                        0.4
-                    , place_block os chr coord
-                    ]
-            )
+            (\chr coord -> place_block_letter os chr coord)
             (String.split "" expr)
             (List.map (\x -> toCoordI os x)
                 (List.range 0 (os.num_blocks - 1))
@@ -206,8 +215,18 @@ renderExpr canvas_width expr =
                     ++ toString os.cv_w
                 )
             ]
+        <|
             [ S.defs [] [ arrow_def ]
-            , place_multiplex_boundaries os expr
+
+            -- place_multiplex_boundaries fails on invalid input
+            , S.g [] <|
+                if (is_valid expr) then
+                    [ place_multiplex_boundaries os expr
+                    , place_arrows os expr
+                    ]
+                else
+                    []
+
+            --place_blocks will print invalid characters nicely
             , place_blocks os expr
-            , place_arrows os expr
             ]

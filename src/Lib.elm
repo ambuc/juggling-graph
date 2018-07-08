@@ -47,6 +47,20 @@ type alias ArrowDescriptor =
     }
 
 
+
+-- VALIDATION
+
+
+is_valid : Expr -> Bool
+is_valid expr =
+    List.all (\c -> Char.isDigit c || Char.isLower c || c == ']' || c == '[') <|
+        String.toList expr
+
+
+
+-- BIAS
+
+
 type Bias
     = Above
     | Below
@@ -63,19 +77,21 @@ bias arr =
 {-| Given an expression-scale index, return its x-coordinate position on the
 canvas.
 -}
-toCoordF : Opts -> Float -> Float
+toCoordF : Opts -> Float -> Coord
 toCoordF os i =
     i * os.unit_w + os.unit_w_2
 
 
 {-| The same as toCoordF, but for integers.
 -}
-toCoordI : Opts -> Int -> Float
+toCoordI : Opts -> Index -> Coord
 toCoordI os i =
     toCoordF os (toFloat i)
 
 
-toInt : Char -> Int
+{-| Given a character ('0'..'9', 'a'..'z'), convert it to a jump distance
+-}
+toInt : Char -> JumpDistance
 toInt c =
     if Char.isDigit c then
         Result.withDefault 0 <| String.toInt <| String.fromChar c
