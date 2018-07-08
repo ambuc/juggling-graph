@@ -8133,67 +8133,6 @@ var _ambuc$juggling_graph$Lib$arrow_path = function (d_path) {
 		},
 		{ctor: '[]'});
 };
-var _ambuc$juggling_graph$Lib$throw_arrow = F4(
-	function (os, arr, y_base, anticipate_conflict) {
-		var x_to = arr.in_coord;
-		var x_from = arr.out_coord;
-		var r = _elm_lang$core$Basics$abs((x_from - x_to) / 2.0);
-		var x_to_ = anticipate_conflict ? ((_elm_lang$core$Native_Utils.cmp(x_from, x_to) < 0) ? (((x_from + x_to) / 2.0) + _elm_lang$core$Basics$sqrt(
-			Math.pow(r, 2) - Math.pow(os.y_delt, 2))) : (((x_from + x_to) / 2.0) - _elm_lang$core$Basics$sqrt(
-			Math.pow(r, 2) - Math.pow(os.y_delt, 2)))) : x_to;
-		var y_to_ = anticipate_conflict ? ((_elm_lang$core$Native_Utils.cmp(x_from, x_to) < 0) ? (y_base - os.y_delt) : (y_base + os.y_delt)) : y_base;
-		return _ambuc$juggling_graph$Lib$arrow_path(
-			_elm_lang$core$String$concat(
-				{
-					ctor: '::',
-					_0: 'M',
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$core$Basics$toString(x_from),
-						_1: {
-							ctor: '::',
-							_0: ' ',
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$core$Basics$toString(y_base),
-								_1: {
-									ctor: '::',
-									_0: ' A ',
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$core$Basics$toString(r),
-										_1: {
-											ctor: '::',
-											_0: ' ',
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$core$Basics$toString(r),
-												_1: {
-													ctor: '::',
-													_0: ' 0 0 1 ',
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$core$Basics$toString(x_to_),
-														_1: {
-															ctor: '::',
-															_0: ' ',
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$core$Basics$toString(y_to_),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}));
-	});
 var _ambuc$juggling_graph$Lib$self_arrow = F2(
 	function (os, x_base) {
 		var y_base = os.cv_w_2 - os.unit_h;
@@ -8414,9 +8353,74 @@ var _ambuc$juggling_graph$Lib$ArrowDescriptor = F4(
 	});
 var _ambuc$juggling_graph$Lib$Below = {ctor: 'Below'};
 var _ambuc$juggling_graph$Lib$Above = {ctor: 'Above'};
-var _ambuc$juggling_graph$Lib$bias = F2(
-	function (c1, c2) {
-		return (_elm_lang$core$Native_Utils.cmp(c1, c2) < 0) ? _ambuc$juggling_graph$Lib$Above : _ambuc$juggling_graph$Lib$Below;
+var _ambuc$juggling_graph$Lib$bias = function (arr) {
+	return (_elm_lang$core$Native_Utils.cmp(arr.out_coord, arr.in_coord) < 0) ? _ambuc$juggling_graph$Lib$Above : _ambuc$juggling_graph$Lib$Below;
+};
+var _ambuc$juggling_graph$Lib$throw_arrow = F3(
+	function (os, arr, should_stop_short) {
+		var y_base = _elm_lang$core$Native_Utils.eq(
+			_ambuc$juggling_graph$Lib$bias(arr),
+			_ambuc$juggling_graph$Lib$Above) ? (os.cv_w_2 - os.unit_h) : (os.cv_w_2 + os.v_off);
+		var y_to = should_stop_short ? (_elm_lang$core$Native_Utils.eq(
+			_ambuc$juggling_graph$Lib$bias(arr),
+			_ambuc$juggling_graph$Lib$Above) ? (y_base - os.y_delt) : (y_base + os.y_delt)) : y_base;
+		var r = _elm_lang$core$Basics$abs((arr.out_coord - arr.in_coord) / 2.0);
+		var x_to = should_stop_short ? (_elm_lang$core$Native_Utils.eq(
+			_ambuc$juggling_graph$Lib$bias(arr),
+			_ambuc$juggling_graph$Lib$Above) ? (((arr.out_coord + arr.in_coord) / 2.0) + _elm_lang$core$Basics$sqrt(
+			Math.pow(r, 2) - Math.pow(os.y_delt, 2))) : (((arr.out_coord + arr.in_coord) / 2.0) - _elm_lang$core$Basics$sqrt(
+			Math.pow(r, 2) - Math.pow(os.y_delt, 2)))) : arr.in_coord;
+		return _ambuc$juggling_graph$Lib$arrow_path(
+			_elm_lang$core$String$concat(
+				{
+					ctor: '::',
+					_0: 'M',
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$core$Basics$toString(arr.out_coord),
+						_1: {
+							ctor: '::',
+							_0: ' ',
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Basics$toString(y_base),
+								_1: {
+									ctor: '::',
+									_0: ' A ',
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$core$Basics$toString(r),
+										_1: {
+											ctor: '::',
+											_0: ' ',
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$core$Basics$toString(r),
+												_1: {
+													ctor: '::',
+													_0: ' 0 0 1 ',
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$core$Basics$toString(x_to),
+														_1: {
+															ctor: '::',
+															_0: ' ',
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$core$Basics$toString(y_to),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}));
 	});
 var _elm_lang$html$Html_Attributes$map = _elm_lang$virtual_dom$VirtualDom$mapProperty;
 var _elm_lang$html$Html_Attributes$attribute = _elm_lang$virtual_dom$VirtualDom$attribute;
@@ -10547,11 +10551,11 @@ var _ambuc$juggling_graph$Siteswap$place_arrow = F3(
 					_elm_lang$core$List$filter,
 					function (x) {
 						return _elm_lang$core$Native_Utils.eq(
-							A2(_ambuc$juggling_graph$Lib$bias, x.out_coord, x.in_coord),
-							A2(_ambuc$juggling_graph$Lib$bias, arr.out_coord, arr.in_coord));
+							_ambuc$juggling_graph$Lib$bias(x),
+							_ambuc$juggling_graph$Lib$bias(arr));
 					},
 					A2(_elm_community$list_extra$List_Extra$remove, arr, all_arrows))));
-		return _elm_lang$core$Native_Utils.eq(arr.out_coord, arr.in_coord) ? A2(_ambuc$juggling_graph$Lib$self_arrow, os, arr.in_coord) : ((_elm_lang$core$Native_Utils.cmp(arr.in_coord, arr.out_coord) < 0) ? A4(_ambuc$juggling_graph$Lib$throw_arrow, os, arr, os.cv_w_2 + os.v_off, is_conflict) : A4(_ambuc$juggling_graph$Lib$throw_arrow, os, arr, os.cv_w_2 - os.unit_h, is_conflict));
+		return _elm_lang$core$Native_Utils.eq(arr.out_coord, arr.in_coord) ? A2(_ambuc$juggling_graph$Lib$self_arrow, os, arr.in_coord) : A3(_ambuc$juggling_graph$Lib$throw_arrow, os, arr, is_conflict);
 	});
 var _ambuc$juggling_graph$Siteswap$plan_arrow = F4(
 	function (os, xins, out_coord, jump_dist) {

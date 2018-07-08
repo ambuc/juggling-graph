@@ -149,20 +149,13 @@ place_arrow os all_arrows arr =
             not <|
                 List.isEmpty <|
                     List.filter (\x -> arr.in_coord == x.out_coord) <|
-                        List.filter
-                            (\x ->
-                                bias x.out_coord x.in_coord
-                                    == bias arr.out_coord arr.in_coord
-                            )
-                        <|
+                        List.filter (\x -> bias x == bias arr) <|
                             LE.remove arr all_arrows
     in
         if arr.out_coord == arr.in_coord then
             self_arrow os arr.in_coord
-        else if arr.in_coord < arr.out_coord then
-            throw_arrow os arr (os.cv_w_2 + os.v_off) is_conflict
         else
-            throw_arrow os arr (os.cv_w_2 - os.unit_h) is_conflict
+            throw_arrow os arr is_conflict
 
 
 {-| Places all throw arrows.

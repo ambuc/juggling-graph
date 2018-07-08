@@ -52,9 +52,9 @@ type Bias
     | Below
 
 
-bias : Coord -> Coord -> Bias
-bias c1 c2 =
-    if c1 < c2 then
+bias : ArrowDescriptor -> Bias
+bias arr =
+    if arr.out_coord < arr.in_coord then
         Above
     else
         Below
@@ -156,30 +156,34 @@ arrow_path d_path =
 
 {-| Returns a standard semicircular throwing arrow.
 -}
-throw_arrow : Opts -> ArrowDescriptor -> Float -> Bool -> S.Svg msg
-throw_arrow os arr y_base anticipate_conflict =
+throw_arrow : Opts -> ArrowDescriptor -> Bool -> S.Svg msg
+throw_arrow os arr should_stop_short =
     let
-        x_from =
-            arr.out_coord
+        r =
+            abs <| (arr.out_coord - arr.in_coord) / 2.0
+
+        y_base =
+            if (bias arr) == Above then
+                os.cv_w_2 - os.unit_h
+            else
+                os.cv_w_2 + os.v_off
 
         x_to =
-            arr.in_coord
-
-        r =
-            abs <| (x_from - x_to) / 2.0
-
-        x_to_ =
-            if anticipate_conflict then
-                if x_from < x_to then
-                    (x_from + x_to) / 2.0 + (sqrt <| r ^ 2 - os.y_delt ^ 2)
+            if should_stop_short then
+                if (bias arr) == Above then
+                    (arr.out_coord + arr.in_coord)
+                        / 2.0
+                        + (sqrt <| r ^ 2 - os.y_delt ^ 2)
                 else
-                    (x_from + x_to) / 2.0 - (sqrt <| r ^ 2 - os.y_delt ^ 2)
+                    (arr.out_coord + arr.in_coord)
+                        / 2.0
+                        - (sqrt <| r ^ 2 - os.y_delt ^ 2)
             else
-                x_to
+                arr.in_coord
 
-        y_to_ =
-            if anticipate_conflict then
-                if x_from < x_to then
+        y_to =
+            if should_stop_short then
+                if (bias arr) == Above then
                     y_base - os.y_delt
                 else
                     y_base + os.y_delt
@@ -189,7 +193,7 @@ throw_arrow os arr y_base anticipate_conflict =
         arrow_path <|
             String.concat
                 [ "M"
-                , toString x_from
+                , toString arr.out_coord
                 , " "
                 , toString y_base
                 , " A "
@@ -197,9 +201,9 @@ throw_arrow os arr y_base anticipate_conflict =
                 , " "
                 , toString r
                 , " 0 0 1 "
-                , toString x_to_
+                , toString x_to
                 , " "
-                , toString y_to_
+                , toString y_to
                 ]
 
 
