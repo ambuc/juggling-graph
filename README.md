@@ -19,7 +19,7 @@ Right now `index.html` exists so that a demo can live at
 [jbuckland.com/juggling-graph](http://jbuckland.com/juggling-graph/). To wit,
 `index.html` is not hand-generated. Instead, run 
 
-    elm-make Main.elm --output=index.html
+    elm-make src/Main.elm 
 
 to build it.
 
