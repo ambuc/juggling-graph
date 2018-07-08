@@ -18,6 +18,7 @@ default_expression =
     "1[22]2[23]"
 
 
+main : Program Never Model Msg
 main =
     Html.beginnerProgram
         { model = model
