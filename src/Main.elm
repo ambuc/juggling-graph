@@ -71,19 +71,28 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [ style [ ( "text-align", "center" ) ] ]
-        [ h1 [] [ text "juggling-graph" ]
-        , Html.form []
-            [ label [ for "expr" ] [ text "Enter a siteswap" ]
-            , br [] []
-            , input
-                [ id "expr"
-                , placeholder default_expression
-                , onInput Change
-                , maxlength 30
+    div []
+        [ div [ class "row" ]
+            [ div [ class "input-field col s12" ]
+                [ Html.form []
+                    [ label [ for "expr" ] [ text "Enter a siteswap" ]
+                    , br [] []
+                    , input
+                        [ class "characterCounter"
+                        , attribute "type" "text"
+                        , attribute "data-length" "30"
+                        , maxlength 30
+                        , defaultValue default_expression
+                        , onInput Change
+                        ]
+                        []
+                    ]
                 ]
-                []
             ]
         , br [] []
-        , Siteswap.renderExpr 600 model.expr
+        , div [ style [ ( "text-align", "center" ) ] ]
+            [ Siteswap.renderExpr
+                600
+                model.expr
+            ]
         ]
