@@ -10,12 +10,16 @@ import Html.Events exposing (onInput)
 import Siteswap exposing (renderExpr)
 
 
--- MAGIC CONSTANTS
+---------------------
+-- MAGIC CONSTANTS --
+---------------------
 
 
 default_expression : String
 default_expression =
-    "1[22]2[23]"
+    -- "([44x],[44x])"
+    --"1[23]4[56]"
+    "(6x,4)([42],2x)"
 
 
 main : Program Never Model Msg
@@ -28,7 +32,9 @@ main =
 
 
 
--- MODEL
+-----------
+-- MODEL --
+-----------
 
 
 type alias Model =
@@ -41,7 +47,9 @@ model =
 
 
 
--- UPDATE
+------------
+-- UPDATE --
+------------
 
 
 type Msg
@@ -56,12 +64,14 @@ update msg model =
 
 
 
--- VIEW
+----------
+-- VIEW --
+----------
 
 
 view : Model -> Html Msg
 view model =
-    div [ class "container" ]
+    div [ style [ ( "text-align", "center" ) ] ]
         [ h1 [] [ text "juggling-graph" ]
         , Html.form []
             [ label [ for "expr" ] [ text "Enter a siteswap" ]
@@ -70,7 +80,7 @@ view model =
                 [ id "expr"
                 , placeholder default_expression
                 , onInput Change
-                , maxlength 20
+                , maxlength 30
                 ]
                 []
             ]
