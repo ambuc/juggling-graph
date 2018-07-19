@@ -16,12 +16,10 @@ See the documentation on
 [package.elm-lang.org](http://package.elm-lang.org/packages/ambuc/juggling-graph/latest).
 
 Right now `index.html` exists so that a demo can live at
-[jbuckland.com/juggling-graph](http://jbuckland.com/juggling-graph/). To wit,
-`index.html` is not hand-generated. Instead, run 
+[jbuckland.com/juggling-graph](http://jbuckland.com/juggling-graph/). 
 
-    elm-make src/Main.elm 
-
-to build it.
+# Build
+Run `./build.sh` to run the `elm-make` command which generates `main.js`.
 
 ## `renderExpr`
 
@@ -35,5 +33,10 @@ to build it.
 ```
 
 # TODO
- - Higher-throw counts, i.e. `[a-w]` for throws greater than nine beats long.
- - Synch siteswap notation, i.e. `(_,_)` for per-hand notation.
+ - [x] Higher-throw counts, i.e. `[a-w]` for throws greater than nine beats long.
+ - [x] Synch siteswap notation, i.e. `(_,_)` for per-hand notation.
+ - [ ] Arrows stop short of their destination if another arrow is emerging from
+   that side (conflict resolution).
+ - [ ] Multiple arrows for more traveled orbits.
+ - [ ] Colors per-orbit.
+
