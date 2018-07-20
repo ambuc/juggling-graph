@@ -17,8 +17,8 @@ import Siteswap exposing (renderExpr)
 
 default_expression : String
 default_expression =
-    -- "([44x],[44x])"
-    --"1[23]4[56]"
+    --"([44x],[44x])"
+    --"2[23]4[56]"
     "(6x,4)([42],2x)"
 
 

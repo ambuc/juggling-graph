@@ -51,7 +51,9 @@ type Bias
 
 bias : Descriptor -> Bias
 bias arr =
-    (arr.out_coord < arr.in_coord) ? Above <| Below
+    -- (<=) so that self-loops, which are drawn atop the character, count as
+    -- conflicts
+    (arr.out_coord <= arr.in_coord) ? Above <| Below
 
 
 mkDescriptors : Opts -> List Token -> List Descriptor
@@ -127,17 +129,22 @@ addColors ls =
     ls
 
 
-{-| TODO(jbuckland) Implement arrow curtailing
--- is_conflict =
--- not <|
--- List.isEmpty <|
--- List.filter (\x -> arr.in_coord == x.out_coord) <|
--- List.filter (\x -> bias x == bias arr) <|
--- LE.remove arr all_arrows
--}
 addCurtails : List Descriptor -> List Descriptor
-addCurtails ls =
-    ls
+addCurtails arrs =
+    let
+        hasConflict : Descriptor -> Bool
+        hasConflict arr =
+            List.isEmpty <|
+                List.filter (\x -> arr.in_index == x.out_index) <|
+                    List.filter (\x -> bias x == bias arr) <|
+                        LE.remove arr arrs
+    in
+        List.map
+            (\arr ->
+                { arr | should_curtail = (hasConflict arr) ? False <| True }
+            )
+        <|
+            Debug.log "" arrs
 
 
 

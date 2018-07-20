@@ -58,7 +58,7 @@ renderExpr canvas_width input_string =
             , arrow_dxy = ( 0.0, 25.0 )
             , text_dxy = ( -4.0, 8.0 )
             , viewbox_dxy = ( -5, 0 )
-            , y_delt = 5.0
+            , y_delt = 15.0
             , is_sync = (String.left 1 input_string == "(")
             }
     in

@@ -10231,9 +10231,6 @@ var _ambuc$juggling_graph$Arrow$definition = A2(
 			{ctor: '[]'}),
 		_1: {ctor: '[]'}
 	});
-var _ambuc$juggling_graph$Arrow$addCurtails = function (ls) {
-	return ls;
-};
 var _ambuc$juggling_graph$Arrow$addColors = function (ls) {
 	return ls;
 };
@@ -10354,8 +10351,39 @@ var _ambuc$juggling_graph$Arrow$Above = {ctor: 'Above'};
 var _ambuc$juggling_graph$Arrow$bias = function (arr) {
 	return A2(
 		_rogeriochaves$elm_ternary$Ternary_ops['?'],
-		_elm_lang$core$Native_Utils.cmp(arr.out_coord, arr.in_coord) < 0,
+		_elm_lang$core$Native_Utils.cmp(arr.out_coord, arr.in_coord) < 1,
 		_ambuc$juggling_graph$Arrow$Above)(_ambuc$juggling_graph$Arrow$Below);
+};
+var _ambuc$juggling_graph$Arrow$addCurtails = function (arrs) {
+	var hasConflict = function (arr) {
+		return _elm_lang$core$List$isEmpty(
+			A2(
+				_elm_lang$core$List$filter,
+				function (x) {
+					return _elm_lang$core$Native_Utils.eq(arr.in_index, x.out_index);
+				},
+				A2(
+					_elm_lang$core$List$filter,
+					function (x) {
+						return _elm_lang$core$Native_Utils.eq(
+							_ambuc$juggling_graph$Arrow$bias(x),
+							_ambuc$juggling_graph$Arrow$bias(arr));
+					},
+					A2(_elm_community$list_extra$List_Extra$remove, arr, arrs))));
+	};
+	return A2(
+		_elm_lang$core$List$map,
+		function (arr) {
+			return _elm_lang$core$Native_Utils.update(
+				arr,
+				{
+					should_curtail: A2(
+						_rogeriochaves$elm_ternary$Ternary_ops['?'],
+						hasConflict(arr),
+						false)(true)
+				});
+		},
+		A2(_elm_lang$core$Debug$log, '', arrs));
 };
 var _ambuc$juggling_graph$Arrow$toSvgThrownArrow = F2(
 	function (os, arr) {
@@ -11853,7 +11881,7 @@ var _ambuc$juggling_graph$Siteswap$renderExpr = F2(
 			arrow_dxy: {ctor: '_Tuple2', _0: 0.0, _1: 25.0},
 			text_dxy: {ctor: '_Tuple2', _0: -4.0, _1: 8.0},
 			viewbox_dxy: {ctor: '_Tuple2', _0: -5, _1: 0},
-			y_delt: 5.0,
+			y_delt: 15.0,
 			is_sync: _elm_lang$core$Native_Utils.eq(
 				A2(_elm_lang$core$String$left, 1, input_string),
 				'(')
