@@ -35,8 +35,9 @@ Run `./build.sh` to run the `elm-make` command which generates `main.js`.
 # TODO
  - [x] Higher-throw counts, i.e. `[a-w]` for throws greater than nine beats long.
  - [x] Synch siteswap notation, i.e. `(_,_)` for per-hand notation.
- - [ ] Arrows stop short of their destination if another arrow is emerging from
-   that side (conflict resolution).
+ - [x] Arrows stop short of their destination if another arrow is emerging from
+   that side (conflict resolution). You can see this with (for example)
+   "251451", which is not a valid siteswap.
  - [ ] Multiple arrows for more traveled orbits.
  - [ ] Colors per-orbit.
 
