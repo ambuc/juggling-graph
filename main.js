@@ -10383,7 +10383,7 @@ var _ambuc$juggling_graph$Arrow$addCurtails = function (arrs) {
 						false)(true)
 				});
 		},
-		A2(_elm_lang$core$Debug$log, '', arrs));
+		arrs);
 };
 var _ambuc$juggling_graph$Arrow$toSvgThrownArrow = F2(
 	function (os, arr) {

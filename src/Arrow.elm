@@ -143,8 +143,7 @@ addCurtails arrs =
             (\arr ->
                 { arr | should_curtail = (hasConflict arr) ? False <| True }
             )
-        <|
-            Debug.log "" arrs
+            arrs
 
 
 
