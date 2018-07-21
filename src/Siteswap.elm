@@ -25,7 +25,6 @@ import Arrow
 import Draw
 import Lib exposing (..)
 import StateMachine
-import Tokens
 
 
 {-| Generates an svg of the given siteswap.
@@ -41,37 +40,30 @@ renderExpr canvas_width input_string =
         parseObject =
             StateMachine.parseExpr input_string
 
-        tokens =
-            Tokens.mkBeatmap parseObject.beatmap
-
-        num_tokens_ =
-            List.length tokens
-
-        os : Opts
-        os =
-            { num_tokens = num_tokens_
-            , cv_w = canvas_width
-            , unit_w = (toFloat canvas_width) / (toFloat num_tokens_)
-            , unit_h = 30.0
-            , self_arrow_w = 25
-            , self_arrow_h = 35
-            , arrow_dxy = ( 0.0, 25.0 )
-            , text_dxy = ( -4.0, 8.0 )
-            , viewbox_dxy = ( -5, 0 )
+        opts : Opts
+        opts =
+            { num_tokens = List.length parseObject.tokens
+            , canvas = { w = toFloat canvas_width, h = toFloat canvas_width }
+            , unit =
+                { w = (toFloat canvas_width) / (toFloat <| List.length parseObject.tokens)
+                , h = 30.0
+                }
+            , self_arrow = { w = 25, h = 35 }
+            , arrow_offset = { x = 10.0, y = 25.0 }
+            , text_offset = { x = -4.0, y = 8.0 }
+            , viewbox_offset = { x = -5, y = 0 }
             , y_delt = 15.0
-            , is_sync = (String.left 1 input_string == "(")
+            , is_sync = parseObject.is_sync
             }
     in
         S.svg
-            [ SA.width <| toString os.cv_w
-            , SA.height <| toString os.cv_w
-            , Draw.mkViewbox os
+            [ SA.width <| toString opts.canvas.w
+            , SA.height <| toString opts.canvas.h
+            , Draw.mkViewbox opts
             ]
         <|
             [ S.defs [] [ Arrow.definition ]
-            , Draw.tokens os tokens
-            , if (StateMachine.allValid parseObject.beatmap) then
-                Draw.arrows os parseObject tokens
-              else
-                S.g [] []
+            , Draw.multiplexBoxes opts parseObject
+            , Draw.tokenBoxes opts parseObject
+            , Draw.arrows opts parseObject
             ]

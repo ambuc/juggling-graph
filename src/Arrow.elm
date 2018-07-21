@@ -1,4 +1,11 @@
-module Arrow exposing (..)
+module Arrow
+    exposing
+        ( definition
+        , toSvgArrow
+        , addCurtails
+        , addColors
+        , mkDescriptors
+        )
 
 import List.Extra as LE
 import Maybe
@@ -6,12 +13,13 @@ import Maybe.Extra as ME
 import Svg as S
 import Svg.Attributes as SA
 import Ternary exposing ((?))
+import Template as T
+import Template.Infix exposing ((<%), (%>))
 
 
 --
 
 import Lib exposing (..)
-import Tokens
 
 
 --------------------------------------------------------------------------------
@@ -56,17 +64,20 @@ bias arr =
     (arr.out_coord <= arr.in_coord) ? Above <| Below
 
 
+is_self : Descriptor -> Bool
+is_self arr =
+    arr.out_coord == arr.in_coord
+
+
 mkDescriptors : Opts -> List Token -> List Descriptor
-mkDescriptors os tokens =
+mkDescriptors opts tokens =
     let
         max_recv_index =
             Maybe.withDefault 0 <| List.maximum <| List.map .recv_index tokens
 
         recv_idx_list : List Int
         recv_idx_list =
-            LE.unique <|
-                List.map .recv_index <|
-                    List.filter .is_recv tokens
+            LE.unique <| List.map .recv_index <| List.filter .is_recv tokens
     in
         List.map
             (\( out_index, token ) ->
@@ -76,7 +87,6 @@ mkDescriptors os tokens =
                         Maybe.withDefault 0 <|
                             LE.findIndex (\x -> x == token.recv_index) recv_idx_list
 
-                    jump_distance : Int
                     -- this is measured in recv_point indexes,
                     -- not real printed character indexes
                     jump_distance =
@@ -100,7 +110,7 @@ mkDescriptors os tokens =
                         in
                             default_distance + addtl_offset
 
-                    --if os.is_sync then value // 2 else value
+                    --if opts.is_sync then value // 2 else value
                     in_idx_in_recv =
                         (out_idx_in_recv + jump_distance)
                             % (List.length recv_idx_list)
@@ -111,15 +121,14 @@ mkDescriptors os tokens =
                 in
                     { emptyDescriptor
                         | out_index = out_index
-                        , out_coord = toFloat out_index * os.unit_w
+                        , out_coord = toFloat out_index * opts.unit.w
                         , in_index = in_idx
-                        , in_coord = toFloat (in_idx) * os.unit_w
+                        , in_coord = toFloat (in_idx) * opts.unit.w
                     }
             )
         <|
             List.filter (\( _, token ) -> ME.isJust token.throw) <|
-                List.indexedMap (,) <|
-                    tokens
+                List.indexedMap (,) tokens
 
 
 {-| TODO(jbuckland) Implement colors
@@ -139,11 +148,7 @@ addCurtails arrs =
                     List.filter (\x -> bias x == bias arr) <|
                         LE.remove arr arrs
     in
-        List.map
-            (\arr ->
-                { arr | should_curtail = (hasConflict arr) ? False <| True }
-            )
-            arrs
+        List.map (\x -> { x | should_curtail = not (hasConflict x) }) arrs
 
 
 
@@ -165,21 +170,16 @@ definition =
         , SA.orient "auto"
         , SA.markerUnits "strokeWidth"
         ]
-        [ S.path
-            [ SA.d "M0,0 L0,6 L9,3 z"
-            , SA.fill "black"
-            ]
-            []
+        [ S.path [ SA.d "M0,0 L0,6 L9,3 z", SA.fill "black" ] []
         ]
 
 
-{-| Helper function to wrap an svg path string and return an arrow with that
-path.
+{-| Returns a standard semicircular throwing arrow.
 -}
-arrowPathWrapper : String -> S.Svg msg
-arrowPathWrapper d_path =
+toSvgArrow : Opts -> Descriptor -> S.Svg msg
+toSvgArrow opts arr =
     S.path
-        [ SA.d d_path
+        [ SA.d <| (is_self arr ? mkPathSelf <| mkPathThrown) opts arr
         , SA.stroke "black"
         , SA.fill "transparent"
         , SA.strokeWidth "1.0"
@@ -188,94 +188,72 @@ arrowPathWrapper d_path =
         []
 
 
-{-| Returns a standard semicircular throwing arrow.
--}
-toSvg : Opts -> Descriptor -> S.Svg msg
-toSvg os arr =
-    if arr.out_index == arr.in_index then
-        toSvgSelfArrow os arr
-    else
-        toSvgThrownArrow os arr
-
-
 {-| Returns a specialized identity throwing arrow.
 -}
-toSvgSelfArrow : Opts -> Descriptor -> S.Svg msg
-toSvgSelfArrow os arr =
+mkPathSelf : Opts -> Descriptor -> String
+mkPathSelf { canvas, unit, self_arrow } arr =
     let
         x_base =
             arr.out_coord
 
         y_base =
-            ((toFloat os.cv_w) / 2.0) - os.unit_h
+            ((canvas.w) / 2.0) - unit.h
     in
-        arrowPathWrapper <|
-            String.concat
-                [ "M"
-                , toString x_base
-                , " "
-                , toString y_base
-                , " C "
-                , toString <| x_base - os.self_arrow_w
-                , " "
-                , toString <| y_base - os.self_arrow_h
-                , ", "
-                , toString <| x_base + os.self_arrow_w
-                , " "
-                , toString <| y_base - os.self_arrow_h
-                , ", "
-                , toString x_base
-                , " "
-                , toString y_base
-                ]
+        T.render
+            (T.template "M" <% .p1x %> " " <% .p1y %> " C " <% .p2x %> " " <% .p2y %> ", " <% .p3x %> " " <% .p3y %> ", " <% .p4x %> " " <% .p4y %> "")
+            { p1x = toString x_base
+            , p1y = toString y_base
+            , p2x = toString <| x_base - self_arrow.w
+            , p2y = toString <| y_base - self_arrow.h
+            , p3x = toString <| x_base + self_arrow.w
+            , p3y = toString <| y_base - self_arrow.h
+            , p4x = toString x_base
+            , p4y = toString y_base
+            }
 
 
-toSvgThrownArrow : Opts -> Descriptor -> S.Svg msg
-toSvgThrownArrow os arr =
+mkPathThrown : Opts -> Descriptor -> String
+mkPathThrown { canvas, unit, arrow_offset, y_delt } arr =
     let
-        r =
+        radius =
             abs <| (arr.out_coord - arr.in_coord) / 2.0
 
         y_base =
-            if (bias arr) == Above then
-                ((toFloat os.cv_w) / 2.0) - os.unit_h
-            else
-                ((toFloat os.cv_w) / 2.0) + (Tuple.second os.arrow_dxy)
-
-        x_to =
-            if arr.should_curtail then
+            let
+                default_y_base =
+                    canvas.w / 2.0
+            in
                 if (bias arr) == Above then
-                    (arr.out_coord + arr.in_coord)
-                        / 2.0
-                        + (sqrt <| r ^ 2 - os.y_delt ^ 2)
+                    default_y_base - unit.h
                 else
-                    (arr.out_coord + arr.in_coord)
-                        / 2.0
-                        - (sqrt <| r ^ 2 - os.y_delt ^ 2)
-            else
-                arr.in_coord
-
-        y_to =
-            if arr.should_curtail then
-                ((bias arr) == Above)
-                    ? (y_base - os.y_delt)
-                <|
-                    (y_base + os.y_delt)
-            else
-                y_base
+                    default_y_base + arrow_offset.y
     in
-        arrowPathWrapper <|
-            String.concat
-                [ "M"
-                , toString arr.out_coord
-                , " "
-                , toString y_base
-                , " A "
-                , toString r
-                , " "
-                , toString r
-                , " 0 0 1 "
-                , toString x_to
-                , " "
-                , toString y_to
-                ]
+        T.render
+            (T.template "M" <% .origin_x %> " " <% .origin_y %> " A " <% .rx %> " " <% .ry %> " " <% .x_axis_rotation %> " " <% .large_arc_flag %> " " <% .sweep_flag %> " " <% .dx %> " " <% .dy %> "")
+            { origin_x = toString arr.out_coord
+            , origin_y = toString y_base
+            , rx = toString radius
+            , ry = toString radius
+            , x_axis_rotation = "0"
+            , large_arc_flag = "0"
+            , sweep_flag = "1"
+            , dx =
+                toString <|
+                    if arr.should_curtail then
+                        let
+                            dx =
+                                (arr.out_coord + arr.in_coord) / 2.0
+
+                            dy =
+                                (sqrt <| radius ^ 2 - y_delt ^ 2)
+                        in
+                            ((bias arr) == Above) ? (dx + dy) <| (dx - dy)
+                    else
+                        arr.in_coord
+            , dy =
+                toString <|
+                    if arr.should_curtail then
+                        ((bias arr) == Above) ? (y_base - y_delt) <| (y_base + y_delt)
+                    else
+                        y_base
+            }

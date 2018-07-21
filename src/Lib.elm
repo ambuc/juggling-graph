@@ -3,18 +3,26 @@ module Lib exposing (..)
 import Char
 
 
+type alias WH =
+    { w : Float, h : Float }
+
+
+type alias XY =
+    { x : Float
+    , y : Float
+    }
+
+
 {-| Top-level options struct.
 -}
 type alias Opts =
     { num_tokens : Int -- number of blocks in the expression
-    , cv_w : Int -- the width of the canvas
-    , unit_w : Float -- the width of a unit block
-    , unit_h : Float -- the height of a unit block
-    , self_arrow_w : Float -- the width of the self arc
-    , self_arrow_h : Float -- the height of the self arc
-    , arrow_dxy : ( Float, Float )
-    , text_dxy : ( Float, Float )
-    , viewbox_dxy : ( Float, Float )
+    , canvas : WH -- the width/height of the canvas
+    , unit : WH -- the width/height of a token block
+    , self_arrow : WH -- the width/height of the self-arc
+    , arrow_offset : XY
+    , text_offset : XY
+    , viewbox_offset : XY
     , y_delt : Float -- the y-distance to stop short when curtailing an arrow
     , is_sync : Bool
     }
@@ -42,17 +50,8 @@ type alias Throw =
 
 
 type alias Beat =
-    { valid : Bool
+    { is_valid : Bool
     , throws : List Throw
-    }
-
-
-type alias BeatMap =
-    List (List Beat)
-
-
-type alias ParseObject =
-    { beatmap : List (List Beat)
     }
 
 
@@ -61,4 +60,12 @@ type alias Token =
     , throw : Maybe Throw
     , recv_index : Int
     , is_recv : Bool
+    }
+
+
+type alias ParseObject =
+    { beatmap : List (List Beat)
+    , is_sync : Bool
+    , tokens : List Token
+    , is_valid : Bool
     }

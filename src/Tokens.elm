@@ -1,4 +1,4 @@
-module Tokens exposing (mkBeatmap)
+module Tokens exposing (mkTokens)
 
 import List.Extra as LE
 import Ternary exposing ((?))
@@ -7,6 +7,16 @@ import Ternary exposing ((?))
 --
 
 import Lib exposing (..)
+
+
+------------
+-- TOKENS --
+------------
+-- Tokens are a flattened representation of a beatmap. We unfold a beatmap into
+-- its component beats and throws, annotating each throw with metadata useful
+-- for both computing throws and printing. A token is the smallest unit width
+-- for printing. Tokens generally map to characters in an input string, except
+-- that the `x` character in sync gets attached to its left-adjacent character.
 
 
 emptyToken : Token
@@ -18,91 +28,71 @@ emptyToken =
     }
 
 
-toToken : Char -> Token
-toToken x =
+syntaxToToken : Char -> Token
+syntaxToToken x =
     { emptyToken | txt = String.fromList [ x ] }
 
 
-markRecv : Token -> Token
-markRecv t =
-    { t | is_recv = True }
+throwToToken : Int -> Throw -> Token
+throwToToken curr_idx throw =
+    { emptyToken
+        | txt = String.fromList <| throw.char :: (throw.is_cross ? [ 'x' ] <| [])
+        , throw = Just throw
+        , recv_index = curr_idx
+    }
 
 
-mkTokensBeat : Int -> Beat -> List Token
-mkTokensBeat recv_index beat =
+beatToToken : Int -> Beat -> List Token
+beatToToken curr_idx { throws } =
     let
-        base =
-            List.map
-                (\throw ->
-                    { emptyToken
-                        | txt =
-                            String.fromList <|
-                                throw.char
-                                    :: (throw.is_cross ? [ 'x' ] <| [])
-                        , throw = Just throw
-                        , recv_index = recv_index
-                    }
-                )
-                beat.throws
-    in
-        if (List.length beat.throws == 1) then
-            List.map (\b -> { b | is_recv = True }) base
-        else
+        left_bracket =
             [ { emptyToken
                 | txt = String.fromList [ '[' ]
                 , is_recv = True
-                , recv_index = recv_index
+                , recv_index = curr_idx
               }
             ]
-                ++ base
-                ++ [ toToken ']' ]
+
+        inner =
+            List.map (throwToToken curr_idx) throws
+
+        right_bracket =
+            [ syntaxToToken ']' ]
+    in
+        if (List.length throws == 1) then
+            List.map (\b -> { b | is_recv = True }) inner
+        else
+            List.concat [ left_bracket, inner, right_bracket ]
 
 
-mkBeatmapFold : Int -> BeatMap -> List Token
-mkBeatmapFold recv_index beatmap =
+chr_len : Beat -> Int
+chr_len { throws } =
+    (List.length throws == 1) ? 1 <| (2 + List.length throws)
+
+
+beatmapToToken : Int -> List (List Beat) -> List Token
+beatmapToToken curr_idx beatmap =
     case (LE.uncons beatmap) of
         Just ( [ hand ], tail ) ->
-            let
-                hand_length =
-                    if (List.length hand.throws == 1) then
-                        1
-                    else
-                        2 + List.length hand.throws
-            in
-                mkTokensBeat recv_index hand
-                    ++ mkBeatmapFold (recv_index + hand_length) tail
+            List.concat
+                [ beatToToken curr_idx hand
+                , beatmapToToken (curr_idx + chr_len hand) tail
+                ]
 
         Just ( [ left, right ], tail ) ->
-            let
-                left_length =
-                    if (List.length left.throws == 1) then
-                        1
-                    else
-                        2 + List.length left.throws
-
-                right_length =
-                    if (List.length right.throws == 1) then
-                        1
-                    else
-                        2 + List.length right.throws
-            in
-                [ toToken '(' ]
-                    ++ mkTokensBeat (recv_index + 1) left
-                    ++ [ toToken ',' ]
-                    ++ mkTokensBeat (recv_index + left_length + 2) right
-                    ++ [ toToken ')' ]
-                    ++ mkBeatmapFold
-                        (recv_index
-                            + left_length
-                            + right_length
-                            + 3
-                        )
-                        tail
+            List.concat
+                [ [ syntaxToToken '(' ]
+                , beatToToken (curr_idx + 1) left
+                , [ syntaxToToken ',' ]
+                , beatToToken (curr_idx + chr_len left + 2) right
+                , [ syntaxToToken ')' ]
+                , beatmapToToken (curr_idx + chr_len left + chr_len right + 3) tail
+                ]
 
         _ ->
             []
 
 
-mkBeatmap : BeatMap -> List Token
-mkBeatmap beatmap =
-    mkBeatmapFold 0 beatmap
+mkTokens : List (List Beat) -> List Token
+mkTokens beatmap =
+    beatmapToToken 0 beatmap
