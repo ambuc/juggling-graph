@@ -72,7 +72,8 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ div [ class "row" ]
+        [ -- Input
+          div [ class "row" ]
             [ div [ class "input-field col s12" ]
                 [ Html.form []
                     [ label [ for "expr" ] [ text "Enter a siteswap" ]
@@ -90,9 +91,8 @@ view model =
                 ]
             ]
         , br [] []
+
+        -- Output
         , div [ style [ ( "text-align", "center" ) ] ]
-            [ Siteswap.renderExpr
-                600
-                model.expr
-            ]
+            [ Siteswap.renderExpr 600 model.expr ]
         ]
