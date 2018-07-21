@@ -33,8 +33,8 @@ import StateMachine
     renderExpr 500 "3[12][22]"
 
 -}
-renderExpr : Int -> String -> Html.Html msg
-renderExpr canvas_width input_string =
+renderExpr : Int -> Int -> String -> Html.Html msg
+renderExpr canvas_width canvas_height input_string =
     let
         parseObject : ParseObject
         parseObject =
@@ -43,7 +43,7 @@ renderExpr canvas_width input_string =
         opts : Opts
         opts =
             { num_tokens = List.length parseObject.tokens
-            , canvas = { w = toFloat canvas_width, h = toFloat canvas_width }
+            , canvas = { w = toFloat canvas_width, h = toFloat canvas_height }
             , unit =
                 { w = (toFloat canvas_width) / (toFloat <| List.length parseObject.tokens)
                 , h = 30.0
@@ -57,7 +57,7 @@ renderExpr canvas_width input_string =
             }
     in
         S.svg
-            [ SA.width <| toString opts.canvas.w
+            [ SA.width "100%"
             , SA.height <| toString opts.canvas.h
             , Draw.mkViewbox opts
             ]

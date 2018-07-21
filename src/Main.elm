@@ -90,9 +90,8 @@ view model =
                     ]
                 ]
             ]
-        , br [] []
 
         -- Output
         , div [ style [ ( "text-align", "center" ) ] ]
-            [ Siteswap.renderExpr 600 model.expr ]
+            [ Siteswap.renderExpr 500 500 model.expr ]
         ]

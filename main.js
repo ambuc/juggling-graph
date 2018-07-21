@@ -12061,14 +12061,14 @@ var _ambuc$juggling_graph$StateMachine$parseExpr = function (input_string) {
 	};
 };
 
-var _ambuc$juggling_graph$Siteswap$renderExpr = F2(
-	function (canvas_width, input_string) {
+var _ambuc$juggling_graph$Siteswap$renderExpr = F3(
+	function (canvas_width, canvas_height, input_string) {
 		var parseObject = _ambuc$juggling_graph$StateMachine$parseExpr(input_string);
 		var opts = {
 			num_tokens: _elm_lang$core$List$length(parseObject.tokens),
 			canvas: {
 				w: _elm_lang$core$Basics$toFloat(canvas_width),
-				h: _elm_lang$core$Basics$toFloat(canvas_width)
+				h: _elm_lang$core$Basics$toFloat(canvas_height)
 			},
 			unit: {
 				w: _elm_lang$core$Basics$toFloat(canvas_width) / _elm_lang$core$Basics$toFloat(
@@ -12086,8 +12086,7 @@ var _ambuc$juggling_graph$Siteswap$renderExpr = F2(
 			_elm_lang$svg$Svg$svg,
 			{
 				ctor: '::',
-				_0: _elm_lang$svg$Svg_Attributes$width(
-					_elm_lang$core$Basics$toString(opts.canvas.w)),
+				_0: _elm_lang$svg$Svg_Attributes$width('100%'),
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$svg$Svg_Attributes$height(
@@ -12228,30 +12227,23 @@ var _ambuc$juggling_graph$Main$view = function (model) {
 			_1: {
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$br,
-					{ctor: '[]'},
-					{ctor: '[]'}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$style(
-								{
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
-									_1: {ctor: '[]'}
-								}),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A2(_ambuc$juggling_graph$Siteswap$renderExpr, 600, model.expr),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A3(_ambuc$juggling_graph$Siteswap$renderExpr, 500, 500, model.expr),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
 			}
 		});
 };
