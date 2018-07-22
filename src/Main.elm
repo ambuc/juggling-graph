@@ -81,10 +81,21 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ -- Input
-          div [ class "row" ]
-            [ div [ class "input-field col s12 l6" ]
+    let
+        switch_span =
+            span
+                [ class "switch" ]
+                [ label [ onMouseUp ToggleView ]
+                    [ text "Circular"
+                    , input [ attribute "type" "checkbox" ] []
+                    , span [ class "lever" ] []
+                    , text "Linear"
+                    ]
+                ]
+
+        input_span =
+            span
+                [ class "input-field" ]
                 [ Html.form []
                     [ label [ for "expr" ] [ text "Enter a siteswap" ]
                     , br [] []
@@ -99,20 +110,22 @@ view model =
                         []
                     ]
                 ]
-            , div [ class "switch col s12 l6" ]
-                [ label [ onMouseUp ToggleView ]
-                    [ text "Circular"
-                    , input [ attribute "type" "checkbox" ] []
-                    , span [ class "lever" ] []
-                    , text "Linear"
+
+        output_span =
+            span
+                [ style [ ( "text-align", "center" ) ] ]
+                [ Siteswap.renderExpr 500 500 model.expr model.view ]
+    in
+        div [ class "row" ]
+            [ br [] []
+            , div [ class "col s12 m10 offset-m1 l8 offset-l2" ]
+                [ div [ class "container" ]
+                    [ input_span
+                    , switch_span
                     ]
                 ]
+            , div [ class "col s12" ] [ output_span ]
             ]
-
-        -- Output
-        , div [ style [ ( "text-align", "center" ) ] ]
-            [ Siteswap.renderExpr 500 500 model.expr model.view ]
-        ]
 
 
 

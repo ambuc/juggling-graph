@@ -78,8 +78,9 @@ type alias Beat =
 type alias Token =
     { txt : String
     , throw : Maybe Throw
-    , recv_index : Int
-    , is_recv : Bool
+    , is_valid : Bool
+    , catch_index : Int
+    , is_catch : Bool
     }
 
 
@@ -95,7 +96,6 @@ type alias Arrow =
     { out_index : Int
     , in_index : Int
     , should_curtail_linear : Bool
-    , should_curtail_circular : Bool
     }
 
 

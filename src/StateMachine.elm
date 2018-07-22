@@ -98,7 +98,8 @@ newBeat hand chr =
     case (charToInt chr) of
         Just int ->
             { emptyBeat
-                | throws = [ { emptyThrow | value = int, char = chr, hand = hand } ]
+                | throws =
+                    [ { emptyThrow | value = int, char = chr, hand = hand } ]
             }
 
         Nothing ->
@@ -122,7 +123,11 @@ multiplexPush : Hand -> Char -> Beat -> Beat
 multiplexPush hand chr beat =
     case (charToInt chr) of
         Just int ->
-            { beat | throws = { emptyThrow | value = int, char = chr, hand = hand } :: beat.throws }
+            { beat
+                | throws =
+                    { emptyThrow | value = int, char = chr, hand = hand }
+                        :: beat.throws
+            }
 
         Nothing ->
             { beat
@@ -185,7 +190,11 @@ parse ( state, string, bs ) =
 
                         -- not in a multiplex
                         chr ->
-                            parse ( AS_NORMAL, tail, [ newBeat Center chr ] :: bs )
+                            parse
+                                ( AS_NORMAL
+                                , tail
+                                , [ newBeat Center chr ] :: bs
+                                )
 
                 AS_BRACE_EMPTY ->
                     parse
@@ -206,9 +215,9 @@ parse ( state, string, bs ) =
                                 , push_ Center head bs
                                 )
 
-                --------------------------------------------------------------
-                -- NOW -- ENTERING -- THE -- SYNCHRONOUS -- PARSING -- ZONE --
-                --------------------------------------------------------------
+                ----------------------------------------------------------------
+                -- NOW -- ENTERING -- THE -- SYNCHRONOUS -- PARSING -- ZONE ----
+                ----------------------------------------------------------------
                 S_NORMAL ->
                     case head of
                         '(' ->
@@ -240,7 +249,11 @@ parse ( state, string, bs ) =
                             [ invalidBeat 'x' ] :: bs
 
                         chr ->
-                            parse ( S_FIRST_X_OR_BRACE, tail, push_ LeftHand head bs )
+                            parse
+                                ( S_FIRST_X_OR_BRACE
+                                , tail
+                                , push_ LeftHand head bs
+                                )
 
                 S_FIRST_BRACE ->
                     case head of
@@ -254,7 +267,11 @@ parse ( state, string, bs ) =
                             [ invalidBeat 'x' ] :: bs
 
                         chr ->
-                            parse ( S_FIRST_X_OR_BRACE, tail, push_ LeftHand head bs )
+                            parse
+                                ( S_FIRST_X_OR_BRACE
+                                , tail
+                                , push_ LeftHand head bs
+                                )
 
                 S_FIRST_X_OR_BRACE ->
                     case head of
@@ -283,7 +300,11 @@ parse ( state, string, bs ) =
                                 )
 
                         chr ->
-                            parse ( S_FIRST_X_OR_BRACE, tail, push_ LeftHand head bs )
+                            parse
+                                ( S_FIRST_X_OR_BRACE
+                                , tail
+                                , push_ LeftHand head bs
+                                )
 
                 S_FIRST_X ->
                     case head of
@@ -325,7 +346,10 @@ parse ( state, string, bs ) =
                             parse
                                 ( S_PAREN
                                 , tail
-                                , LE.updateAt 0 (\x -> newBeat RightHand '0' :: x) bs
+                                , LE.updateAt
+                                    0
+                                    (\x -> newBeat RightHand '0' :: x)
+                                    bs
                                 )
 
                         '[' ->
@@ -346,7 +370,10 @@ parse ( state, string, bs ) =
                             parse
                                 ( S_SECOND_X
                                 , tail
-                                , LE.updateAt 0 (\x -> newBeat RightHand chr :: x) bs
+                                , LE.updateAt
+                                    0
+                                    (\x -> newBeat RightHand chr :: x)
+                                    bs
                                 )
 
                 S_SECOND_X ->
@@ -379,18 +406,30 @@ parse ( state, string, bs ) =
                 S_SECOND_BRACE_EMPTY ->
                     case head of
                         '0' ->
-                            parse ( S_SECOND_BRACE, tail, push_ RightHand '0' bs )
+                            parse
+                                ( S_SECOND_BRACE
+                                , tail
+                                , push_ RightHand '0' bs
+                                )
 
                         'x' ->
                             [ invalidBeat 'x' ] :: bs
 
                         chr ->
-                            parse ( S_SECOND_X_OR_BRACE, tail, push_ RightHand chr bs )
+                            parse
+                                ( S_SECOND_X_OR_BRACE
+                                , tail
+                                , push_ RightHand chr bs
+                                )
 
                 S_SECOND_BRACE ->
                     case head of
                         '0' ->
-                            parse ( S_SECOND_BRACE, tail, push_ RightHand '0' bs )
+                            parse
+                                ( S_SECOND_BRACE
+                                , tail
+                                , push_ RightHand '0' bs
+                                )
 
                         ']' ->
                             parse ( S_PAREN, tail, bs )
@@ -399,12 +438,20 @@ parse ( state, string, bs ) =
                             [ invalidBeat 'x' ] :: bs
 
                         chr ->
-                            parse ( S_SECOND_X_OR_BRACE, tail, push_ RightHand chr bs )
+                            parse
+                                ( S_SECOND_X_OR_BRACE
+                                , tail
+                                , push_ RightHand chr bs
+                                )
 
                 S_SECOND_X_OR_BRACE ->
                     case head of
                         '0' ->
-                            parse ( S_SECOND_BRACE, tail, push_ RightHand '0' bs )
+                            parse
+                                ( S_SECOND_BRACE
+                                , tail
+                                , push_ RightHand '0' bs
+                                )
 
                         'x' ->
                             parse
@@ -429,7 +476,11 @@ parse ( state, string, bs ) =
                             parse ( S_PAREN, tail, bs )
 
                         chr ->
-                            parse ( S_SECOND_X_OR_BRACE, tail, push_ RightHand chr bs )
+                            parse
+                                ( S_SECOND_X_OR_BRACE
+                                , tail
+                                , push_ RightHand chr bs
+                                )
 
                 S_PAREN ->
                     case head of
@@ -450,7 +501,8 @@ parseExpr input_string =
                 -- reverse hands within beats
                 |> List.map List.reverse
                 -- reverse throws within hands within beats
-                |> List.map (List.map (\x -> { x | throws = List.reverse x.throws }))
+                |> List.map
+                    (List.map (\x -> { x | throws = List.reverse x.throws }))
     in
         { beatmap = beatmap
         , is_sync = (String.left 1 input_string == "(")

@@ -10,7 +10,6 @@ module Draw
 import Basics.Extra exposing (fmod)
 import Either exposing (Either(Left, Right))
 import List.Extra as LE
-import Maybe.Extra as ME
 import Svg as S
 import Svg.Attributes as SA
 import Ternary exposing ((?))
@@ -145,20 +144,27 @@ arrowToSvgLinear { unit, self_arrow, arrow_offset, y_delt } { canvas } =
                                     dy =
                                         (sqrt <| radius ^ 2 - y_delt ^ 2)
                                 in
-                                    ((Arrow.bias arr) == Above) ? (dx + dy) <| (dx - dy)
+                                    ((Arrow.bias arr) == Above)
+                                        ? (dx + dy)
+                                    <|
+                                        (dx - dy)
                             else
                                 in_coord arr
                     , dy =
                         toString <|
                             if arr.should_curtail_linear then
-                                ((Arrow.bias arr) == Above) ? (y_base - y_delt) <| (y_base + y_delt)
+                                if (Arrow.bias arr) == Above then
+                                    y_base - y_delt
+                                else
+                                    y_base + y_delt
                             else
                                 y_base
                     }
     in
         (\arr ->
             S.path
-                [ SA.d <| (Arrow.is_self arr ? mkLoopLinear <| mkThrowLinear) arr
+                [ SA.d <|
+                    (Arrow.is_self arr ? mkLoopLinear <| mkThrowLinear) arr
                 , SA.stroke "black"
                 , SA.fill "transparent"
                 , SA.strokeWidth "1.5"
@@ -175,28 +181,42 @@ arrowToSvgCircular { center, radius, unit, self_arrow } { num_tokens } =
         mkLoopCircular { out_index } =
             let
                 out_theta =
-                    fmod ((2 * pi) / (toFloat num_tokens) * (toFloat out_index)) (2 * pi)
+                    fmod
+                        ((2 * pi) / (toFloat num_tokens) * (toFloat out_index))
+                        (2 * pi)
             in
                 T.render
                     (T.template "M" <% .o_x %> " " <% .o_y %> " C " <% .x_1 %> " " <% .y_1 %> ", " <% .x_2 %> " " <% .y_2 %> ", " <% .f_x %> " " <% .f_y %> "")
                     { o_x = toString <| center.x
                     , o_y = toString <| (center.y - radius) + (unit.h / 2)
                     , x_1 = toString <| center.x - self_arrow.w
-                    , y_1 = toString <| (center.y - radius) + (unit.h / 2) + self_arrow.h
+                    , y_1 =
+                        toString <|
+                            (center.y - radius)
+                                + (unit.h / 2)
+                                + self_arrow.h
                     , x_2 = toString <| center.x + self_arrow.w
-                    , y_2 = toString <| (center.y - radius) + (unit.h / 2) + self_arrow.h
+                    , y_2 =
+                        toString <|
+                            (center.y - radius)
+                                + (unit.h / 2)
+                                + self_arrow.h
                     , f_x = toString <| center.x
                     , f_y = toString <| (center.y - radius) + (unit.h / 2)
                     }
 
         mkThrowCircular : Arrow -> String
-        mkThrowCircular { out_index, in_index, should_curtail_circular } =
+        mkThrowCircular { out_index, in_index } =
             let
                 out_theta =
-                    fmod ((2 * pi) / (toFloat num_tokens) * (toFloat out_index)) (2 * pi)
+                    fmod
+                        ((2 * pi) / (toFloat num_tokens) * (toFloat out_index))
+                        (2 * pi)
 
                 in_theta =
-                    fmod ((2 * pi) / (toFloat num_tokens) * (toFloat in_index)) (2 * pi)
+                    fmod
+                        ((2 * pi) / (toFloat num_tokens) * (toFloat in_index))
+                        (2 * pi)
 
                 starting_radius =
                     radius - (unit.h / 2)
@@ -225,17 +245,32 @@ arrowToSvgCircular { center, radius, unit, self_arrow } { num_tokens } =
 
                     -- this is about the cross prorduct of a->b with a->center.
                     , sweep_flag =
-                        if ((beta_x - alpha_x) * (center.y - alpha_y) - (beta_y - alpha_y) * (center.x - alpha_x)) > 0 then
+                        if
+                            ((beta_x - alpha_x)
+                                * (center.y - alpha_y)
+                                - (beta_y - alpha_y)
+                                * (center.x - alpha_x)
+                            )
+                                > 0
+                        then
                             "0"
                         else
                             "1"
-                    , radius = toString <| sqrt ((beta_y - alpha_y) ^ 2 + (beta_x - alpha_x) ^ 2)
+                    , radius =
+                        toString <|
+                            sqrt <|
+                                (beta_y - alpha_y)
+                                    ^ 2
+                                    + (beta_x - alpha_x)
+                                    ^ 2
                     }
     in
         (\arr ->
             S.g []
                 [ S.path
-                    [ SA.d <| (Arrow.is_self arr ? mkLoopCircular <| mkThrowCircular) arr
+                    [ SA.d <|
+                        (Arrow.is_self arr ? mkLoopCircular <| mkThrowCircular)
+                            arr
                     , SA.stroke "black"
                     , SA.fill "transparent"
                     , SA.strokeWidth "1.5"
@@ -244,7 +279,11 @@ arrowToSvgCircular { center, radius, unit, self_arrow } { num_tokens } =
                         if (Arrow.is_self arr) then
                             T.render
                                 (T.template "rotate(" <% .theta %> "," <% .center_x %> "," <% .center_y %> ")")
-                                { theta = toString <| 360.0 / toFloat num_tokens * toFloat (arr.out_index)
+                                { theta =
+                                    toString <|
+                                        360.0
+                                            / toFloat num_tokens
+                                            * toFloat (arr.out_index)
                                 , center_x = toString <| center.x
                                 , center_y = toString <| center.y
                                 }
@@ -292,12 +331,12 @@ boundToMultiplexBoxLinear { unit } { canvas } =
 
 
 boundsToMultiplexBoxCircular : CircularOpts -> Opts -> (Int -> Int -> S.Svg msg)
-boundsToMultiplexBoxCircular { center, radius, unit, multiplex_offset } { num_tokens } =
+boundsToMultiplexBoxCircular { center, radius, unit, multiplex_offset } opts =
     (\l_idx r_idx ->
         let
-            delta_theta =
+            d_th =
                 (2 * pi)
-                    / (toFloat num_tokens)
+                    / (toFloat opts.num_tokens)
                     * (toFloat <| (r_idx - l_idx))
 
             inner_r =
@@ -314,20 +353,24 @@ boundsToMultiplexBoxCircular { center, radius, unit, multiplex_offset } { num_to
                         , alpha_y = toString <| center.y - outer_r
                         , betaa_x = toString <| center.x
                         , betaa_y = toString <| center.y - inner_r
-                        , gamma_x = toString <| center.x + inner_r * sin delta_theta
-                        , gamma_y = toString <| center.y - inner_r * cos delta_theta
-                        , delta_x = toString <| center.x + outer_r * sin delta_theta
-                        , delta_y = toString <| center.y - outer_r * cos delta_theta
+                        , gamma_x = toString <| center.x + inner_r * sin d_th
+                        , gamma_y = toString <| center.y - inner_r * cos d_th
+                        , delta_x = toString <| center.x + outer_r * sin d_th
+                        , delta_y = toString <| center.y - outer_r * cos d_th
                         , inner_r = toString <| inner_r
                         , outer_r = toString <| outer_r
-                        , large_arc_inner = toString <| (delta_theta < pi) ? 0 <| 1
-                        , large_arc_outer = toString <| (delta_theta < pi) ? 0 <| 1
+                        , large_arc_inner = toString <| (d_th < pi) ? 0 <| 1
+                        , large_arc_outer = toString <| (d_th < pi) ? 0 <| 1
                         }
                 , SA.fill "lightblue"
                 , SA.transform <|
                     T.render
                         (T.template "rotate(" <% .theta %> "," <% .center_x %> "," <% .center_y %> ")")
-                        { theta = toString <| 360.0 / toFloat num_tokens * toFloat (l_idx)
+                        { theta =
+                            toString <|
+                                360.0
+                                    / toFloat opts.num_tokens
+                                    * toFloat (l_idx)
                         , center_x = toString <| center.x
                         , center_y = toString <| center.y
                         }
@@ -358,7 +401,7 @@ tokenBoxes opts { tokens } =
 
 indexedTokenToSvgLinear : LinearOpts -> Opts -> (( Int, Token ) -> S.Svg msg)
 indexedTokenToSvgLinear { text_offset, unit } { canvas } =
-    (\( index, token ) ->
+    (\( index, { is_valid, txt } ) ->
         S.text_
             [ SA.x <| toString <| text_offset.x + unit.w * toFloat index
             , SA.y <| toString <| text_offset.y + (canvas.w / 2.0)
@@ -366,31 +409,36 @@ indexedTokenToSvgLinear { text_offset, unit } { canvas } =
 
             -- is ME.isJust (token.throw) && throw.is_valid
             -- defaults to True, so black is the default color
-            , SA.fill <| (ME.unwrap True (.is_valid) (token.throw)) ? "black" <| "red"
+            , SA.fill <| is_valid ? "black" <| "red"
             , SA.textAnchor "middle"
             ]
-            [ S.text token.txt ]
+            [ S.text txt ]
     )
 
 
-indexedTokenToSvgCircular : CircularOpts -> Opts -> (( Int, Token ) -> S.Svg msg)
+indexedTokenToSvgCircular :
+    CircularOpts
+    -> Opts
+    -> (( Int, Token ) -> S.Svg msg)
 indexedTokenToSvgCircular { radius, unit, center } { canvas, num_tokens } =
-    (\( index, token ) ->
+    (\( index, { is_valid, txt } ) ->
         S.text_
             [ SA.x <| toString center.x
             , SA.y <| toString <| center.y - radius
             , SA.fontSize <| toString unit.h
-            , SA.fill <| (ME.unwrap True .is_valid token.throw) ? "black" <| "red"
+            , SA.fill <| is_valid ? "black" <| "red"
             , SA.textAnchor "middle"
             , SA.transform <|
                 T.render
                     (T.template "rotate(" <% .theta %> "," <% .center_x %> "," <% .center_y %> ")")
-                    { theta = toString <| (360.0 / toFloat num_tokens * toFloat index)
+                    { theta =
+                        toString <|
+                            (360.0 / toFloat num_tokens * toFloat index)
                     , center_x = toString <| center.x
                     , center_y = toString <| center.y
                     }
             ]
-            [ S.text token.txt ]
+            [ S.text txt ]
     )
 
 

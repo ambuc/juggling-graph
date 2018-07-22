@@ -23,8 +23,9 @@ emptyToken : Token
 emptyToken =
     { txt = ""
     , throw = Nothing
-    , recv_index = 0
-    , is_recv = False
+    , catch_index = 0
+    , is_catch = False
+    , is_valid = True
     }
 
 
@@ -36,9 +37,13 @@ syntaxToToken x =
 throwToToken : Int -> Throw -> Token
 throwToToken curr_idx throw =
     { emptyToken
-        | txt = String.fromList <| throw.char :: (throw.is_cross ? [ 'x' ] <| [])
+        | txt =
+            String.fromList <|
+                throw.char
+                    :: (throw.is_cross ? [ 'x' ] <| [])
         , throw = Just throw
-        , recv_index = curr_idx
+        , catch_index = curr_idx
+        , is_valid = throw.is_valid
     }
 
 
@@ -48,8 +53,8 @@ beatToToken curr_idx { throws } =
         left_bracket =
             [ { emptyToken
                 | txt = String.fromList [ '[' ]
-                , is_recv = True
-                , recv_index = curr_idx
+                , is_catch = True
+                , catch_index = curr_idx
               }
             ]
 
@@ -60,7 +65,7 @@ beatToToken curr_idx { throws } =
             [ syntaxToToken ']' ]
     in
         if (List.length throws == 1) then
-            List.map (\b -> { b | is_recv = True }) inner
+            List.map (\b -> { b | is_catch = True }) inner
         else
             List.concat [ left_bracket, inner, right_bracket ]
 
@@ -86,7 +91,9 @@ beatmapToToken curr_idx beatmap =
                 , [ syntaxToToken ',' ]
                 , beatToToken (curr_idx + chr_len left + 2) right
                 , [ syntaxToToken ')' ]
-                , beatmapToToken (curr_idx + chr_len left + chr_len right + 3) tail
+                , beatmapToToken
+                    (curr_idx + chr_len left + chr_len right + 3)
+                    tail
                 ]
 
         _ ->
