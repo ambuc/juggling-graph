@@ -48,11 +48,11 @@ mkOpts canvas_width canvas_height parseObject view =
                         { w =
                             (toFloat canvas_width)
                                 / (toFloat <| List.length parseObject.tokens)
-                        , h = 30.0
+                        , h = 15.0
                         }
                     , self_arrow = { w = 25, h = 35 }
-                    , arrow_offset = { x = 10.0, y = 25.0 }
-                    , text_offset = { x = -4.0, y = 8.0 }
+                    , arrow_offset = { x = 5.0, y = 13.0 }
+                    , text_offset = { x = 0.0, y = 4.0 }
                     , y_delt = 15.0
                     }
 
@@ -60,12 +60,12 @@ mkOpts canvas_width canvas_height parseObject view =
                 -- CircularOpts
                 Right
                     { radius = (toFloat canvas_width) / 3
-                    , unit = { w = 30.0, h = 30.0 }
+                    , unit = { w = 20.0, h = 20.0 }
                     , center =
                         { x = (toFloat canvas_width) / 2.0
                         , y = (toFloat canvas_height) / 2.0
                         }
-                    , multiplex_offset = { x = 0.0, y = 10.0 }
+                    , multiplex_offset = { x = 0.0, y = 6.0 }
                     , self_arrow = { w = 25, h = 35 }
                     }
     }

@@ -10824,13 +10824,13 @@ var _ambuc$juggling_graph$Draw$indexedTokenToSvgLinear = F3(
 		var _p13 = _p10.text_offset;
 		var _p11 = _p8;
 		var _p12 = _p7;
+		var x = _p13.x + (_p14.w * _elm_lang$core$Basics$toFloat(_p12._0));
 		return A2(
 			_elm_lang$svg$Svg$text_,
 			{
 				ctor: '::',
 				_0: _elm_lang$svg$Svg_Attributes$x(
-					_elm_lang$core$Basics$toString(
-						_p13.x + (_p14.w * _elm_lang$core$Basics$toFloat(_p12._0)))),
+					_elm_lang$core$Basics$toString(x)),
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$svg$Svg_Attributes$y(
@@ -11367,7 +11367,7 @@ var _ambuc$juggling_graph$Draw$arrowToSvgCircular = F2(
 									_0: _elm_lang$svg$Svg_Attributes$fill('transparent'),
 									_1: {
 										ctor: '::',
-										_0: _elm_lang$svg$Svg_Attributes$strokeWidth('1.5'),
+										_0: _elm_lang$svg$Svg_Attributes$strokeWidth('1.0'),
 										_1: {
 											ctor: '::',
 											_0: _elm_lang$svg$Svg_Attributes$markerEnd('url(#arrow)'),
@@ -11644,7 +11644,7 @@ var _ambuc$juggling_graph$Draw$arrowToSvgLinear = F2(
 							_0: _elm_lang$svg$Svg_Attributes$fill('transparent'),
 							_1: {
 								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$strokeWidth('1.5'),
+								_0: _elm_lang$svg$Svg_Attributes$strokeWidth('1.0'),
 								_1: {
 									ctor: '::',
 									_0: _elm_lang$svg$Svg_Attributes$markerEnd('url(#arrow)'),
@@ -11774,88 +11774,8 @@ var _ambuc$juggling_graph$Draw$mkViewbox = function (_p55) {
 
 var _ambuc$juggling_graph$Examples$examples = {
 	ctor: '::',
-	_0: '([44x],[44x])',
-	_1: {
-		ctor: '::',
-		_0: '2[23]4[56]',
-		_1: {
-			ctor: '::',
-			_0: '(6x,4)([42],2x)',
-			_1: {
-				ctor: '::',
-				_0: '([66x],2)(6x,2)(6x,2)',
-				_1: {
-					ctor: '::',
-					_0: '([66x],2)(6x,2x)(6,2)',
-					_1: {
-						ctor: '::',
-						_0: '([66x],2)(2,6)(6,2)',
-						_1: {
-							ctor: '::',
-							_0: '([66x],2)(6,2x)(6,2)',
-							_1: {
-								ctor: '::',
-								_0: '([66x],2)(6,2)(6x,2)',
-								_1: {
-									ctor: '::',
-									_0: '([66x],2)(2x,6x)(6x,2)',
-									_1: {
-										ctor: '::',
-										_0: '([66x],4)(2,6)(4,2)',
-										_1: {
-											ctor: '::',
-											_0: '([66x],4x)(2x,6)(4,2)',
-											_1: {
-												ctor: '::',
-												_0: '([66x],4x)(2x,6x)(4x,2)',
-												_1: {
-													ctor: '::',
-													_0: '([66x],4)(2,6x)(4x,2)',
-													_1: {
-														ctor: '::',
-														_0: '([66x],4x)(6,2)(4x,2)',
-														_1: {
-															ctor: '::',
-															_0: '([66x],4)(6x,2x)(4,2)',
-															_1: {
-																ctor: '::',
-																_0: '([44x],6)(2,6)([66x],2x)(2,2)',
-																_1: {
-																	ctor: '::',
-																	_0: '([44x],6)(2,6)([66x],2x)(2,2x)',
-																	_1: {
-																		ctor: '::',
-																		_0: '([44x],6x)(6x,2)(2x,[66x])(2,2)',
-																		_1: {
-																			ctor: '::',
-																			_0: '([44x],6x)(6x,2)(2x,[66x])(2,2x)',
-																			_1: {
-																				ctor: '::',
-																				_0: '(2,6x)([66x],2x)(2x,6x)(4x,6x)',
-																				_1: {
-																					ctor: '::',
-																					_0: '(2,6x)([66x],2x)(2x,6x)(4x,6)',
-																					_1: {ctor: '[]'}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	_0: '(2,6x)([66x],2x)(2x,6x)(4x,6x)*',
+	_1: {ctor: '[]'}
 };
 
 var _elm_lang$html$Html_Attributes$map = _elm_lang$virtual_dom$VirtualDom$mapProperty;
@@ -13562,8 +13482,8 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p4) {
 						return _elm_lang$core$Native_Utils.crashCase(
 							'StateMachine',
 							{
-								start: {line: 165, column: 17},
-								end: {line: 170, column: 74}
+								start: {line: 167, column: 17},
+								end: {line: 172, column: 74}
 							},
 							_p7)('I thought the string wasn\'t empty!!');
 					}
@@ -13647,33 +13567,39 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p4) {
 						}
 					case 'S_NORMAL':
 						var _p13 = head;
-						if (_p13.valueOf() === '(') {
-							var _v18 = {
-								ctor: '_Tuple3',
-								_0: _ambuc$juggling_graph$StateMachine$S_FIRST,
-								_1: tail,
-								_2: {
+						switch (_p13.valueOf()) {
+							case '(':
+								var _v18 = {
+									ctor: '_Tuple3',
+									_0: _ambuc$juggling_graph$StateMachine$S_FIRST,
+									_1: tail,
+									_2: {
+										ctor: '::',
+										_0: {
+											ctor: '::',
+											_0: _ambuc$juggling_graph$StateMachine$emptyBeat,
+											_1: {ctor: '[]'}
+										},
+										_1: _p26
+									}
+								};
+								_p4 = _v18;
+								continue parse;
+							case '*':
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									_p26,
+									A2(_elm_lang$core$List$map, _elm_lang$core$List$reverse, _p26));
+							default:
+								return {
 									ctor: '::',
 									_0: {
 										ctor: '::',
-										_0: _ambuc$juggling_graph$StateMachine$emptyBeat,
+										_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p13),
 										_1: {ctor: '[]'}
 									},
 									_1: _p26
-								}
-							};
-							_p4 = _v18;
-							continue parse;
-						} else {
-							return {
-								ctor: '::',
-								_0: {
-									ctor: '::',
-									_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p13),
-									_1: {ctor: '[]'}
-								},
-								_1: _p26
-							};
+								};
 						}
 					case 'S_FIRST':
 						var _p14 = head;
@@ -14217,23 +14143,23 @@ var _ambuc$juggling_graph$Siteswap$mkOpts = F4(
 							unit: {
 								w: _elm_lang$core$Basics$toFloat(canvas_width) / _elm_lang$core$Basics$toFloat(
 									_elm_lang$core$List$length(parseObject.tokens)),
-								h: 30.0
+								h: 15.0
 							},
 							self_arrow: {w: 25, h: 35},
-							arrow_offset: {x: 10.0, y: 25.0},
-							text_offset: {x: -4.0, y: 8.0},
+							arrow_offset: {x: 5.0, y: 13.0},
+							text_offset: {x: 0.0, y: 4.0},
 							y_delt: 15.0
 						});
 				} else {
 					return _toastal$either$Either$Right(
 						{
 							radius: _elm_lang$core$Basics$toFloat(canvas_width) / 3,
-							unit: {w: 30.0, h: 30.0},
+							unit: {w: 20.0, h: 20.0},
 							center: {
 								x: _elm_lang$core$Basics$toFloat(canvas_width) / 2.0,
 								y: _elm_lang$core$Basics$toFloat(canvas_height) / 2.0
 							},
-							multiplex_offset: {x: 0.0, y: 10.0},
+							multiplex_offset: {x: 0.0, y: 6.0},
 							self_arrow: {w: 25, h: 35}
 						});
 				}
@@ -14296,7 +14222,7 @@ var _ambuc$juggling_graph$Main$UpdateExamplesIdx = function (a) {
 var _ambuc$juggling_graph$Main$Roll = {ctor: 'Roll'};
 var _ambuc$juggling_graph$Main$init = {
 	ctor: '_Tuple2',
-	_0: {expr: '', view: _ambuc$juggling_graph$Lib$Circular},
+	_0: {expr: '', view: _ambuc$juggling_graph$Lib$Linear},
 	_1: _GlobalWebIndex$cmd_extra$Cmd_Extra$perform(_ambuc$juggling_graph$Main$Roll)
 };
 var _ambuc$juggling_graph$Main$update = F2(
@@ -14371,7 +14297,7 @@ var _ambuc$juggling_graph$Main$view = function (model) {
 		},
 		{
 			ctor: '::',
-			_0: A4(_ambuc$juggling_graph$Siteswap$renderExpr, 500, 500, model.expr, model.view),
+			_0: A4(_ambuc$juggling_graph$Siteswap$renderExpr, 600, 600, model.expr, model.view),
 			_1: {ctor: '[]'}
 		});
 	var shuffle_span = A2(

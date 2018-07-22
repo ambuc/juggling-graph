@@ -167,7 +167,7 @@ arrowToSvgLinear { unit, self_arrow, arrow_offset, y_delt } { canvas } =
                     (Arrow.is_self arr ? mkLoopLinear <| mkThrowLinear) arr
                 , SA.stroke "black"
                 , SA.fill "transparent"
-                , SA.strokeWidth "1.5"
+                , SA.strokeWidth "1.0"
                 , SA.markerEnd "url(#arrow)"
                 ]
                 []
@@ -273,7 +273,7 @@ arrowToSvgCircular { center, radius, unit, self_arrow } { num_tokens } =
                             arr
                     , SA.stroke "black"
                     , SA.fill "transparent"
-                    , SA.strokeWidth "1.5"
+                    , SA.strokeWidth "1.0"
                     , SA.markerEnd "url(#arrow)"
                     , SA.transform <|
                         if (Arrow.is_self arr) then
@@ -402,17 +402,21 @@ tokenBoxes opts { tokens } =
 indexedTokenToSvgLinear : LinearOpts -> Opts -> (( Int, Token ) -> S.Svg msg)
 indexedTokenToSvgLinear { text_offset, unit } { canvas } =
     (\( index, { is_valid, txt } ) ->
-        S.text_
-            [ SA.x <| toString <| text_offset.x + unit.w * toFloat index
-            , SA.y <| toString <| text_offset.y + (canvas.w / 2.0)
-            , SA.fontSize <| toString unit.h
+        let
+            x =
+                text_offset.x + unit.w * toFloat index
+        in
+            S.text_
+                [ SA.x <| toString x
+                , SA.y <| toString <| text_offset.y + (canvas.w / 2.0)
+                , SA.fontSize <| toString unit.h
 
-            -- is ME.isJust (token.throw) && throw.is_valid
-            -- defaults to True, so black is the default color
-            , SA.fill <| is_valid ? "black" <| "red"
-            , SA.textAnchor "middle"
-            ]
-            [ S.text txt ]
+                -- is ME.isJust (token.throw) && throw.is_valid
+                -- defaults to True, so black is the default color
+                , SA.fill <| is_valid ? "black" <| "red"
+                , SA.textAnchor "middle"
+                ]
+                [ S.text txt ]
     )
 
 
