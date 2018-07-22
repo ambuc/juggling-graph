@@ -2,12 +2,14 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onInput, onMouseUp)
+import Ternary exposing ((?))
 
 
 --
 
 import Siteswap exposing (renderExpr)
+import Lib exposing (View(Linear, Circular))
 
 
 ---------------------
@@ -38,12 +40,16 @@ main =
 
 
 type alias Model =
-    { expr : String }
+    { expr : String
+    , view : View
+    }
 
 
 model : Model
 model =
-    { expr = default_expression }
+    { expr = default_expression
+    , view = Circular
+    }
 
 
 
@@ -54,6 +60,7 @@ model =
 
 type Msg
     = Change String
+    | ToggleView
 
 
 update : Msg -> Model -> Model
@@ -61,6 +68,9 @@ update msg model =
     case msg of
         Change newExpr ->
             { model | expr = newExpr }
+
+        ToggleView ->
+            { model | view = (model.view == Linear) ? Circular <| Linear }
 
 
 
@@ -74,7 +84,7 @@ view model =
     div []
         [ -- Input
           div [ class "row" ]
-            [ div [ class "input-field col s12" ]
+            [ div [ class "input-field col s12 l6" ]
                 [ Html.form []
                     [ label [ for "expr" ] [ text "Enter a siteswap" ]
                     , br [] []
@@ -89,9 +99,21 @@ view model =
                         []
                     ]
                 ]
+            , div [ class "switch col s12 l6" ]
+                [ label [ onMouseUp ToggleView ]
+                    [ text "Circular"
+                    , input [ attribute "type" "checkbox" ] []
+                    , span [ class "lever" ] []
+                    , text "Linear"
+                    ]
+                ]
             ]
 
         -- Output
         , div [ style [ ( "text-align", "center" ) ] ]
-            [ Siteswap.renderExpr 500 500 model.expr ]
+            [ Siteswap.renderExpr 500 500 model.expr model.view ]
         ]
+
+
+
+--
