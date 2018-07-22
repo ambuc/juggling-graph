@@ -45,7 +45,7 @@ type Msg
 init : ( Model, Cmd Msg )
 init =
     ( { expr = ""
-      , view = Circular
+      , view = Linear
       }
     , CE.perform Roll
     )
@@ -131,7 +131,7 @@ view model =
 
         output_span =
             span [ style [ ( "text-align", "center" ) ] ]
-                [ Siteswap.renderExpr 500 500 model.expr model.view ]
+                [ Siteswap.renderExpr 600 600 model.expr model.view ]
     in
         div [ class "row" ]
             [ br [] []

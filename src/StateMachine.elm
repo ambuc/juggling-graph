@@ -90,7 +90,9 @@ charToInt c =
 
 emptyBeat : Beat
 emptyBeat =
-    { is_valid = True, throws = [] }
+    { is_valid = True
+    , throws = []
+    }
 
 
 newBeat : Hand -> Char -> Beat
@@ -222,6 +224,14 @@ parse ( state, string, bs ) =
                     case head of
                         '(' ->
                             parse ( S_FIRST, tail, [ emptyBeat ] :: bs )
+
+                        --------------------------------------------------------
+                        -- ASTERISK HANDLING ZONE ------------------------------
+                        -- (a,a')(b,b') --> (a,a')(b,b')(a',a)(b',b) -----------
+                        --------------------------------------------------------
+                        '*' ->
+                            bs
+                                ++ (List.map List.reverse bs)
 
                         chr ->
                             [ invalidBeat chr ] :: bs
