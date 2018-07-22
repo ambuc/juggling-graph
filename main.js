@@ -14302,7 +14302,7 @@ var _ambuc$juggling_graph$Main$UpdateExamplesIdx = function (a) {
 var _ambuc$juggling_graph$Main$Roll = {ctor: 'Roll'};
 var _ambuc$juggling_graph$Main$init = {
 	ctor: '_Tuple2',
-	_0: {expr: '', view: _ambuc$juggling_graph$Lib$Linear},
+	_0: {expr: '', view: _ambuc$juggling_graph$Lib$Circular},
 	_1: _GlobalWebIndex$cmd_extra$Cmd_Extra$perform(_ambuc$juggling_graph$Main$Roll)
 };
 var _ambuc$juggling_graph$Main$update = F2(
