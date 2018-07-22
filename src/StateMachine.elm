@@ -223,29 +223,29 @@ parse ( state, string, bs ) =
                             parse ( S_FIRST_BRACE_EMPTY, tail, bs )
 
                         '0' ->
-                            parse ( S_COMMA, tail, push_ Left '0' bs )
+                            parse ( S_COMMA, tail, push_ LeftHand '0' bs )
 
                         'x' ->
                             [ invalidBeat 'x' ] :: bs
 
                         chr ->
-                            parse ( S_FIRST_X, tail, push_ Left chr bs )
+                            parse ( S_FIRST_X, tail, push_ LeftHand chr bs )
 
                 S_FIRST_BRACE_EMPTY ->
                     case head of
                         '0' ->
-                            parse ( S_FIRST_BRACE, tail, push_ Left '0' bs )
+                            parse ( S_FIRST_BRACE, tail, push_ LeftHand '0' bs )
 
                         'x' ->
                             [ invalidBeat 'x' ] :: bs
 
                         chr ->
-                            parse ( S_FIRST_X_OR_BRACE, tail, push_ Left head bs )
+                            parse ( S_FIRST_X_OR_BRACE, tail, push_ LeftHand head bs )
 
                 S_FIRST_BRACE ->
                     case head of
                         '0' ->
-                            parse ( S_FIRST_BRACE, tail, push_ Left '0' bs )
+                            parse ( S_FIRST_BRACE, tail, push_ LeftHand '0' bs )
 
                         ']' ->
                             parse ( S_COMMA, tail, bs )
@@ -254,7 +254,7 @@ parse ( state, string, bs ) =
                             [ invalidBeat 'x' ] :: bs
 
                         chr ->
-                            parse ( S_FIRST_X_OR_BRACE, tail, push_ Left head bs )
+                            parse ( S_FIRST_X_OR_BRACE, tail, push_ LeftHand head bs )
 
                 S_FIRST_X_OR_BRACE ->
                     case head of
@@ -262,7 +262,7 @@ parse ( state, string, bs ) =
                             parse ( S_COMMA, tail, bs )
 
                         '0' ->
-                            parse ( S_FIRST_BRACE, tail, push_ Left '0' bs )
+                            parse ( S_FIRST_BRACE, tail, push_ LeftHand '0' bs )
 
                         'x' ->
                             parse
@@ -283,7 +283,7 @@ parse ( state, string, bs ) =
                                 )
 
                         chr ->
-                            parse ( S_FIRST_X_OR_BRACE, tail, push_ Left head bs )
+                            parse ( S_FIRST_X_OR_BRACE, tail, push_ LeftHand head bs )
 
                 S_FIRST_X ->
                     case head of
@@ -325,7 +325,7 @@ parse ( state, string, bs ) =
                             parse
                                 ( S_PAREN
                                 , tail
-                                , LE.updateAt 0 (\x -> newBeat Right '0' :: x) bs
+                                , LE.updateAt 0 (\x -> newBeat RightHand '0' :: x) bs
                                 )
 
                         '[' ->
@@ -346,7 +346,7 @@ parse ( state, string, bs ) =
                             parse
                                 ( S_SECOND_X
                                 , tail
-                                , LE.updateAt 0 (\x -> newBeat Right chr :: x) bs
+                                , LE.updateAt 0 (\x -> newBeat RightHand chr :: x) bs
                                 )
 
                 S_SECOND_X ->
@@ -379,18 +379,18 @@ parse ( state, string, bs ) =
                 S_SECOND_BRACE_EMPTY ->
                     case head of
                         '0' ->
-                            parse ( S_SECOND_BRACE, tail, push_ Right '0' bs )
+                            parse ( S_SECOND_BRACE, tail, push_ RightHand '0' bs )
 
                         'x' ->
                             [ invalidBeat 'x' ] :: bs
 
                         chr ->
-                            parse ( S_SECOND_X_OR_BRACE, tail, push_ Right chr bs )
+                            parse ( S_SECOND_X_OR_BRACE, tail, push_ RightHand chr bs )
 
                 S_SECOND_BRACE ->
                     case head of
                         '0' ->
-                            parse ( S_SECOND_BRACE, tail, push_ Right '0' bs )
+                            parse ( S_SECOND_BRACE, tail, push_ RightHand '0' bs )
 
                         ']' ->
                             parse ( S_PAREN, tail, bs )
@@ -399,12 +399,12 @@ parse ( state, string, bs ) =
                             [ invalidBeat 'x' ] :: bs
 
                         chr ->
-                            parse ( S_SECOND_X_OR_BRACE, tail, push_ Right chr bs )
+                            parse ( S_SECOND_X_OR_BRACE, tail, push_ RightHand chr bs )
 
                 S_SECOND_X_OR_BRACE ->
                     case head of
                         '0' ->
-                            parse ( S_SECOND_BRACE, tail, push_ Right '0' bs )
+                            parse ( S_SECOND_BRACE, tail, push_ RightHand '0' bs )
 
                         'x' ->
                             parse
@@ -429,7 +429,7 @@ parse ( state, string, bs ) =
                             parse ( S_PAREN, tail, bs )
 
                         chr ->
-                            parse ( S_SECOND_X_OR_BRACE, tail, push_ Right chr bs )
+                            parse ( S_SECOND_X_OR_BRACE, tail, push_ RightHand chr bs )
 
                 S_PAREN ->
                     case head of
@@ -444,13 +444,20 @@ parseExpr : String -> ParseObject
 parseExpr input_string =
     let
         beatmap =
-            List.map (List.map (\x -> { x | throws = List.reverse x.throws })) <|
-                List.map List.reverse <|
-                    List.reverse <|
-                        parse ( INIT, input_string, [] )
+            parse ( INIT, input_string, [] )
+                -- reverse beats
+                |> List.reverse
+                -- reverse hands within beats
+                |> List.map List.reverse
+                -- reverse throws within hands within beats
+                |> List.map (List.map (\x -> { x | throws = List.reverse x.throws }))
     in
         { beatmap = beatmap
         , is_sync = (String.left 1 input_string == "(")
         , tokens = Tokens.mkTokens beatmap
         , is_valid = is_beatmap_valid beatmap
         }
+
+
+
+--

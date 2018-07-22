@@ -1,6 +1,12 @@
 module Lib exposing (..)
 
 import Char
+import Either exposing (Either)
+
+
+type View
+    = Linear
+    | Circular
 
 
 type alias WH =
@@ -13,18 +19,32 @@ type alias XY =
     }
 
 
+type alias LinearOpts =
+    { unit : WH -- the width/height of a token block
+    , self_arrow : WH -- the width/height of the self-arc
+    , arrow_offset : XY
+    , text_offset : XY
+    , y_delt : Float -- the y-distance to stop short when curtailing an arrow
+    }
+
+
+type alias CircularOpts =
+    { radius : Float
+    , unit : WH
+    , self_arrow : WH -- the width/height of the self-arc
+    , center : XY
+    , multiplex_offset : XY
+    }
+
+
 {-| Top-level options struct.
 -}
 type alias Opts =
     { num_tokens : Int -- number of blocks in the expression
     , canvas : WH -- the width/height of the canvas
-    , unit : WH -- the width/height of a token block
-    , self_arrow : WH -- the width/height of the self-arc
-    , arrow_offset : XY
-    , text_offset : XY
+    , view : View -- whether we are printing in a linear or circular pattern
     , viewbox_offset : XY
-    , y_delt : Float -- the y-distance to stop short when curtailing an arrow
-    , is_sync : Bool
+    , view_opts : Either LinearOpts CircularOpts
     }
 
 
@@ -35,8 +55,8 @@ type alias Opts =
 
 
 type Hand
-    = Left
-    | Right
+    = LeftHand
+    | RightHand
     | Center
 
 
@@ -69,3 +89,20 @@ type alias ParseObject =
     , tokens : List Token
     , is_valid : Bool
     }
+
+
+type alias Arrow =
+    { out_index : Int
+    , in_index : Int
+    , should_curtail_linear : Bool
+    , should_curtail_circular : Bool
+    }
+
+
+type Bias
+    = Above
+    | Below
+
+
+
+--
