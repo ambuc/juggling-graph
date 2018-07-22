@@ -45,7 +45,7 @@ type Msg
 init : ( Model, Cmd Msg )
 init =
     ( { expr = ""
-      , view = Linear
+      , view = Circular
       }
     , CE.perform Roll
     )
