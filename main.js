@@ -13767,8 +13767,8 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p4) {
 							case '*':
 								return A2(
 									_elm_lang$core$Basics_ops['++'],
-									_p26,
-									A2(_elm_lang$core$List$map, _elm_lang$core$List$reverse, _p26));
+									A2(_elm_lang$core$List$map, _elm_lang$core$List$reverse, _p26),
+									_p26);
 							default:
 								return {
 									ctor: '::',
