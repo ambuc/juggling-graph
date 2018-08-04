@@ -7515,53 +7515,53 @@ var _rogeriochaves$elm_ternary$Ternary$ifThenElse = F3(
 var _rogeriochaves$elm_ternary$Ternary_ops = _rogeriochaves$elm_ternary$Ternary_ops || {};
 _rogeriochaves$elm_ternary$Ternary_ops['?'] = _rogeriochaves$elm_ternary$Ternary$ifThenElse;
 
-var _ambuc$juggling_graph$Lib$WH = F2(
+var _ambuc$juggling_graph$Types$WH = F2(
 	function (a, b) {
 		return {w: a, h: b};
 	});
-var _ambuc$juggling_graph$Lib$XY = F2(
+var _ambuc$juggling_graph$Types$XY = F2(
 	function (a, b) {
 		return {x: a, y: b};
 	});
-var _ambuc$juggling_graph$Lib$LinearOpts = F5(
+var _ambuc$juggling_graph$Types$LinearOpts = F5(
 	function (a, b, c, d, e) {
 		return {unit: a, self_arrow: b, arrow_offset: c, text_offset: d, y_delt: e};
 	});
-var _ambuc$juggling_graph$Lib$CircularOpts = F5(
+var _ambuc$juggling_graph$Types$CircularOpts = F5(
 	function (a, b, c, d, e) {
 		return {radius: a, unit: b, self_arrow: c, center: d, multiplex_offset: e};
 	});
-var _ambuc$juggling_graph$Lib$Opts = F5(
+var _ambuc$juggling_graph$Types$Opts = F5(
 	function (a, b, c, d, e) {
 		return {num_tokens: a, canvas: b, view: c, viewbox_offset: d, view_opts: e};
 	});
-var _ambuc$juggling_graph$Lib$Throw = F5(
+var _ambuc$juggling_graph$Types$Throw = F5(
 	function (a, b, c, d, e) {
 		return {value: a, hand: b, is_cross: c, is_valid: d, $char: e};
 	});
-var _ambuc$juggling_graph$Lib$Beat = F2(
+var _ambuc$juggling_graph$Types$Beat = F2(
 	function (a, b) {
 		return {is_valid: a, $throws: b};
 	});
-var _ambuc$juggling_graph$Lib$Token = F5(
+var _ambuc$juggling_graph$Types$Token = F5(
 	function (a, b, c, d, e) {
 		return {txt: a, $throw: b, is_valid: c, catch_index: d, is_catch: e};
 	});
-var _ambuc$juggling_graph$Lib$ParseObject = F4(
+var _ambuc$juggling_graph$Types$ParseObject = F4(
 	function (a, b, c, d) {
 		return {beatmap: a, is_sync: b, tokens: c, is_valid: d};
 	});
-var _ambuc$juggling_graph$Lib$Arrow = F4(
+var _ambuc$juggling_graph$Types$Arrow = F4(
 	function (a, b, c, d) {
 		return {out_index: a, in_index: b, should_curtail_linear: c, should_curtail_circular: d};
 	});
-var _ambuc$juggling_graph$Lib$Circular = {ctor: 'Circular'};
-var _ambuc$juggling_graph$Lib$Linear = {ctor: 'Linear'};
-var _ambuc$juggling_graph$Lib$Center = {ctor: 'Center'};
-var _ambuc$juggling_graph$Lib$RightHand = {ctor: 'RightHand'};
-var _ambuc$juggling_graph$Lib$LeftHand = {ctor: 'LeftHand'};
-var _ambuc$juggling_graph$Lib$Below = {ctor: 'Below'};
-var _ambuc$juggling_graph$Lib$Above = {ctor: 'Above'};
+var _ambuc$juggling_graph$Types$Circular = {ctor: 'Circular'};
+var _ambuc$juggling_graph$Types$Linear = {ctor: 'Linear'};
+var _ambuc$juggling_graph$Types$Center = {ctor: 'Center'};
+var _ambuc$juggling_graph$Types$RightHand = {ctor: 'RightHand'};
+var _ambuc$juggling_graph$Types$LeftHand = {ctor: 'LeftHand'};
+var _ambuc$juggling_graph$Types$Below = {ctor: 'Below'};
+var _ambuc$juggling_graph$Types$Above = {ctor: 'Above'};
 
 var _ambuc$juggling_graph$Arrow$addCurtailsCircular = function (arrs) {
 	var hasConflict = function (arr) {
@@ -7596,7 +7596,7 @@ var _ambuc$juggling_graph$Arrow$bias = function (_p2) {
 	return A2(
 		_rogeriochaves$elm_ternary$Ternary_ops['?'],
 		_elm_lang$core$Native_Utils.cmp(_p3.out_index, _p3.in_index) < 1,
-		_ambuc$juggling_graph$Lib$Above)(_ambuc$juggling_graph$Lib$Below);
+		_ambuc$juggling_graph$Types$Above)(_ambuc$juggling_graph$Types$Below);
 };
 var _ambuc$juggling_graph$Arrow$addCurtailsLinear = function (arrs) {
 	var hasConflict = function (arr) {
@@ -7704,35 +7704,6 @@ var _ambuc$juggling_graph$Arrow$mkArrows = function (tokens) {
 								}),
 							tokens))))));
 };
-
-var _elm_community$basics_extra$Basics_Extra$turnsPerRadian = 1 / _elm_lang$core$Basics$turns(1);
-var _elm_community$basics_extra$Basics_Extra$inTurns = function (angle) {
-	return angle * _elm_community$basics_extra$Basics_Extra$turnsPerRadian;
-};
-var _elm_community$basics_extra$Basics_Extra$inRadians = _elm_lang$core$Basics$identity;
-var _elm_community$basics_extra$Basics_Extra$degreesPerRadian = 1 / _elm_lang$core$Basics$degrees(1);
-var _elm_community$basics_extra$Basics_Extra$inDegrees = function (angle) {
-	return angle * _elm_community$basics_extra$Basics_Extra$degreesPerRadian;
-};
-var _elm_community$basics_extra$Basics_Extra$fmod = F2(
-	function (x, m) {
-		return x - (m * _elm_lang$core$Basics$toFloat(
-			_elm_lang$core$Basics$floor(x / m)));
-	});
-var _elm_community$basics_extra$Basics_Extra$maxSafeInteger = Math.pow(2, 53) - 1;
-var _elm_community$basics_extra$Basics_Extra$minSafeInteger = 0 - _elm_community$basics_extra$Basics_Extra$maxSafeInteger;
-var _elm_community$basics_extra$Basics_Extra$isSafeInteger = function (number) {
-	return (_elm_lang$core$Native_Utils.cmp(_elm_community$basics_extra$Basics_Extra$minSafeInteger, number) < 1) && (_elm_lang$core$Native_Utils.cmp(_elm_community$basics_extra$Basics_Extra$maxSafeInteger, number) > -1);
-};
-var _elm_community$basics_extra$Basics_Extra$swap = function (_p0) {
-	var _p1 = _p0;
-	return {ctor: '_Tuple2', _0: _p1._1, _1: _p1._0};
-};
-var _elm_community$basics_extra$Basics_Extra_ops = _elm_community$basics_extra$Basics_Extra_ops || {};
-_elm_community$basics_extra$Basics_Extra_ops['=>'] = F2(
-	function (v0, v1) {
-		return {ctor: '_Tuple2', _0: v0, _1: v1};
-	});
 
 //import Maybe, Native.Array, Native.List, Native.Utils, Result //
 
@@ -10763,10 +10734,39 @@ var _elm_lang$svg$Svg_Attributes$accumulate = _elm_lang$virtual_dom$VirtualDom$a
 var _elm_lang$svg$Svg_Attributes$accelerate = _elm_lang$virtual_dom$VirtualDom$attribute('accelerate');
 var _elm_lang$svg$Svg_Attributes$accentHeight = _elm_lang$virtual_dom$VirtualDom$attribute('accent-height');
 
-var _ambuc$juggling_graph$Draw$indexedTokenToSvgCircular = F3(
+var _ambuc$juggling_graph$Points$flipX = function (a) {
+	return {x: -1 * a.x, y: a.y};
+};
+var _ambuc$juggling_graph$Points$flipY = function (a) {
+	return {x: a.x, y: -1 * a.y};
+};
+var _ambuc$juggling_graph$Points_ops = _ambuc$juggling_graph$Points_ops || {};
+_ambuc$juggling_graph$Points_ops['+/+'] = F2(
+	function (a, _p0) {
+		var _p1 = _p0;
+		var _p3 = _p1._0;
+		var _p2 = _p1._1;
+		return {
+			x: a.x + (_p2 * _elm_lang$core$Basics$sin(_p3)),
+			y: a.y - (_p2 * _elm_lang$core$Basics$cos(_p3))
+		};
+	});
+var _ambuc$juggling_graph$Points_ops = _ambuc$juggling_graph$Points_ops || {};
+_ambuc$juggling_graph$Points_ops['-.-'] = F2(
+	function (a, b) {
+		return {x: a.x - b.x, y: a.y - b.y};
+	});
+var _ambuc$juggling_graph$Points_ops = _ambuc$juggling_graph$Points_ops || {};
+_ambuc$juggling_graph$Points_ops['+.+'] = F2(
+	function (a, b) {
+		return {x: a.x + b.x, y: a.y + b.y};
+	});
+
+var _ambuc$juggling_graph$Draw$indexedTokenToSvgLinear = F3(
 	function (_p2, _p1, _p0) {
 		var _p3 = _p2;
-		var _p6 = _p3.center;
+		var _p7 = _p3.unit;
+		var _p6 = _p3.text_offset;
 		var _p4 = _p1;
 		var _p5 = _p0;
 		return A2(
@@ -10774,15 +10774,16 @@ var _ambuc$juggling_graph$Draw$indexedTokenToSvgCircular = F3(
 			{
 				ctor: '::',
 				_0: _elm_lang$svg$Svg_Attributes$x(
-					_elm_lang$core$Basics$toString(_p6.x)),
+					_elm_lang$core$Basics$toString(
+						_p6.x + (_p7.w * _elm_lang$core$Basics$toFloat(_p5._0)))),
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$svg$Svg_Attributes$y(
-						_elm_lang$core$Basics$toString(_p6.y - _p3.radius)),
+						_elm_lang$core$Basics$toString(_p6.y + (_p4.canvas.w / 2.0))),
 					_1: {
 						ctor: '::',
 						_0: _elm_lang$svg$Svg_Attributes$fontSize(
-							_elm_lang$core$Basics$toString(_p3.unit.h)),
+							_elm_lang$core$Basics$toString(_p7.h)),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$svg$Svg_Attributes$fill(
@@ -10790,44 +10791,7 @@ var _ambuc$juggling_graph$Draw$indexedTokenToSvgCircular = F3(
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$svg$Svg_Attributes$textAnchor('middle'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$transform(
-										A2(
-											_lukewestby$elm_template$Template$render,
-											A2(
-												_lukewestby$elm_template$Template_Infix_ops['%>'],
-												A2(
-													_lukewestby$elm_template$Template_Infix_ops['<%'],
-													A2(
-														_lukewestby$elm_template$Template_Infix_ops['%>'],
-														A2(
-															_lukewestby$elm_template$Template_Infix_ops['<%'],
-															A2(
-																_lukewestby$elm_template$Template_Infix_ops['%>'],
-																A2(
-																	_lukewestby$elm_template$Template_Infix_ops['<%'],
-																	_lukewestby$elm_template$Template$template('rotate('),
-																	function (_) {
-																		return _.theta;
-																	}),
-																','),
-															function (_) {
-																return _.center_x;
-															}),
-														','),
-													function (_) {
-														return _.center_y;
-													}),
-												')'),
-											{
-												theta: _elm_lang$core$Basics$toString(
-													(360.0 / _elm_lang$core$Basics$toFloat(_p4.num_tokens)) * _elm_lang$core$Basics$toFloat(_p5._0)),
-												center_x: _elm_lang$core$Basics$toString(_p6.x),
-												center_y: _elm_lang$core$Basics$toString(_p6.y)
-											})),
-									_1: {ctor: '[]'}
-								}
+								_1: {ctor: '[]'}
 							}
 						}
 					}
@@ -10839,313 +10803,31 @@ var _ambuc$juggling_graph$Draw$indexedTokenToSvgCircular = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _ambuc$juggling_graph$Draw$indexedTokenToSvgLinear = F3(
-	function (_p9, _p8, _p7) {
-		var _p10 = _p9;
-		var _p14 = _p10.unit;
-		var _p13 = _p10.text_offset;
-		var _p11 = _p8;
-		var _p12 = _p7;
-		var x = _p13.x + (_p14.w * _elm_lang$core$Basics$toFloat(_p12._0));
-		return A2(
-			_elm_lang$svg$Svg$text_,
-			{
-				ctor: '::',
-				_0: _elm_lang$svg$Svg_Attributes$x(
-					_elm_lang$core$Basics$toString(x)),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$y(
-						_elm_lang$core$Basics$toString(_p13.y + (_p11.canvas.w / 2.0))),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$svg$Svg_Attributes$fontSize(
-							_elm_lang$core$Basics$toString(_p14.h)),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$fill(
-								A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], _p12._1.is_valid, 'black')('red')),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$textAnchor('middle'),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$svg$Svg$text(_p12._1.txt),
-				_1: {ctor: '[]'}
-			});
-	});
-var _ambuc$juggling_graph$Draw$tokenBoxes = F2(
-	function (opts, _p15) {
-		var _p16 = _p15;
-		return A2(
-			_elm_lang$svg$Svg$g,
-			{ctor: '[]'},
-			A2(
-				_elm_lang$core$List$map,
-				function () {
-					var _p17 = opts.view_opts;
-					if (_p17.ctor === 'Left') {
-						return A2(_ambuc$juggling_graph$Draw$indexedTokenToSvgLinear, _p17._0, opts);
-					} else {
-						return A2(_ambuc$juggling_graph$Draw$indexedTokenToSvgCircular, _p17._0, opts);
-					}
-				}(),
-				A2(
-					_elm_lang$core$List$indexedMap,
-					F2(
-						function (v0, v1) {
-							return {ctor: '_Tuple2', _0: v0, _1: v1};
-						}),
-					_p16.tokens)));
-	});
-var _ambuc$juggling_graph$Draw$boundsToMultiplexBoxCircular = F4(
-	function (_p18, opts, l_idx, r_idx) {
-		var _p19 = _p18;
-		var _p23 = _p19.unit;
-		var _p22 = _p19.radius;
-		var _p21 = _p19.multiplex_offset;
-		var _p20 = _p19.center;
-		var outer_r = (_p22 + (_p23.h / 2.0)) + _p21.y;
-		var inner_r = (_p22 - (_p23.h / 2.0)) + _p21.y;
-		var d_th = ((2 * _elm_lang$core$Basics$pi) / _elm_lang$core$Basics$toFloat(opts.num_tokens)) * _elm_lang$core$Basics$toFloat(r_idx - l_idx);
-		return A2(
-			_elm_lang$svg$Svg$path,
-			{
-				ctor: '::',
-				_0: _elm_lang$svg$Svg_Attributes$d(
-					A2(
-						_lukewestby$elm_template$Template$render,
-						A2(
-							_lukewestby$elm_template$Template_Infix_ops['%>'],
-							A2(
-								_lukewestby$elm_template$Template_Infix_ops['<%'],
-								A2(
-									_lukewestby$elm_template$Template_Infix_ops['%>'],
-									A2(
-										_lukewestby$elm_template$Template_Infix_ops['<%'],
-										A2(
-											_lukewestby$elm_template$Template_Infix_ops['%>'],
-											A2(
-												_lukewestby$elm_template$Template_Infix_ops['<%'],
-												A2(
-													_lukewestby$elm_template$Template_Infix_ops['%>'],
-													A2(
-														_lukewestby$elm_template$Template_Infix_ops['<%'],
-														A2(
-															_lukewestby$elm_template$Template_Infix_ops['%>'],
-															A2(
-																_lukewestby$elm_template$Template_Infix_ops['<%'],
-																A2(
-																	_lukewestby$elm_template$Template_Infix_ops['%>'],
-																	A2(
-																		_lukewestby$elm_template$Template_Infix_ops['<%'],
-																		A2(
-																			_lukewestby$elm_template$Template_Infix_ops['%>'],
-																			A2(
-																				_lukewestby$elm_template$Template_Infix_ops['<%'],
-																				A2(
-																					_lukewestby$elm_template$Template_Infix_ops['%>'],
-																					A2(
-																						_lukewestby$elm_template$Template_Infix_ops['<%'],
-																						A2(
-																							_lukewestby$elm_template$Template_Infix_ops['%>'],
-																							A2(
-																								_lukewestby$elm_template$Template_Infix_ops['<%'],
-																								A2(
-																									_lukewestby$elm_template$Template_Infix_ops['%>'],
-																									A2(
-																										_lukewestby$elm_template$Template_Infix_ops['<%'],
-																										A2(
-																											_lukewestby$elm_template$Template_Infix_ops['%>'],
-																											A2(
-																												_lukewestby$elm_template$Template_Infix_ops['<%'],
-																												A2(
-																													_lukewestby$elm_template$Template_Infix_ops['%>'],
-																													A2(
-																														_lukewestby$elm_template$Template_Infix_ops['<%'],
-																														A2(
-																															_lukewestby$elm_template$Template_Infix_ops['%>'],
-																															A2(
-																																_lukewestby$elm_template$Template_Infix_ops['<%'],
-																																A2(
-																																	_lukewestby$elm_template$Template_Infix_ops['%>'],
-																																	A2(
-																																		_lukewestby$elm_template$Template_Infix_ops['<%'],
-																																		A2(
-																																			_lukewestby$elm_template$Template_Infix_ops['%>'],
-																																			A2(
-																																				_lukewestby$elm_template$Template_Infix_ops['<%'],
-																																				A2(
-																																					_lukewestby$elm_template$Template_Infix_ops['%>'],
-																																					A2(
-																																						_lukewestby$elm_template$Template_Infix_ops['<%'],
-																																						_lukewestby$elm_template$Template$template('M '),
-																																						function (_) {
-																																							return _.a_x;
-																																						}),
-																																					' '),
-																																				function (_) {
-																																					return _.a_y;
-																																				}),
-																																			' L '),
-																																		function (_) {
-																																			return _.b_x;
-																																		}),
-																																	' '),
-																																function (_) {
-																																	return _.b_y;
-																																}),
-																															' A '),
-																														function (_) {
-																															return _.inner_r;
-																														}),
-																													' '),
-																												function (_) {
-																													return _.inner_r;
-																												}),
-																											' 0 '),
-																										function (_) {
-																											return _.large_arc_inner;
-																										}),
-																									' 1 '),
-																								function (_) {
-																									return _.gamma_x;
-																								}),
-																							' '),
-																						function (_) {
-																							return _.gamma_y;
-																						}),
-																					' L '),
-																				function (_) {
-																					return _.delta_x;
-																				}),
-																			' '),
-																		function (_) {
-																			return _.delta_y;
-																		}),
-																	' A '),
-																function (_) {
-																	return _.outer_r;
-																}),
-															' '),
-														function (_) {
-															return _.outer_r;
-														}),
-													' 0 '),
-												function (_) {
-													return _.large_arc_outer;
-												}),
-											' 0 '),
-										function (_) {
-											return _.a_x;
-										}),
-									' '),
-								function (_) {
-									return _.a_y;
-								}),
-							' Z'),
-						{
-							a_x: _elm_lang$core$Basics$toString(_p20.x),
-							a_y: _elm_lang$core$Basics$toString(_p20.y - outer_r),
-							b_x: _elm_lang$core$Basics$toString(_p20.x),
-							b_y: _elm_lang$core$Basics$toString(_p20.y - inner_r),
-							gamma_x: _elm_lang$core$Basics$toString(
-								_p20.x + (inner_r * _elm_lang$core$Basics$sin(d_th))),
-							gamma_y: _elm_lang$core$Basics$toString(
-								_p20.y - (inner_r * _elm_lang$core$Basics$cos(d_th))),
-							delta_x: _elm_lang$core$Basics$toString(
-								_p20.x + (outer_r * _elm_lang$core$Basics$sin(d_th))),
-							delta_y: _elm_lang$core$Basics$toString(
-								_p20.y - (outer_r * _elm_lang$core$Basics$cos(d_th))),
-							inner_r: _elm_lang$core$Basics$toString(inner_r),
-							outer_r: _elm_lang$core$Basics$toString(outer_r),
-							large_arc_inner: _elm_lang$core$Basics$toString(
-								A2(
-									_rogeriochaves$elm_ternary$Ternary_ops['?'],
-									_elm_lang$core$Native_Utils.cmp(d_th, _elm_lang$core$Basics$pi) < 0,
-									0)(1)),
-							large_arc_outer: _elm_lang$core$Basics$toString(
-								A2(
-									_rogeriochaves$elm_ternary$Ternary_ops['?'],
-									_elm_lang$core$Native_Utils.cmp(d_th, _elm_lang$core$Basics$pi) < 0,
-									0)(1))
-						})),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$fill('lightblue'),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$svg$Svg_Attributes$transform(
-							A2(
-								_lukewestby$elm_template$Template$render,
-								A2(
-									_lukewestby$elm_template$Template_Infix_ops['%>'],
-									A2(
-										_lukewestby$elm_template$Template_Infix_ops['<%'],
-										A2(
-											_lukewestby$elm_template$Template_Infix_ops['%>'],
-											A2(
-												_lukewestby$elm_template$Template_Infix_ops['<%'],
-												A2(
-													_lukewestby$elm_template$Template_Infix_ops['%>'],
-													A2(
-														_lukewestby$elm_template$Template_Infix_ops['<%'],
-														_lukewestby$elm_template$Template$template('rotate('),
-														function (_) {
-															return _.theta;
-														}),
-													','),
-												function (_) {
-													return _.center_x;
-												}),
-											','),
-										function (_) {
-											return _.center_y;
-										}),
-									')'),
-								{
-									theta: _elm_lang$core$Basics$toString(
-										(360.0 / _elm_lang$core$Basics$toFloat(opts.num_tokens)) * _elm_lang$core$Basics$toFloat(l_idx)),
-									center_x: _elm_lang$core$Basics$toString(_p20.x),
-									center_y: _elm_lang$core$Basics$toString(_p20.y)
-								})),
-						_1: {ctor: '[]'}
-					}
-				}
-			},
-			{ctor: '[]'});
-	});
 var _ambuc$juggling_graph$Draw$boundToMultiplexBoxLinear = F4(
-	function (_p25, _p24, l_idx, r_idx) {
-		var _p26 = _p25;
-		var _p28 = _p26.unit;
-		var _p27 = _p24;
+	function (_p9, _p8, l_idx, r_idx) {
+		var _p10 = _p9;
+		var _p12 = _p10.unit;
+		var _p11 = _p8;
 		return A2(
 			_elm_lang$svg$Svg$rect,
 			{
 				ctor: '::',
 				_0: _elm_lang$svg$Svg_Attributes$x(
 					_elm_lang$core$Basics$toString(
-						_elm_lang$core$Basics$toFloat(l_idx) * _p28.w)),
+						_elm_lang$core$Basics$toFloat(l_idx) * _p12.w)),
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$svg$Svg_Attributes$y(
-						_elm_lang$core$Basics$toString((_p27.canvas.w / 2.0) - (_p28.h / 2.0))),
+						_elm_lang$core$Basics$toString((_p11.canvas.w / 2.0) - (_p12.h / 2.0))),
 					_1: {
 						ctor: '::',
 						_0: _elm_lang$svg$Svg_Attributes$width(
 							_elm_lang$core$Basics$toString(
-								_elm_lang$core$Basics$toFloat(r_idx - l_idx) * _p28.w)),
+								_elm_lang$core$Basics$toFloat(r_idx - l_idx) * _p12.w)),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$svg$Svg_Attributes$height(
-								_elm_lang$core$Basics$toString(_p28.h)),
+								_elm_lang$core$Basics$toString(_p12.h)),
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$svg$Svg_Attributes$fill('lightblue'),
@@ -11156,625 +10838,6 @@ var _ambuc$juggling_graph$Draw$boundToMultiplexBoxLinear = F4(
 				}
 			},
 			{ctor: '[]'});
-	});
-var _ambuc$juggling_graph$Draw$multiplexBoxes = F2(
-	function (opts, _p29) {
-		var _p30 = _p29;
-		var _p32 = _p30.tokens;
-		return A2(
-			_elm_lang$svg$Svg$g,
-			{ctor: '[]'},
-			A3(
-				_elm_lang$core$List$map2,
-				function () {
-					var _p31 = opts.view_opts;
-					if (_p31.ctor === 'Left') {
-						return A2(_ambuc$juggling_graph$Draw$boundToMultiplexBoxLinear, _p31._0, opts);
-					} else {
-						return A2(_ambuc$juggling_graph$Draw$boundsToMultiplexBoxCircular, _p31._0, opts);
-					}
-				}(),
-				A2(
-					_elm_community$list_extra$List_Extra$findIndices,
-					function (x) {
-						return _elm_lang$core$Native_Utils.eq(x.txt, '[');
-					},
-					_p32),
-				A2(
-					_elm_community$list_extra$List_Extra$findIndices,
-					function (x) {
-						return _elm_lang$core$Native_Utils.eq(x.txt, ']');
-					},
-					_p32)));
-	});
-var _ambuc$juggling_graph$Draw$arrowToSvgCircular = F2(
-	function (_p34, _p33) {
-		var _p35 = _p34;
-		var _p56 = _p35.unit;
-		var _p55 = _p35.self_arrow;
-		var _p54 = _p35.radius;
-		var _p53 = _p35.center;
-		var _p36 = _p33;
-		var _p52 = _p36.num_tokens;
-		var mkThrowCircular = function (_p37) {
-			var _p38 = _p37;
-			var _p49 = _p38.should_curtail_circular;
-			var r_b = 15.0;
-			var _p39 = function () {
-				var in_theta = A2(
-					_elm_community$basics_extra$Basics_Extra$fmod,
-					((2 * _elm_lang$core$Basics$pi) / _elm_lang$core$Basics$toFloat(_p52)) * _elm_lang$core$Basics$toFloat(_p38.in_index),
-					2 * _elm_lang$core$Basics$pi);
-				var ending_radius = _p54 - (_p56.h / 2);
-				return {
-					ctor: '_Tuple2',
-					_0: _p53.x + (ending_radius * _elm_lang$core$Basics$sin(in_theta)),
-					_1: _p53.y - (ending_radius * _elm_lang$core$Basics$cos(in_theta))
-				};
-			}();
-			var b_x = _p39._0;
-			var b_y = _p39._1;
-			var _p40 = function () {
-				var out_theta = A2(
-					_elm_community$basics_extra$Basics_Extra$fmod,
-					((2 * _elm_lang$core$Basics$pi) / _elm_lang$core$Basics$toFloat(_p52)) * _elm_lang$core$Basics$toFloat(_p38.out_index),
-					2 * _elm_lang$core$Basics$pi);
-				var starting_radius = _p54 - (_p56.h / 2);
-				return {
-					ctor: '_Tuple2',
-					_0: _p53.x + (starting_radius * _elm_lang$core$Basics$sin(out_theta)),
-					_1: _p53.y - (starting_radius * _elm_lang$core$Basics$cos(out_theta))
-				};
-			}();
-			var a_x = _p40._0;
-			var a_y = _p40._1;
-			var d_ab = _elm_lang$core$Basics$sqrt(
-				Math.pow(b_y - a_y, 2) + Math.pow(b_x - a_x, 2));
-			var r_c = d_ab / 1.25;
-			var rp_c = _elm_lang$core$Basics$sqrt(
-				Math.pow(r_c, 2) - Math.pow(d_ab / 2.0, 2));
-			var _p41 = function () {
-				var theta_ab = A2(_elm_lang$core$Basics$atan2, b_y - a_y, b_x - a_x);
-				var _p42 = {ctor: '_Tuple2', _0: (a_x + b_x) / 2.0, _1: (a_y + b_y) / 2.0};
-				var midpoint_ab_x = _p42._0;
-				var midpoint_ab_y = _p42._1;
-				var _p43 = {
-					ctor: '_Tuple2',
-					_0: midpoint_ab_x + (rp_c * _elm_lang$core$Basics$sin(theta_ab)),
-					_1: midpoint_ab_y - (rp_c * _elm_lang$core$Basics$cos(theta_ab))
-				};
-				var c_x_1 = _p43._0;
-				var c_y_1 = _p43._1;
-				var _p44 = {
-					ctor: '_Tuple2',
-					_0: midpoint_ab_x - (rp_c * _elm_lang$core$Basics$sin(theta_ab)),
-					_1: midpoint_ab_y + (rp_c * _elm_lang$core$Basics$cos(theta_ab))
-				};
-				var c_x_2 = _p44._0;
-				var c_y_2 = _p44._1;
-				return (_elm_lang$core$Native_Utils.cmp(
-					Math.pow(c_y_2 - _p53.y, 2) + Math.pow(c_x_2 - _p53.x, 2),
-					Math.pow(c_y_1 - _p53.y, 2) + Math.pow(c_x_1 - _p53.x, 2)) > 0) ? {ctor: '_Tuple2', _0: c_x_2, _1: c_y_2} : {ctor: '_Tuple2', _0: c_x_1, _1: c_y_1};
-			}();
-			var c_x = _p41._0;
-			var c_y = _p41._1;
-			var _p45 = function () {
-				var theta = function () {
-					var q = ((2 * Math.pow(r_c, 2)) - Math.pow(r_b, 2)) / (2 * r_c);
-					return _elm_lang$core$Basics$acos(q / r_c);
-				}();
-				var theta_cb = A2(_elm_lang$core$Basics$atan2, b_y - c_y, b_x - c_x);
-				var _p46 = {ctor: '_Tuple2', _0: theta_cb + theta, _1: theta_cb - theta};
-				var ang_1 = _p46._0;
-				var ang_2 = _p46._1;
-				var _p47 = {
-					ctor: '_Tuple2',
-					_0: c_x + ((1.0 * r_c) * _elm_lang$core$Basics$cos(ang_1)),
-					_1: c_y + ((1.0 * r_c) * _elm_lang$core$Basics$sin(ang_1))
-				};
-				var bp_x_1 = _p47._0;
-				var bp_y_1 = _p47._1;
-				var _p48 = {
-					ctor: '_Tuple2',
-					_0: c_x + ((1.0 * r_c) * _elm_lang$core$Basics$cos(ang_2)),
-					_1: c_y + ((1.0 * r_c) * _elm_lang$core$Basics$sin(ang_2))
-				};
-				var bp_x_2 = _p48._0;
-				var bp_y_2 = _p48._1;
-				return (_elm_lang$core$Native_Utils.cmp(
-					Math.pow(bp_x_2 - _p53.x, 2) + Math.pow(bp_y_2 - _p53.y, 2),
-					Math.pow(bp_x_1 - _p53.x, 2) + Math.pow(bp_y_1 - _p53.y, 2)) > 0) ? {ctor: '_Tuple2', _0: bp_x_1, _1: bp_y_1} : {ctor: '_Tuple2', _0: bp_x_2, _1: bp_y_2};
-			}();
-			var bp_x = _p45._0;
-			var bp_y = _p45._1;
-			var e_x = A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], _p49, bp_x)(b_x);
-			var e_y = A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], _p49, bp_y)(b_y);
-			var sweep_in = _p49 ? (_elm_lang$core$Native_Utils.cmp(((b_x - a_x) * (c_y - a_y)) - ((b_y - a_y) * (c_x - a_x)), 0) < 0) : (_elm_lang$core$Native_Utils.cmp(((b_x - a_x) * (_p53.y - a_y)) - ((b_y - a_y) * (_p53.x - a_x)), 0) > 0);
-			return A2(
-				_lukewestby$elm_template$Template$render,
-				A2(
-					_lukewestby$elm_template$Template_Infix_ops['%>'],
-					A2(
-						_lukewestby$elm_template$Template_Infix_ops['<%'],
-						A2(
-							_lukewestby$elm_template$Template_Infix_ops['%>'],
-							A2(
-								_lukewestby$elm_template$Template_Infix_ops['<%'],
-								A2(
-									_lukewestby$elm_template$Template_Infix_ops['%>'],
-									A2(
-										_lukewestby$elm_template$Template_Infix_ops['<%'],
-										A2(
-											_lukewestby$elm_template$Template_Infix_ops['%>'],
-											A2(
-												_lukewestby$elm_template$Template_Infix_ops['<%'],
-												A2(
-													_lukewestby$elm_template$Template_Infix_ops['%>'],
-													A2(
-														_lukewestby$elm_template$Template_Infix_ops['<%'],
-														A2(
-															_lukewestby$elm_template$Template_Infix_ops['%>'],
-															A2(
-																_lukewestby$elm_template$Template_Infix_ops['<%'],
-																A2(
-																	_lukewestby$elm_template$Template_Infix_ops['%>'],
-																	A2(
-																		_lukewestby$elm_template$Template_Infix_ops['<%'],
-																		_lukewestby$elm_template$Template$template('M '),
-																		function (_) {
-																			return _.a_x;
-																		}),
-																	' '),
-																function (_) {
-																	return _.a_y;
-																}),
-															' A '),
-														function (_) {
-															return _.r_c;
-														}),
-													' '),
-												function (_) {
-													return _.r_c;
-												}),
-											' 0 0 '),
-										function (_) {
-											return _.sweep_flag;
-										}),
-									' '),
-								function (_) {
-									return _.e_x;
-								}),
-							' '),
-						function (_) {
-							return _.e_y;
-						}),
-					''),
-				{
-					a_x: _elm_lang$core$Basics$toString(a_x),
-					a_y: _elm_lang$core$Basics$toString(a_y),
-					e_x: _elm_lang$core$Basics$toString(e_x),
-					e_y: _elm_lang$core$Basics$toString(e_y),
-					sweep_flag: _elm_lang$core$Basics$toString(
-						A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], sweep_in, 0)(1)),
-					r_c: _elm_lang$core$Basics$toString(r_c)
-				});
-		};
-		var mkLoopCircular = function (_p50) {
-			var _p51 = _p50;
-			var out_theta = A2(
-				_elm_community$basics_extra$Basics_Extra$fmod,
-				((2 * _elm_lang$core$Basics$pi) / _elm_lang$core$Basics$toFloat(_p52)) * _elm_lang$core$Basics$toFloat(_p51.out_index),
-				2 * _elm_lang$core$Basics$pi);
-			return A2(
-				_lukewestby$elm_template$Template$render,
-				A2(
-					_lukewestby$elm_template$Template_Infix_ops['%>'],
-					A2(
-						_lukewestby$elm_template$Template_Infix_ops['<%'],
-						A2(
-							_lukewestby$elm_template$Template_Infix_ops['%>'],
-							A2(
-								_lukewestby$elm_template$Template_Infix_ops['<%'],
-								A2(
-									_lukewestby$elm_template$Template_Infix_ops['%>'],
-									A2(
-										_lukewestby$elm_template$Template_Infix_ops['<%'],
-										A2(
-											_lukewestby$elm_template$Template_Infix_ops['%>'],
-											A2(
-												_lukewestby$elm_template$Template_Infix_ops['<%'],
-												A2(
-													_lukewestby$elm_template$Template_Infix_ops['%>'],
-													A2(
-														_lukewestby$elm_template$Template_Infix_ops['<%'],
-														A2(
-															_lukewestby$elm_template$Template_Infix_ops['%>'],
-															A2(
-																_lukewestby$elm_template$Template_Infix_ops['<%'],
-																A2(
-																	_lukewestby$elm_template$Template_Infix_ops['%>'],
-																	A2(
-																		_lukewestby$elm_template$Template_Infix_ops['<%'],
-																		A2(
-																			_lukewestby$elm_template$Template_Infix_ops['%>'],
-																			A2(
-																				_lukewestby$elm_template$Template_Infix_ops['<%'],
-																				_lukewestby$elm_template$Template$template('M'),
-																				function (_) {
-																					return _.o_x;
-																				}),
-																			' '),
-																		function (_) {
-																			return _.o_y;
-																		}),
-																	' C '),
-																function (_) {
-																	return _.x_1;
-																}),
-															' '),
-														function (_) {
-															return _.y_1;
-														}),
-													', '),
-												function (_) {
-													return _.x_2;
-												}),
-											' '),
-										function (_) {
-											return _.y_2;
-										}),
-									', '),
-								function (_) {
-									return _.f_x;
-								}),
-							' '),
-						function (_) {
-							return _.f_y;
-						}),
-					''),
-				{
-					o_x: _elm_lang$core$Basics$toString(_p53.x),
-					o_y: _elm_lang$core$Basics$toString((_p53.y - _p54) + (_p56.h / 2)),
-					x_1: _elm_lang$core$Basics$toString(_p53.x - _p55.w),
-					y_1: _elm_lang$core$Basics$toString(((_p53.y - _p54) + (_p56.h / 2)) + _p55.h),
-					x_2: _elm_lang$core$Basics$toString(_p53.x + _p55.w),
-					y_2: _elm_lang$core$Basics$toString(((_p53.y - _p54) + (_p56.h / 2)) + _p55.h),
-					f_x: _elm_lang$core$Basics$toString(_p53.x),
-					f_y: _elm_lang$core$Basics$toString((_p53.y - _p54) + (_p56.h / 2))
-				});
-		};
-		return function (arr) {
-			return A2(
-				_elm_lang$svg$Svg$g,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$svg$Svg$path,
-						{
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$d(
-								A2(
-									_rogeriochaves$elm_ternary$Ternary_ops['?'],
-									_ambuc$juggling_graph$Arrow$is_self(arr),
-									mkLoopCircular)(mkThrowCircular)(arr)),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$stroke('black'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$fill('transparent'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$svg$Svg_Attributes$strokeWidth('1.0'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$svg$Svg_Attributes$markerEnd('url(#arrow)'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$svg$Svg_Attributes$transform(
-													_ambuc$juggling_graph$Arrow$is_self(arr) ? A2(
-														_lukewestby$elm_template$Template$render,
-														A2(
-															_lukewestby$elm_template$Template_Infix_ops['%>'],
-															A2(
-																_lukewestby$elm_template$Template_Infix_ops['<%'],
-																A2(
-																	_lukewestby$elm_template$Template_Infix_ops['%>'],
-																	A2(
-																		_lukewestby$elm_template$Template_Infix_ops['<%'],
-																		A2(
-																			_lukewestby$elm_template$Template_Infix_ops['%>'],
-																			A2(
-																				_lukewestby$elm_template$Template_Infix_ops['<%'],
-																				_lukewestby$elm_template$Template$template('rotate('),
-																				function (_) {
-																					return _.theta;
-																				}),
-																			','),
-																		function (_) {
-																			return _.center_x;
-																		}),
-																	','),
-																function (_) {
-																	return _.center_y;
-																}),
-															')'),
-														{
-															theta: _elm_lang$core$Basics$toString(
-																(360.0 / _elm_lang$core$Basics$toFloat(_p52)) * _elm_lang$core$Basics$toFloat(arr.out_index)),
-															center_x: _elm_lang$core$Basics$toString(_p53.x),
-															center_y: _elm_lang$core$Basics$toString(_p53.y)
-														}) : ''),
-												_1: {ctor: '[]'}
-											}
-										}
-									}
-								}
-							}
-						},
-						{ctor: '[]'}),
-					_1: {ctor: '[]'}
-				});
-		};
-	});
-var _ambuc$juggling_graph$Draw$arrowToSvgLinear = F2(
-	function (_p58, _p57) {
-		var _p59 = _p58;
-		var _p64 = _p59.y_delt;
-		var _p63 = _p59.unit;
-		var _p62 = _p59.self_arrow;
-		var _p60 = _p57;
-		var _p61 = _p60.canvas;
-		var in_coord = function (arr) {
-			return _elm_lang$core$Basics$toFloat(arr.in_index) * _p63.w;
-		};
-		var out_coord = function (arr) {
-			return _elm_lang$core$Basics$toFloat(arr.out_index) * _p63.w;
-		};
-		var mkLoopLinear = function (arr) {
-			var y_base = (_p61.w / 2.0) - _p63.h;
-			var x_base = out_coord(arr);
-			return A2(
-				_lukewestby$elm_template$Template$render,
-				A2(
-					_lukewestby$elm_template$Template_Infix_ops['%>'],
-					A2(
-						_lukewestby$elm_template$Template_Infix_ops['<%'],
-						A2(
-							_lukewestby$elm_template$Template_Infix_ops['%>'],
-							A2(
-								_lukewestby$elm_template$Template_Infix_ops['<%'],
-								A2(
-									_lukewestby$elm_template$Template_Infix_ops['%>'],
-									A2(
-										_lukewestby$elm_template$Template_Infix_ops['<%'],
-										A2(
-											_lukewestby$elm_template$Template_Infix_ops['%>'],
-											A2(
-												_lukewestby$elm_template$Template_Infix_ops['<%'],
-												A2(
-													_lukewestby$elm_template$Template_Infix_ops['%>'],
-													A2(
-														_lukewestby$elm_template$Template_Infix_ops['<%'],
-														A2(
-															_lukewestby$elm_template$Template_Infix_ops['%>'],
-															A2(
-																_lukewestby$elm_template$Template_Infix_ops['<%'],
-																A2(
-																	_lukewestby$elm_template$Template_Infix_ops['%>'],
-																	A2(
-																		_lukewestby$elm_template$Template_Infix_ops['<%'],
-																		A2(
-																			_lukewestby$elm_template$Template_Infix_ops['%>'],
-																			A2(
-																				_lukewestby$elm_template$Template_Infix_ops['<%'],
-																				_lukewestby$elm_template$Template$template('M'),
-																				function (_) {
-																					return _.o_x;
-																				}),
-																			' '),
-																		function (_) {
-																			return _.o_y;
-																		}),
-																	' C '),
-																function (_) {
-																	return _.x_1;
-																}),
-															' '),
-														function (_) {
-															return _.y_1;
-														}),
-													', '),
-												function (_) {
-													return _.x_2;
-												}),
-											' '),
-										function (_) {
-											return _.y_2;
-										}),
-									', '),
-								function (_) {
-									return _.f_x;
-								}),
-							' '),
-						function (_) {
-							return _.f_y;
-						}),
-					''),
-				{
-					o_x: _elm_lang$core$Basics$toString(x_base),
-					o_y: _elm_lang$core$Basics$toString(y_base),
-					x_1: _elm_lang$core$Basics$toString(x_base - _p62.w),
-					y_1: _elm_lang$core$Basics$toString(y_base - _p62.h),
-					x_2: _elm_lang$core$Basics$toString(x_base + _p62.w),
-					y_2: _elm_lang$core$Basics$toString(y_base - _p62.h),
-					f_x: _elm_lang$core$Basics$toString(x_base),
-					f_y: _elm_lang$core$Basics$toString(y_base)
-				});
-		};
-		var mkThrowLinear = function (arr) {
-			var y_base = _elm_lang$core$Native_Utils.eq(
-				_ambuc$juggling_graph$Arrow$bias(arr),
-				_ambuc$juggling_graph$Lib$Above) ? ((_p61.w / 2.0) - _p63.h) : ((_p61.w / 2.0) + _p59.arrow_offset.y);
-			var radius = _elm_lang$core$Basics$abs(
-				(out_coord(arr) - in_coord(arr)) / 2.0);
-			return A2(
-				_lukewestby$elm_template$Template$render,
-				A2(
-					_lukewestby$elm_template$Template_Infix_ops['%>'],
-					A2(
-						_lukewestby$elm_template$Template_Infix_ops['<%'],
-						A2(
-							_lukewestby$elm_template$Template_Infix_ops['%>'],
-							A2(
-								_lukewestby$elm_template$Template_Infix_ops['<%'],
-								A2(
-									_lukewestby$elm_template$Template_Infix_ops['%>'],
-									A2(
-										_lukewestby$elm_template$Template_Infix_ops['<%'],
-										A2(
-											_lukewestby$elm_template$Template_Infix_ops['%>'],
-											A2(
-												_lukewestby$elm_template$Template_Infix_ops['<%'],
-												A2(
-													_lukewestby$elm_template$Template_Infix_ops['%>'],
-													A2(
-														_lukewestby$elm_template$Template_Infix_ops['<%'],
-														A2(
-															_lukewestby$elm_template$Template_Infix_ops['%>'],
-															A2(
-																_lukewestby$elm_template$Template_Infix_ops['<%'],
-																A2(
-																	_lukewestby$elm_template$Template_Infix_ops['%>'],
-																	A2(
-																		_lukewestby$elm_template$Template_Infix_ops['<%'],
-																		A2(
-																			_lukewestby$elm_template$Template_Infix_ops['%>'],
-																			A2(
-																				_lukewestby$elm_template$Template_Infix_ops['<%'],
-																				A2(
-																					_lukewestby$elm_template$Template_Infix_ops['%>'],
-																					A2(
-																						_lukewestby$elm_template$Template_Infix_ops['<%'],
-																						_lukewestby$elm_template$Template$template('M'),
-																						function (_) {
-																							return _.origin_x;
-																						}),
-																					' '),
-																				function (_) {
-																					return _.origin_y;
-																				}),
-																			' A '),
-																		function (_) {
-																			return _.rx;
-																		}),
-																	' '),
-																function (_) {
-																	return _.ry;
-																}),
-															' '),
-														function (_) {
-															return _.x_axis_rotation;
-														}),
-													' '),
-												function (_) {
-													return _.large_arc_flag;
-												}),
-											' '),
-										function (_) {
-											return _.sweep_flag;
-										}),
-									' '),
-								function (_) {
-									return _.dx;
-								}),
-							' '),
-						function (_) {
-							return _.dy;
-						}),
-					''),
-				{
-					origin_x: _elm_lang$core$Basics$toString(
-						out_coord(arr)),
-					origin_y: _elm_lang$core$Basics$toString(y_base),
-					rx: _elm_lang$core$Basics$toString(radius),
-					ry: _elm_lang$core$Basics$toString(radius),
-					x_axis_rotation: '0',
-					large_arc_flag: '0',
-					sweep_flag: '1',
-					dx: _elm_lang$core$Basics$toString(
-						function () {
-							if (arr.should_curtail_linear) {
-								var dy = _elm_lang$core$Basics$sqrt(
-									Math.pow(radius, 2) - Math.pow(_p64, 2));
-								var dx = (out_coord(arr) + in_coord(arr)) / 2.0;
-								return A2(
-									_rogeriochaves$elm_ternary$Ternary_ops['?'],
-									_elm_lang$core$Native_Utils.eq(
-										_ambuc$juggling_graph$Arrow$bias(arr),
-										_ambuc$juggling_graph$Lib$Above),
-									dx + dy)(dx - dy);
-							} else {
-								return in_coord(arr);
-							}
-						}()),
-					dy: _elm_lang$core$Basics$toString(
-						arr.should_curtail_linear ? (_elm_lang$core$Native_Utils.eq(
-							_ambuc$juggling_graph$Arrow$bias(arr),
-							_ambuc$juggling_graph$Lib$Above) ? (y_base - _p64) : (y_base + _p64)) : y_base)
-				});
-		};
-		return function (arr) {
-			return A2(
-				_elm_lang$svg$Svg$path,
-				{
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$d(
-						A2(
-							_rogeriochaves$elm_ternary$Ternary_ops['?'],
-							_ambuc$juggling_graph$Arrow$is_self(arr),
-							mkLoopLinear)(mkThrowLinear)(arr)),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$svg$Svg_Attributes$stroke('black'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$fill('transparent'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$strokeWidth('1.0'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$markerEnd('url(#arrow)'),
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					}
-				},
-				{ctor: '[]'});
-		};
-	});
-var _ambuc$juggling_graph$Draw$arrows = F2(
-	function (opts, parseObject) {
-		return (!parseObject.is_valid) ? A2(
-			_elm_lang$svg$Svg$g,
-			{ctor: '[]'},
-			{ctor: '[]'}) : A2(
-			_elm_lang$svg$Svg$g,
-			{ctor: '[]'},
-			A2(
-				_elm_lang$core$List$map,
-				function () {
-					var _p65 = opts.view_opts;
-					if (_p65.ctor === 'Left') {
-						return A2(_ambuc$juggling_graph$Draw$arrowToSvgLinear, _p65._0, opts);
-					} else {
-						return A2(_ambuc$juggling_graph$Draw$arrowToSvgCircular, _p65._0, opts);
-					}
-				}(),
-				_ambuc$juggling_graph$Arrow$mkArrows(parseObject.tokens)));
 	});
 var _ambuc$juggling_graph$Draw$arrowDefinition = A2(
 	_elm_lang$svg$Svg$marker,
@@ -11823,10 +10886,10 @@ var _ambuc$juggling_graph$Draw$arrowDefinition = A2(
 			{ctor: '[]'}),
 		_1: {ctor: '[]'}
 	});
-var _ambuc$juggling_graph$Draw$mkViewbox = function (_p66) {
-	var _p67 = _p66;
-	var _p69 = _p67.viewbox_offset;
-	var _p68 = _p67.canvas;
+var _ambuc$juggling_graph$Draw$mkViewbox = function (_p13) {
+	var _p14 = _p13;
+	var _p16 = _p14.viewbox_offset;
+	var _p15 = _p14.canvas;
 	return _elm_lang$svg$Svg_Attributes$viewBox(
 		A2(
 			_lukewestby$elm_template$Template$render,
@@ -11864,12 +10927,822 @@ var _ambuc$juggling_graph$Draw$mkViewbox = function (_p66) {
 					}),
 				''),
 			{
-				min_x: _elm_lang$core$Basics$toString(_p69.x),
-				min_y: _elm_lang$core$Basics$toString(_p69.y),
-				width: _elm_lang$core$Basics$toString(_p68.w),
-				height: _elm_lang$core$Basics$toString(_p68.h)
+				min_x: _elm_lang$core$Basics$toString(_p16.x),
+				min_y: _elm_lang$core$Basics$toString(_p16.y),
+				width: _elm_lang$core$Basics$toString(_p15.w),
+				height: _elm_lang$core$Basics$toString(_p15.h)
 			}));
 };
+var _ambuc$juggling_graph$Draw$curvedRectangle = F7(
+	function (o_a, i_a, i_b, o_b, o_r, i_r, angle) {
+		return A2(
+			_lukewestby$elm_template$Template$render,
+			A2(
+				_lukewestby$elm_template$Template_Infix_ops['%>'],
+				A2(
+					_lukewestby$elm_template$Template_Infix_ops['<%'],
+					A2(
+						_lukewestby$elm_template$Template_Infix_ops['%>'],
+						A2(
+							_lukewestby$elm_template$Template_Infix_ops['<%'],
+							A2(
+								_lukewestby$elm_template$Template_Infix_ops['%>'],
+								A2(
+									_lukewestby$elm_template$Template_Infix_ops['<%'],
+									A2(
+										_lukewestby$elm_template$Template_Infix_ops['%>'],
+										A2(
+											_lukewestby$elm_template$Template_Infix_ops['<%'],
+											A2(
+												_lukewestby$elm_template$Template_Infix_ops['%>'],
+												A2(
+													_lukewestby$elm_template$Template_Infix_ops['<%'],
+													A2(
+														_lukewestby$elm_template$Template_Infix_ops['%>'],
+														A2(
+															_lukewestby$elm_template$Template_Infix_ops['<%'],
+															A2(
+																_lukewestby$elm_template$Template_Infix_ops['%>'],
+																A2(
+																	_lukewestby$elm_template$Template_Infix_ops['<%'],
+																	A2(
+																		_lukewestby$elm_template$Template_Infix_ops['%>'],
+																		A2(
+																			_lukewestby$elm_template$Template_Infix_ops['<%'],
+																			A2(
+																				_lukewestby$elm_template$Template_Infix_ops['%>'],
+																				A2(
+																					_lukewestby$elm_template$Template_Infix_ops['<%'],
+																					A2(
+																						_lukewestby$elm_template$Template_Infix_ops['%>'],
+																						A2(
+																							_lukewestby$elm_template$Template_Infix_ops['<%'],
+																							A2(
+																								_lukewestby$elm_template$Template_Infix_ops['%>'],
+																								A2(
+																									_lukewestby$elm_template$Template_Infix_ops['<%'],
+																									A2(
+																										_lukewestby$elm_template$Template_Infix_ops['%>'],
+																										A2(
+																											_lukewestby$elm_template$Template_Infix_ops['<%'],
+																											A2(
+																												_lukewestby$elm_template$Template_Infix_ops['%>'],
+																												A2(
+																													_lukewestby$elm_template$Template_Infix_ops['<%'],
+																													A2(
+																														_lukewestby$elm_template$Template_Infix_ops['%>'],
+																														A2(
+																															_lukewestby$elm_template$Template_Infix_ops['<%'],
+																															A2(
+																																_lukewestby$elm_template$Template_Infix_ops['%>'],
+																																A2(
+																																	_lukewestby$elm_template$Template_Infix_ops['<%'],
+																																	A2(
+																																		_lukewestby$elm_template$Template_Infix_ops['%>'],
+																																		A2(
+																																			_lukewestby$elm_template$Template_Infix_ops['<%'],
+																																			_lukewestby$elm_template$Template$template('M '),
+																																			function (_) {
+																																				return _.o_a_x;
+																																			}),
+																																		' '),
+																																	function (_) {
+																																		return _.o_a_y;
+																																	}),
+																																' L '),
+																															function (_) {
+																																return _.i_a_x;
+																															}),
+																														' '),
+																													function (_) {
+																														return _.i_a_y;
+																													}),
+																												' A '),
+																											function (_) {
+																												return _.i_r;
+																											}),
+																										' '),
+																									function (_) {
+																										return _.i_r;
+																									}),
+																								' 0 '),
+																							function (_) {
+																								return _.large_arc_i;
+																							}),
+																						' 1 '),
+																					function (_) {
+																						return _.i_b_x;
+																					}),
+																				' '),
+																			function (_) {
+																				return _.i_b_y;
+																			}),
+																		' L '),
+																	function (_) {
+																		return _.o_b_x;
+																	}),
+																' '),
+															function (_) {
+																return _.o_b_y;
+															}),
+														' A '),
+													function (_) {
+														return _.o_r;
+													}),
+												' '),
+											function (_) {
+												return _.o_r;
+											}),
+										' 0 '),
+									function (_) {
+										return _.large_arc_o;
+									}),
+								' 0 '),
+							function (_) {
+								return _.o_a_x;
+							}),
+						' '),
+					function (_) {
+						return _.o_a_y;
+					}),
+				' Z'),
+			{
+				o_a_x: _elm_lang$core$Basics$toString(o_a.x),
+				o_a_y: _elm_lang$core$Basics$toString(o_a.y),
+				i_a_x: _elm_lang$core$Basics$toString(i_a.x),
+				i_a_y: _elm_lang$core$Basics$toString(i_a.y),
+				i_b_x: _elm_lang$core$Basics$toString(i_b.x),
+				i_b_y: _elm_lang$core$Basics$toString(i_b.y),
+				o_b_x: _elm_lang$core$Basics$toString(o_b.x),
+				o_b_y: _elm_lang$core$Basics$toString(o_b.y),
+				i_r: _elm_lang$core$Basics$toString(i_r),
+				o_r: _elm_lang$core$Basics$toString(o_r),
+				large_arc_i: _elm_lang$core$Basics$toString(
+					A2(
+						_rogeriochaves$elm_ternary$Ternary_ops['?'],
+						_elm_lang$core$Native_Utils.cmp(angle, _elm_lang$core$Basics$pi) < 0,
+						0)(1)),
+				large_arc_o: _elm_lang$core$Basics$toString(
+					A2(
+						_rogeriochaves$elm_ternary$Ternary_ops['?'],
+						_elm_lang$core$Native_Utils.cmp(angle, _elm_lang$core$Basics$pi) < 0,
+						0)(1))
+			});
+	});
+var _ambuc$juggling_graph$Draw$rotateAbout = F2(
+	function (t, c) {
+		return A2(
+			_lukewestby$elm_template$Template$render,
+			A2(
+				_lukewestby$elm_template$Template_Infix_ops['%>'],
+				A2(
+					_lukewestby$elm_template$Template_Infix_ops['<%'],
+					A2(
+						_lukewestby$elm_template$Template_Infix_ops['%>'],
+						A2(
+							_lukewestby$elm_template$Template_Infix_ops['<%'],
+							A2(
+								_lukewestby$elm_template$Template_Infix_ops['%>'],
+								A2(
+									_lukewestby$elm_template$Template_Infix_ops['<%'],
+									_lukewestby$elm_template$Template$template('rotate('),
+									function (_) {
+										return _.t;
+									}),
+								','),
+							function (_) {
+								return _.c_x;
+							}),
+						','),
+					function (_) {
+						return _.c_y;
+					}),
+				')'),
+			{
+				t: _elm_lang$core$Basics$toString(t),
+				c_x: _elm_lang$core$Basics$toString(c.x),
+				c_y: _elm_lang$core$Basics$toString(c.y)
+			});
+	});
+var _ambuc$juggling_graph$Draw$indexedTokenToSvgCircular = F3(
+	function (_p19, _p18, _p17) {
+		var _p20 = _p19;
+		var _p23 = _p20.center;
+		var _p21 = _p18;
+		var _p22 = _p17;
+		return A2(
+			_elm_lang$svg$Svg$text_,
+			{
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$x(
+					_elm_lang$core$Basics$toString(_p23.x)),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$y(
+						_elm_lang$core$Basics$toString(_p23.y - _p20.radius)),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$fontSize(
+							_elm_lang$core$Basics$toString(_p20.unit.h)),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$fill(
+								A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], _p22._1.is_valid, 'black')('red')),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$textAnchor('middle'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$transform(
+										A2(
+											_ambuc$juggling_graph$Draw$rotateAbout,
+											(360.0 / _elm_lang$core$Basics$toFloat(_p21.num_tokens)) * _elm_lang$core$Basics$toFloat(_p22._0),
+											_p23)),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$svg$Svg$text(_p22._1.txt),
+				_1: {ctor: '[]'}
+			});
+	});
+var _ambuc$juggling_graph$Draw$tokenBoxes = F2(
+	function (opts, _p24) {
+		var _p25 = _p24;
+		return A2(
+			_elm_lang$svg$Svg$g,
+			{ctor: '[]'},
+			A2(
+				_elm_lang$core$List$map,
+				function () {
+					var _p26 = opts.view_opts;
+					if (_p26.ctor === 'Left') {
+						return A2(_ambuc$juggling_graph$Draw$indexedTokenToSvgLinear, _p26._0, opts);
+					} else {
+						return A2(_ambuc$juggling_graph$Draw$indexedTokenToSvgCircular, _p26._0, opts);
+					}
+				}(),
+				A2(
+					_elm_lang$core$List$indexedMap,
+					F2(
+						function (v0, v1) {
+							return {ctor: '_Tuple2', _0: v0, _1: v1};
+						}),
+					_p25.tokens)));
+	});
+var _ambuc$juggling_graph$Draw$arcString = F6(
+	function (pt_i, radius, x_axis_rotation, large_arc, sweep, pt_f) {
+		return A2(
+			_lukewestby$elm_template$Template$render,
+			A2(
+				_lukewestby$elm_template$Template_Infix_ops['%>'],
+				A2(
+					_lukewestby$elm_template$Template_Infix_ops['<%'],
+					A2(
+						_lukewestby$elm_template$Template_Infix_ops['%>'],
+						A2(
+							_lukewestby$elm_template$Template_Infix_ops['<%'],
+							A2(
+								_lukewestby$elm_template$Template_Infix_ops['%>'],
+								A2(
+									_lukewestby$elm_template$Template_Infix_ops['<%'],
+									A2(
+										_lukewestby$elm_template$Template_Infix_ops['%>'],
+										A2(
+											_lukewestby$elm_template$Template_Infix_ops['<%'],
+											A2(
+												_lukewestby$elm_template$Template_Infix_ops['%>'],
+												A2(
+													_lukewestby$elm_template$Template_Infix_ops['<%'],
+													A2(
+														_lukewestby$elm_template$Template_Infix_ops['%>'],
+														A2(
+															_lukewestby$elm_template$Template_Infix_ops['<%'],
+															A2(
+																_lukewestby$elm_template$Template_Infix_ops['%>'],
+																A2(
+																	_lukewestby$elm_template$Template_Infix_ops['<%'],
+																	A2(
+																		_lukewestby$elm_template$Template_Infix_ops['%>'],
+																		A2(
+																			_lukewestby$elm_template$Template_Infix_ops['<%'],
+																			A2(
+																				_lukewestby$elm_template$Template_Infix_ops['%>'],
+																				A2(
+																					_lukewestby$elm_template$Template_Infix_ops['<%'],
+																					_lukewestby$elm_template$Template$template('M '),
+																					function (_) {
+																						return _.pt_i_x;
+																					}),
+																				' '),
+																			function (_) {
+																				return _.pt_i_y;
+																			}),
+																		' A '),
+																	function (_) {
+																		return _.radius;
+																	}),
+																' '),
+															function (_) {
+																return _.radius;
+															}),
+														' '),
+													function (_) {
+														return _.xaxisf;
+													}),
+												' '),
+											function (_) {
+												return _.largef;
+											}),
+										' '),
+									function (_) {
+										return _.sweepf;
+									}),
+								' '),
+							function (_) {
+								return _.pt_f_x;
+							}),
+						' '),
+					function (_) {
+						return _.pt_f_y;
+					}),
+				''),
+			{
+				pt_i_x: _elm_lang$core$Basics$toString(pt_i.x),
+				pt_i_y: _elm_lang$core$Basics$toString(pt_i.y),
+				radius: _elm_lang$core$Basics$toString(radius),
+				sweepf: _elm_lang$core$Basics$toString(
+					A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], sweep, 1)(0)),
+				largef: _elm_lang$core$Basics$toString(
+					A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], large_arc, 1)(0)),
+				xaxisf: _elm_lang$core$Basics$toString(
+					A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], x_axis_rotation, 1)(0)),
+				pt_f_x: _elm_lang$core$Basics$toString(pt_f.x),
+				pt_f_y: _elm_lang$core$Basics$toString(pt_f.y)
+			});
+	});
+var _ambuc$juggling_graph$Draw$mkThrowLinear = F3(
+	function (_p28, _p27, arr) {
+		var _p29 = _p28;
+		var _p33 = _p29.canvas;
+		var _p30 = _p27;
+		var _p32 = _p30.y_delt;
+		var _p31 = _p30.unit;
+		var base = {
+			x: 0,
+			y: _elm_lang$core$Native_Utils.eq(
+				_ambuc$juggling_graph$Arrow$bias(arr),
+				_ambuc$juggling_graph$Types$Above) ? ((_p33.w / 2.0) - _p31.h) : ((_p33.w / 2.0) + _p30.arrow_offset.y)
+		};
+		var in_coord = function (arr) {
+			return _elm_lang$core$Basics$toFloat(arr.in_index) * _p31.w;
+		};
+		var $final = {
+			x: in_coord(arr),
+			y: base.y
+		};
+		var out_coord = function (arr) {
+			return _elm_lang$core$Basics$toFloat(arr.out_index) * _p31.w;
+		};
+		var radius = _elm_lang$core$Basics$abs(
+			(out_coord(arr) - in_coord(arr)) / 2.0);
+		var curtailed_final = function () {
+			var dy = _elm_lang$core$Basics$sqrt(
+				Math.pow(radius, 2) - Math.pow(_p32, 2));
+			var dx = (out_coord(arr) + in_coord(arr)) / 2.0;
+			return _elm_lang$core$Native_Utils.eq(
+				_ambuc$juggling_graph$Arrow$bias(arr),
+				_ambuc$juggling_graph$Types$Above) ? {x: dx + dy, y: base.y - _p32} : {x: dx - dy, y: base.y + _p32};
+		}();
+		var pt_f = A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], arr.should_curtail_linear, curtailed_final)($final);
+		var pt_i = {
+			x: out_coord(arr),
+			y: base.y
+		};
+		return A6(_ambuc$juggling_graph$Draw$arcString, pt_i, radius, false, false, true, pt_f);
+	});
+var _ambuc$juggling_graph$Draw$curveString = F4(
+	function (pt_0, pt_1, pt_2, pt_3) {
+		return A2(
+			_lukewestby$elm_template$Template$render,
+			A2(
+				_lukewestby$elm_template$Template_Infix_ops['%>'],
+				A2(
+					_lukewestby$elm_template$Template_Infix_ops['<%'],
+					A2(
+						_lukewestby$elm_template$Template_Infix_ops['%>'],
+						A2(
+							_lukewestby$elm_template$Template_Infix_ops['<%'],
+							A2(
+								_lukewestby$elm_template$Template_Infix_ops['%>'],
+								A2(
+									_lukewestby$elm_template$Template_Infix_ops['<%'],
+									A2(
+										_lukewestby$elm_template$Template_Infix_ops['%>'],
+										A2(
+											_lukewestby$elm_template$Template_Infix_ops['<%'],
+											A2(
+												_lukewestby$elm_template$Template_Infix_ops['%>'],
+												A2(
+													_lukewestby$elm_template$Template_Infix_ops['<%'],
+													A2(
+														_lukewestby$elm_template$Template_Infix_ops['%>'],
+														A2(
+															_lukewestby$elm_template$Template_Infix_ops['<%'],
+															A2(
+																_lukewestby$elm_template$Template_Infix_ops['%>'],
+																A2(
+																	_lukewestby$elm_template$Template_Infix_ops['<%'],
+																	A2(
+																		_lukewestby$elm_template$Template_Infix_ops['%>'],
+																		A2(
+																			_lukewestby$elm_template$Template_Infix_ops['<%'],
+																			_lukewestby$elm_template$Template$template('M'),
+																			function (_) {
+																				return _.pt_0_x;
+																			}),
+																		' '),
+																	function (_) {
+																		return _.pt_0_y;
+																	}),
+																' C '),
+															function (_) {
+																return _.pt_1_x;
+															}),
+														' '),
+													function (_) {
+														return _.pt_1_y;
+													}),
+												', '),
+											function (_) {
+												return _.pt_2_x;
+											}),
+										' '),
+									function (_) {
+										return _.pt_2_y;
+									}),
+								', '),
+							function (_) {
+								return _.pt_3_x;
+							}),
+						' '),
+					function (_) {
+						return _.pt_3_y;
+					}),
+				''),
+			{
+				pt_0_x: _elm_lang$core$Basics$toString(pt_0.x),
+				pt_0_y: _elm_lang$core$Basics$toString(pt_0.y),
+				pt_1_x: _elm_lang$core$Basics$toString(pt_1.x),
+				pt_1_y: _elm_lang$core$Basics$toString(pt_1.y),
+				pt_2_x: _elm_lang$core$Basics$toString(pt_2.x),
+				pt_2_y: _elm_lang$core$Basics$toString(pt_2.y),
+				pt_3_x: _elm_lang$core$Basics$toString(pt_3.x),
+				pt_3_y: _elm_lang$core$Basics$toString(pt_3.y)
+			});
+	});
+var _ambuc$juggling_graph$Draw$mkLoopLinear = F3(
+	function (_p35, _p34, arr) {
+		var _p36 = _p35;
+		var _p37 = _p34;
+		var _p39 = _p37.unit;
+		var _p38 = _p37.self_arrow;
+		var out_coord = function (arr) {
+			return _elm_lang$core$Basics$toFloat(arr.out_index) * _p39.w;
+		};
+		var base = {
+			x: out_coord(arr),
+			y: (_p36.canvas.w / 2.0) - _p39.h
+		};
+		return A4(
+			_ambuc$juggling_graph$Draw$curveString,
+			base,
+			A2(_ambuc$juggling_graph$Points_ops['-.-'], base, _p38),
+			A2(
+				_ambuc$juggling_graph$Points_ops['+.+'],
+				base,
+				_ambuc$juggling_graph$Points$flipY(_p38)),
+			base);
+	});
+var _ambuc$juggling_graph$Draw$arrowToSvgLinear = F3(
+	function (linear_opts, opts, arr) {
+		return A2(
+			_elm_lang$svg$Svg$path,
+			{
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$d(
+					A3(
+						A2(
+							_rogeriochaves$elm_ternary$Ternary_ops['?'],
+							_ambuc$juggling_graph$Arrow$is_self(arr),
+							_ambuc$juggling_graph$Draw$mkLoopLinear)(_ambuc$juggling_graph$Draw$mkThrowLinear),
+						opts,
+						linear_opts,
+						arr)),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$stroke('black'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$fill('transparent'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$strokeWidth('1.0'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$markerEnd('url(#arrow)'),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			},
+			{ctor: '[]'});
+	});
+var _ambuc$juggling_graph$Draw$mkLoopCircular = F3(
+	function (_p42, _p41, _p40) {
+		var _p43 = _p42;
+		var _p44 = _p41;
+		var _p47 = _p44.self_arrow;
+		var _p46 = _p44.center;
+		var _p45 = _p40;
+		var pt_0 = {x: _p46.x, y: (_p46.y - _p44.radius) + (_p44.unit.h / 2)};
+		return A4(
+			_ambuc$juggling_graph$Draw$curveString,
+			pt_0,
+			A2(
+				_ambuc$juggling_graph$Points_ops['+.+'],
+				pt_0,
+				_ambuc$juggling_graph$Points$flipX(_p47)),
+			A2(_ambuc$juggling_graph$Points_ops['+.+'], pt_0, _p47),
+			pt_0);
+	});
+var _ambuc$juggling_graph$Draw$dist = F2(
+	function (a, b) {
+		return _elm_lang$core$Basics$sqrt(
+			Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
+	});
+var _ambuc$juggling_graph$Draw$closest_to = F3(
+	function (o, a, b) {
+		return A2(
+			_rogeriochaves$elm_ternary$Ternary_ops['?'],
+			_elm_lang$core$Native_Utils.cmp(
+				A2(_ambuc$juggling_graph$Draw$dist, b, o),
+				A2(_ambuc$juggling_graph$Draw$dist, a, o)) > 0,
+			a)(b);
+	});
+var _ambuc$juggling_graph$Draw$furthest_from = F3(
+	function (o, a, b) {
+		return A2(
+			_rogeriochaves$elm_ternary$Ternary_ops['?'],
+			_elm_lang$core$Native_Utils.cmp(
+				A2(_ambuc$juggling_graph$Draw$dist, b, o),
+				A2(_ambuc$juggling_graph$Draw$dist, a, o)) > 0,
+			b)(a);
+	});
+var _ambuc$juggling_graph$Draw$sign_of_cross = F3(
+	function (o, a, b) {
+		return ((a.x - o.x) * (b.y - o.y)) - ((a.y - o.y) * (b.x - o.x));
+	});
+var _ambuc$juggling_graph$Draw$midpoint = F2(
+	function (a, b) {
+		return {x: (a.x + b.x) / 2.0, y: (a.y + b.y) / 2.0};
+	});
+var _ambuc$juggling_graph$Draw$slope = F2(
+	function (a, b) {
+		return A2(_elm_lang$core$Basics$atan2, b.y - a.y, b.x - a.x);
+	});
+var _ambuc$juggling_graph$Draw$tau = 2 * _elm_lang$core$Basics$pi;
+var _ambuc$juggling_graph$Draw$mkThrowCircular = F3(
+	function (_p49, _p48, arr) {
+		var _p50 = _p49;
+		var _p55 = _p50.num_tokens;
+		var _p51 = _p48;
+		var _p54 = _p51.unit;
+		var _p53 = _p51.radius;
+		var _p52 = _p51.center;
+		var r_b = 15.0;
+		var b = A2(
+			_ambuc$juggling_graph$Points_ops['+/+'],
+			_p52,
+			{
+				ctor: '_Tuple2',
+				_0: (_ambuc$juggling_graph$Draw$tau / _elm_lang$core$Basics$toFloat(_p55)) * _elm_lang$core$Basics$toFloat(arr.in_index),
+				_1: _p53 - (_p54.h / 2)
+			});
+		var a = A2(
+			_ambuc$juggling_graph$Points_ops['+/+'],
+			_p52,
+			{
+				ctor: '_Tuple2',
+				_0: (_ambuc$juggling_graph$Draw$tau / _elm_lang$core$Basics$toFloat(_p55)) * _elm_lang$core$Basics$toFloat(arr.out_index),
+				_1: _p53 - (_p54.h / 2)
+			});
+		var r_c = A2(_ambuc$juggling_graph$Draw$dist, a, b) / 1.25;
+		var rp_c = _elm_lang$core$Basics$sqrt(
+			Math.pow(r_c, 2) - Math.pow(
+				A2(_ambuc$juggling_graph$Draw$dist, a, b) / 2.0,
+				2));
+		var c = A3(
+			_ambuc$juggling_graph$Draw$furthest_from,
+			_p52,
+			A2(
+				_ambuc$juggling_graph$Points_ops['+/+'],
+				A2(_ambuc$juggling_graph$Draw$midpoint, a, b),
+				{
+					ctor: '_Tuple2',
+					_0: A2(_ambuc$juggling_graph$Draw$slope, a, b),
+					_1: rp_c
+				}),
+			A2(
+				_ambuc$juggling_graph$Points_ops['+/+'],
+				A2(_ambuc$juggling_graph$Draw$midpoint, a, b),
+				{
+					ctor: '_Tuple2',
+					_0: A2(_ambuc$juggling_graph$Draw$slope, a, b),
+					_1: 0 - rp_c
+				}));
+		var bp = function () {
+			var theta = _elm_lang$core$Basics$acos(
+				((2 * Math.pow(r_c, 2)) - Math.pow(r_b, 2)) / (2 * Math.pow(r_c, 2)));
+			return A3(
+				_ambuc$juggling_graph$Draw$closest_to,
+				_p52,
+				A2(
+					_ambuc$juggling_graph$Points_ops['+/+'],
+					c,
+					{
+						ctor: '_Tuple2',
+						_0: ((_elm_lang$core$Basics$pi / 2) + A2(_ambuc$juggling_graph$Draw$slope, c, b)) + theta,
+						_1: r_c
+					}),
+				A2(
+					_ambuc$juggling_graph$Points_ops['+/+'],
+					c,
+					{
+						ctor: '_Tuple2',
+						_0: ((_elm_lang$core$Basics$pi / 2) + A2(_ambuc$juggling_graph$Draw$slope, c, b)) - theta,
+						_1: r_c
+					}));
+		}();
+		var e = A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], arr.should_curtail_circular, bp)(b);
+		var sweep_in = arr.should_curtail_circular ? (_elm_lang$core$Native_Utils.cmp(
+			A3(_ambuc$juggling_graph$Draw$sign_of_cross, a, b, c),
+			0) > 0) : (_elm_lang$core$Native_Utils.cmp(
+			A3(_ambuc$juggling_graph$Draw$sign_of_cross, a, b, _p52),
+			0) < 0);
+		return A6(_ambuc$juggling_graph$Draw$arcString, a, r_c, false, false, sweep_in, e);
+	});
+var _ambuc$juggling_graph$Draw$arrowToSvgCircular = F3(
+	function (circular_opts, opts, arr) {
+		return A2(
+			_elm_lang$svg$Svg$g,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$svg$Svg$path,
+					{
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$d(
+							A3(
+								A2(
+									_rogeriochaves$elm_ternary$Ternary_ops['?'],
+									_ambuc$juggling_graph$Arrow$is_self(arr),
+									_ambuc$juggling_graph$Draw$mkLoopCircular)(_ambuc$juggling_graph$Draw$mkThrowCircular),
+								opts,
+								circular_opts,
+								arr)),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$stroke('black'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$fill('transparent'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$strokeWidth('1.0'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$svg$Svg_Attributes$markerEnd('url(#arrow)'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$transform(
+												_ambuc$juggling_graph$Arrow$is_self(arr) ? A2(
+													_ambuc$juggling_graph$Draw$rotateAbout,
+													(360.0 / _elm_lang$core$Basics$toFloat(opts.num_tokens)) * _elm_lang$core$Basics$toFloat(arr.out_index),
+													circular_opts.center) : ''),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _ambuc$juggling_graph$Draw$arrows = F2(
+	function (opts, parseObject) {
+		return (!parseObject.is_valid) ? A2(
+			_elm_lang$svg$Svg$g,
+			{ctor: '[]'},
+			{ctor: '[]'}) : A2(
+			_elm_lang$svg$Svg$g,
+			{ctor: '[]'},
+			A2(
+				_elm_lang$core$List$map,
+				function () {
+					var _p56 = opts.view_opts;
+					if (_p56.ctor === 'Left') {
+						return A2(_ambuc$juggling_graph$Draw$arrowToSvgLinear, _p56._0, opts);
+					} else {
+						return A2(_ambuc$juggling_graph$Draw$arrowToSvgCircular, _p56._0, opts);
+					}
+				}(),
+				_ambuc$juggling_graph$Arrow$mkArrows(parseObject.tokens)));
+	});
+var _ambuc$juggling_graph$Draw$boundsToMultiplexBoxCircular = F4(
+	function (_p57, opts, l_idx, r_idx) {
+		var _p58 = _p57;
+		var _p62 = _p58.unit;
+		var _p61 = _p58.radius;
+		var _p60 = _p58.multiplex_offset;
+		var _p59 = _p58.center;
+		var outer_r = (_p61 + (_p62.h / 2.0)) + _p60.y;
+		var inner_r = (_p61 - (_p62.h / 2.0)) + _p60.y;
+		var l_th = (_ambuc$juggling_graph$Draw$tau / _elm_lang$core$Basics$toFloat(opts.num_tokens)) * _elm_lang$core$Basics$toFloat(l_idx);
+		var r_th = (_ambuc$juggling_graph$Draw$tau / _elm_lang$core$Basics$toFloat(opts.num_tokens)) * _elm_lang$core$Basics$toFloat(r_idx);
+		return A2(
+			_elm_lang$svg$Svg$path,
+			{
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$d(
+					A7(
+						_ambuc$juggling_graph$Draw$curvedRectangle,
+						A2(
+							_ambuc$juggling_graph$Points_ops['+/+'],
+							_p59,
+							{ctor: '_Tuple2', _0: l_th, _1: outer_r}),
+						A2(
+							_ambuc$juggling_graph$Points_ops['+/+'],
+							_p59,
+							{ctor: '_Tuple2', _0: l_th, _1: inner_r}),
+						A2(
+							_ambuc$juggling_graph$Points_ops['+/+'],
+							_p59,
+							{ctor: '_Tuple2', _0: r_th, _1: inner_r}),
+						A2(
+							_ambuc$juggling_graph$Points_ops['+/+'],
+							_p59,
+							{ctor: '_Tuple2', _0: r_th, _1: outer_r}),
+						outer_r,
+						inner_r,
+						r_th - l_th)),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$fill('lightblue'),
+					_1: {ctor: '[]'}
+				}
+			},
+			{ctor: '[]'});
+	});
+var _ambuc$juggling_graph$Draw$multiplexBoxes = F2(
+	function (opts, _p63) {
+		var _p64 = _p63;
+		var _p66 = _p64.tokens;
+		return A2(
+			_elm_lang$svg$Svg$g,
+			{ctor: '[]'},
+			A3(
+				_elm_lang$core$List$map2,
+				function () {
+					var _p65 = opts.view_opts;
+					if (_p65.ctor === 'Left') {
+						return A2(_ambuc$juggling_graph$Draw$boundToMultiplexBoxLinear, _p65._0, opts);
+					} else {
+						return A2(_ambuc$juggling_graph$Draw$boundsToMultiplexBoxCircular, _p65._0, opts);
+					}
+				}(),
+				A2(
+					_elm_community$list_extra$List_Extra$findIndices,
+					function (x) {
+						return _elm_lang$core$Native_Utils.eq(x.txt, '[');
+					},
+					_p66),
+				A2(
+					_elm_community$list_extra$List_Extra$findIndices,
+					function (x) {
+						return _elm_lang$core$Native_Utils.eq(x.txt, ']');
+					},
+					_p66)));
+	});
 
 var _ambuc$juggling_graph$Examples$examples = {
 	ctor: '::',
@@ -13506,11 +13379,11 @@ var _ambuc$juggling_graph$Tokens$mkTokens = function (beatmap) {
 
 var _ambuc$juggling_graph$StateMachine$applyAsterisk = function (llb) {
 	var flipHandsOnThrow = function (t) {
-		return _elm_lang$core$Native_Utils.eq(t.hand, _ambuc$juggling_graph$Lib$RightHand) ? _elm_lang$core$Native_Utils.update(
+		return _elm_lang$core$Native_Utils.eq(t.hand, _ambuc$juggling_graph$Types$RightHand) ? _elm_lang$core$Native_Utils.update(
 			t,
-			{hand: _ambuc$juggling_graph$Lib$LeftHand}) : (_elm_lang$core$Native_Utils.eq(t.hand, _ambuc$juggling_graph$Lib$LeftHand) ? _elm_lang$core$Native_Utils.update(
+			{hand: _ambuc$juggling_graph$Types$LeftHand}) : (_elm_lang$core$Native_Utils.eq(t.hand, _ambuc$juggling_graph$Types$LeftHand) ? _elm_lang$core$Native_Utils.update(
 			t,
-			{hand: _ambuc$juggling_graph$Lib$RightHand}) : t);
+			{hand: _ambuc$juggling_graph$Types$RightHand}) : t);
 	};
 	var flipHandsOnBeat = function (b) {
 		return _elm_lang$core$Native_Utils.update(
@@ -13565,7 +13438,7 @@ var _ambuc$juggling_graph$StateMachine$emptyThrow = {
 	is_cross: false,
 	is_valid: true,
 	$char: _elm_lang$core$Native_Utils.chr(' '),
-	hand: _ambuc$juggling_graph$Lib$Center
+	hand: _ambuc$juggling_graph$Types$Center
 };
 var _ambuc$juggling_graph$StateMachine$invalidThrow = function (chr) {
 	return _elm_lang$core$Native_Utils.update(
@@ -13739,7 +13612,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									ctor: '::',
 									_0: {
 										ctor: '::',
-										_0: A2(_ambuc$juggling_graph$StateMachine$newBeat, _ambuc$juggling_graph$Lib$Center, _p12),
+										_0: A2(_ambuc$juggling_graph$StateMachine$newBeat, _ambuc$juggling_graph$Types$Center, _p12),
 										_1: {ctor: '[]'}
 									},
 									_1: _p27
@@ -13753,7 +13626,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 							ctor: '_Tuple3',
 							_0: _ambuc$juggling_graph$StateMachine$AS_BRACE,
 							_1: tail,
-							_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Lib$Center, head, _p27)
+							_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$Center, head, _p27)
 						};
 						_p5 = _v13;
 						continue parse;
@@ -13768,7 +13641,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 								ctor: '_Tuple3',
 								_0: _ambuc$juggling_graph$StateMachine$AS_BRACE,
 								_1: tail,
-								_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Lib$Center, head, _p27)
+								_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$Center, head, _p27)
 							};
 							_p5 = _v16;
 							continue parse;
@@ -13820,7 +13693,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									_1: tail,
 									_2: A3(
 										_ambuc$juggling_graph$StateMachine$push_,
-										_ambuc$juggling_graph$Lib$LeftHand,
+										_ambuc$juggling_graph$Types$LeftHand,
 										_elm_lang$core$Native_Utils.chr('0'),
 										_p27)
 								};
@@ -13842,7 +13715,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_X,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Lib$LeftHand, _p15, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, _p15, _p27)
 								};
 								_p5 = _v22;
 								continue parse;
@@ -13857,7 +13730,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									_1: tail,
 									_2: A3(
 										_ambuc$juggling_graph$StateMachine$push_,
-										_ambuc$juggling_graph$Lib$LeftHand,
+										_ambuc$juggling_graph$Types$LeftHand,
 										_elm_lang$core$Native_Utils.chr('0'),
 										_p27)
 								};
@@ -13879,7 +13752,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Lib$LeftHand, head, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, head, _p27)
 								};
 								_p5 = _v25;
 								continue parse;
@@ -13894,7 +13767,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									_1: tail,
 									_2: A3(
 										_ambuc$juggling_graph$StateMachine$push_,
-										_ambuc$juggling_graph$Lib$LeftHand,
+										_ambuc$juggling_graph$Types$LeftHand,
 										_elm_lang$core$Native_Utils.chr('0'),
 										_p27)
 								};
@@ -13920,7 +13793,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Lib$LeftHand, head, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, head, _p27)
 								};
 								_p5 = _v29;
 								continue parse;
@@ -13939,7 +13812,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									_1: tail,
 									_2: A3(
 										_ambuc$juggling_graph$StateMachine$push_,
-										_ambuc$juggling_graph$Lib$LeftHand,
+										_ambuc$juggling_graph$Types$LeftHand,
 										_elm_lang$core$Native_Utils.chr('0'),
 										_p27)
 								};
@@ -13972,7 +13845,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Lib$LeftHand, head, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, head, _p27)
 								};
 								_p5 = _v34;
 								continue parse;
@@ -14050,7 +13923,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 												ctor: '::',
 												_0: A2(
 													_ambuc$juggling_graph$StateMachine$newBeat,
-													_ambuc$juggling_graph$Lib$RightHand,
+													_ambuc$juggling_graph$Types$RightHand,
 													_elm_lang$core$Native_Utils.chr('0')),
 												_1: x
 											};
@@ -14096,7 +13969,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 										function (x) {
 											return {
 												ctor: '::',
-												_0: A2(_ambuc$juggling_graph$StateMachine$newBeat, _ambuc$juggling_graph$Lib$RightHand, _p21),
+												_0: A2(_ambuc$juggling_graph$StateMachine$newBeat, _ambuc$juggling_graph$Types$RightHand, _p21),
 												_1: x
 											};
 										},
@@ -14155,7 +14028,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									_1: tail,
 									_2: A3(
 										_ambuc$juggling_graph$StateMachine$push_,
-										_ambuc$juggling_graph$Lib$RightHand,
+										_ambuc$juggling_graph$Types$RightHand,
 										_elm_lang$core$Native_Utils.chr('0'),
 										_p27)
 								};
@@ -14177,7 +14050,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Lib$RightHand, _p23, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$RightHand, _p23, _p27)
 								};
 								_p5 = _v49;
 								continue parse;
@@ -14192,7 +14065,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									_1: tail,
 									_2: A3(
 										_ambuc$juggling_graph$StateMachine$push_,
-										_ambuc$juggling_graph$Lib$RightHand,
+										_ambuc$juggling_graph$Types$RightHand,
 										_elm_lang$core$Native_Utils.chr('0'),
 										_p27)
 								};
@@ -14218,7 +14091,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Lib$RightHand, _p24, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$RightHand, _p24, _p27)
 								};
 								_p5 = _v53;
 								continue parse;
@@ -14233,7 +14106,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									_1: tail,
 									_2: A3(
 										_ambuc$juggling_graph$StateMachine$push_,
-										_ambuc$juggling_graph$Lib$RightHand,
+										_ambuc$juggling_graph$Types$RightHand,
 										_elm_lang$core$Native_Utils.chr('0'),
 										_p27)
 								};
@@ -14270,7 +14143,7 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Lib$RightHand, _p25, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$RightHand, _p25, _p27)
 								};
 								_p5 = _v58;
 								continue parse;
@@ -14350,7 +14223,7 @@ var _ambuc$juggling_graph$Siteswap$mkOpts = F4(
 									_elm_lang$core$List$length(parseObject.tokens)),
 								h: 15.0
 							},
-							self_arrow: {w: 25, h: 35},
+							self_arrow: {x: 25, y: 35},
 							arrow_offset: {x: 5.0, y: 13.0},
 							text_offset: {x: 0.0, y: 4.0},
 							y_delt: 15.0
@@ -14365,7 +14238,7 @@ var _ambuc$juggling_graph$Siteswap$mkOpts = F4(
 								y: _elm_lang$core$Basics$toFloat(canvas_height) / 2.0
 							},
 							multiplex_offset: {x: 0.0, y: 6.0},
-							self_arrow: {w: 25, h: 35}
+							self_arrow: {x: 25, y: 35}
 						});
 				}
 			}()
@@ -14427,7 +14300,7 @@ var _ambuc$juggling_graph$Main$UpdateExamplesIdx = function (a) {
 var _ambuc$juggling_graph$Main$Roll = {ctor: 'Roll'};
 var _ambuc$juggling_graph$Main$init = {
 	ctor: '_Tuple2',
-	_0: {expr: '', view: _ambuc$juggling_graph$Lib$Circular},
+	_0: {expr: '', view: _ambuc$juggling_graph$Types$Circular},
 	_1: _GlobalWebIndex$cmd_extra$Cmd_Extra$perform(_ambuc$juggling_graph$Main$Roll)
 };
 var _ambuc$juggling_graph$Main$update = F2(
@@ -14450,8 +14323,8 @@ var _ambuc$juggling_graph$Main$update = F2(
 						{
 							view: A2(
 								_rogeriochaves$elm_ternary$Ternary_ops['?'],
-								_elm_lang$core$Native_Utils.eq(model.view, _ambuc$juggling_graph$Lib$Linear),
-								_ambuc$juggling_graph$Lib$Circular)(_ambuc$juggling_graph$Lib$Linear)
+								_elm_lang$core$Native_Utils.eq(model.view, _ambuc$juggling_graph$Types$Linear),
+								_ambuc$juggling_graph$Types$Circular)(_ambuc$juggling_graph$Types$Linear)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};

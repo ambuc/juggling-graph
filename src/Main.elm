@@ -14,7 +14,7 @@ import Unwrap as U
 --
 
 import Siteswap exposing (renderExpr)
-import Lib exposing (View(Linear, Circular))
+import Types exposing (View(Linear, Circular))
 import Examples exposing (examples)
 
 

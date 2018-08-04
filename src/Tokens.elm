@@ -6,7 +6,7 @@ import Ternary exposing ((?))
 
 --
 
-import Lib exposing (..)
+import Types exposing (..)
 
 
 ------------

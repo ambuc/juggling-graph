@@ -24,8 +24,8 @@ import Ternary exposing ((?))
 
 import Arrow
 import Draw
-import Lib exposing (..)
 import StateMachine
+import Types exposing (..)
 
 
 -----------------------
@@ -50,7 +50,7 @@ mkOpts canvas_width canvas_height parseObject view =
                                 / (toFloat <| List.length parseObject.tokens)
                         , h = 15.0
                         }
-                    , self_arrow = { w = 25, h = 35 }
+                    , self_arrow = { x = 25, y = 35 }
                     , arrow_offset = { x = 5.0, y = 13.0 }
                     , text_offset = { x = 0.0, y = 4.0 }
                     , y_delt = 15.0
@@ -66,7 +66,7 @@ mkOpts canvas_width canvas_height parseObject view =
                         , y = (toFloat canvas_height) / 2.0
                         }
                     , multiplex_offset = { x = 0.0, y = 6.0 }
-                    , self_arrow = { w = 25, h = 35 }
+                    , self_arrow = { x = 25, y = 35 }
                     }
     }
 

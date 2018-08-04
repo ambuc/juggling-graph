@@ -1,4 +1,4 @@
-module Lib exposing (..)
+module Types exposing (..)
 
 import Char
 import Either exposing (Either)
@@ -21,7 +21,7 @@ type alias XY =
 
 type alias LinearOpts =
     { unit : WH -- the width/height of a token block
-    , self_arrow : WH -- the width/height of the self-arc
+    , self_arrow : XY -- the width/height of the self-arc
     , arrow_offset : XY
     , text_offset : XY
     , y_delt : Float -- the y-distance to stop short when curtailing an arrow
@@ -31,7 +31,7 @@ type alias LinearOpts =
 type alias CircularOpts =
     { radius : Float
     , unit : WH
-    , self_arrow : WH -- the width/height of the self-arc
+    , self_arrow : XY -- the width/height of the self-arc
     , center : XY
     , multiplex_offset : XY
     }

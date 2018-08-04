@@ -17,7 +17,7 @@ import Unwrap as U
 
 --
 
-import Lib exposing (..)
+import Types exposing (..)
 
 
 --------------------------------------------------------------------------------
