@@ -227,11 +227,9 @@ parse ( state, string, bs ) =
 
                         --------------------------------------------------------
                         -- ASTERISK HANDLING ZONE ------------------------------
-                        -- (a,a')(b,b')* --> (a,a')(b,b')(a',a)(b',b) ----------
-                        -- (8,2x)(4,2x)* --> (8,2x)(4,2x)(2x,8)(2x,4) ----------
                         --------------------------------------------------------
                         '*' ->
-                            (List.map List.reverse bs) ++ bs
+                            applyAsterisk bs
 
                         chr ->
                             [ invalidBeat chr ] :: bs
@@ -499,6 +497,33 @@ parse ( state, string, bs ) =
 
                         chr ->
                             [ invalidBeat chr ] :: bs
+
+
+{-| Asterisk handling.
+(a,a')(b,b')* --> (a,a')(b,b')(a',a)(b',b)
+(8,2x)(4,2x)* --> (8,2x)(4,2x)(2x,8)(2x,4)
+-}
+applyAsterisk : List (List Beat) -> List (List Beat)
+applyAsterisk llb =
+    let
+        flipHandsOnThrow : Throw -> Throw
+        flipHandsOnThrow t =
+            if t.hand == RightHand then
+                { t | hand = LeftHand }
+            else if t.hand == LeftHand then
+                { t | hand = RightHand }
+            else
+                t
+
+        flipHandsOnBeat : Beat -> Beat
+        flipHandsOnBeat b =
+            { b | throws = List.map flipHandsOnThrow b.throws }
+
+        flipHandsOnListOfBeats : List Beat -> List Beat
+        flipHandsOnListOfBeats lb =
+            List.map flipHandsOnBeat lb
+    in
+        (List.map (List.reverse << flipHandsOnListOfBeats) llb) ++ llb
 
 
 parseExpr : String -> ParseObject
