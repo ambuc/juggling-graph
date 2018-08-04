@@ -96,6 +96,7 @@ type alias Arrow =
     { out_index : Int
     , in_index : Int
     , should_curtail_linear : Bool
+    , should_curtail_circular : Bool
     }
 
 

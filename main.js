@@ -7551,9 +7551,9 @@ var _ambuc$juggling_graph$Lib$ParseObject = F4(
 	function (a, b, c, d) {
 		return {beatmap: a, is_sync: b, tokens: c, is_valid: d};
 	});
-var _ambuc$juggling_graph$Lib$Arrow = F3(
-	function (a, b, c) {
-		return {out_index: a, in_index: b, should_curtail_linear: c};
+var _ambuc$juggling_graph$Lib$Arrow = F4(
+	function (a, b, c, d) {
+		return {out_index: a, in_index: b, should_curtail_linear: c, should_curtail_circular: d};
 	});
 var _ambuc$juggling_graph$Lib$Circular = {ctor: 'Circular'};
 var _ambuc$juggling_graph$Lib$Linear = {ctor: 'Linear'};
@@ -7563,6 +7563,27 @@ var _ambuc$juggling_graph$Lib$LeftHand = {ctor: 'LeftHand'};
 var _ambuc$juggling_graph$Lib$Below = {ctor: 'Below'};
 var _ambuc$juggling_graph$Lib$Above = {ctor: 'Above'};
 
+var _ambuc$juggling_graph$Arrow$addCurtailsCircular = function (arrs) {
+	var hasConflict = function (arr) {
+		return _elm_lang$core$List$isEmpty(
+			A2(
+				_elm_lang$core$List$filter,
+				function (x) {
+					return _elm_lang$core$Native_Utils.eq(arr.in_index, x.out_index) || _elm_lang$core$Native_Utils.eq(arr.in_index, x.in_index);
+				},
+				A2(_elm_community$list_extra$List_Extra$remove, arr, arrs)));
+	};
+	return A2(
+		_elm_lang$core$List$map,
+		function (x) {
+			return _elm_lang$core$Native_Utils.update(
+				x,
+				{
+					should_curtail_circular: !hasConflict(x)
+				});
+		},
+		arrs);
+};
 var _ambuc$juggling_graph$Arrow$addColors = function (ls) {
 	return ls;
 };
@@ -7605,7 +7626,7 @@ var _ambuc$juggling_graph$Arrow$addCurtailsLinear = function (arrs) {
 		},
 		arrs);
 };
-var _ambuc$juggling_graph$Arrow$emptyArrow = {out_index: 0, in_index: 0, should_curtail_linear: false};
+var _ambuc$juggling_graph$Arrow$emptyArrow = {out_index: 0, in_index: 0, should_curtail_linear: false, should_curtail_circular: false};
 var _ambuc$juggling_graph$Arrow$mkArrow = F4(
 	function (out_index, _p5, _p4, catch_points) {
 		var _p6 = _p5;
@@ -7656,31 +7677,32 @@ var _ambuc$juggling_graph$Arrow$mkArrows = function (tokens) {
 				},
 				tokens)));
 	return _ambuc$juggling_graph$Arrow$addColors(
-		_ambuc$juggling_graph$Arrow$addCurtailsLinear(
-			_elm_lang$core$List$concat(
-				A2(
-					_elm_lang$core$List$map,
-					function (_p10) {
-						var _p11 = _p10;
-						var _p13 = _p11._1;
-						var _p12 = _p13.$throw;
-						if (_p12.ctor === 'Just') {
-							return {
-								ctor: '::',
-								_0: A4(_ambuc$juggling_graph$Arrow$mkArrow, _p11._0, _p13, _p12._0, catch_points),
-								_1: {ctor: '[]'}
-							};
-						} else {
-							return {ctor: '[]'};
-						}
-					},
+		_ambuc$juggling_graph$Arrow$addCurtailsCircular(
+			_ambuc$juggling_graph$Arrow$addCurtailsLinear(
+				_elm_lang$core$List$concat(
 					A2(
-						_elm_lang$core$List$indexedMap,
-						F2(
-							function (v0, v1) {
-								return {ctor: '_Tuple2', _0: v0, _1: v1};
-							}),
-						tokens)))));
+						_elm_lang$core$List$map,
+						function (_p10) {
+							var _p11 = _p10;
+							var _p13 = _p11._1;
+							var _p12 = _p13.$throw;
+							if (_p12.ctor === 'Just') {
+								return {
+									ctor: '::',
+									_0: A4(_ambuc$juggling_graph$Arrow$mkArrow, _p11._0, _p13, _p12._0, catch_points),
+									_1: {ctor: '[]'}
+								};
+							} else {
+								return {ctor: '[]'};
+							}
+						},
+						A2(
+							_elm_lang$core$List$indexedMap,
+							F2(
+								function (v0, v1) {
+									return {ctor: '_Tuple2', _0: v0, _1: v1};
+								}),
+							tokens))))));
 };
 
 var _elm_community$basics_extra$Basics_Extra$turnsPerRadian = 1 / _elm_lang$core$Basics$turns(1);
@@ -10965,19 +10987,19 @@ var _ambuc$juggling_graph$Draw$boundsToMultiplexBoxCircular = F4(
 																																						_lukewestby$elm_template$Template_Infix_ops['<%'],
 																																						_lukewestby$elm_template$Template$template('M '),
 																																						function (_) {
-																																							return _.alpha_x;
+																																							return _.a_x;
 																																						}),
 																																					' '),
 																																				function (_) {
-																																					return _.alpha_y;
+																																					return _.a_y;
 																																				}),
 																																			' L '),
 																																		function (_) {
-																																			return _.betaa_x;
+																																			return _.b_x;
 																																		}),
 																																	' '),
 																																function (_) {
-																																	return _.betaa_y;
+																																	return _.b_y;
 																																}),
 																															' A '),
 																														function (_) {
@@ -11021,18 +11043,18 @@ var _ambuc$juggling_graph$Draw$boundsToMultiplexBoxCircular = F4(
 												}),
 											' 0 '),
 										function (_) {
-											return _.alpha_x;
+											return _.a_x;
 										}),
 									' '),
 								function (_) {
-									return _.alpha_y;
+									return _.a_y;
 								}),
 							' Z'),
 						{
-							alpha_x: _elm_lang$core$Basics$toString(_p20.x),
-							alpha_y: _elm_lang$core$Basics$toString(_p20.y - outer_r),
-							betaa_x: _elm_lang$core$Basics$toString(_p20.x),
-							betaa_y: _elm_lang$core$Basics$toString(_p20.y - inner_r),
+							a_x: _elm_lang$core$Basics$toString(_p20.x),
+							a_y: _elm_lang$core$Basics$toString(_p20.y - outer_r),
+							b_x: _elm_lang$core$Basics$toString(_p20.x),
+							b_y: _elm_lang$core$Basics$toString(_p20.y - inner_r),
 							gamma_x: _elm_lang$core$Basics$toString(
 								_p20.x + (inner_r * _elm_lang$core$Basics$sin(d_th))),
 							gamma_y: _elm_lang$core$Basics$toString(
@@ -11168,28 +11190,106 @@ var _ambuc$juggling_graph$Draw$multiplexBoxes = F2(
 var _ambuc$juggling_graph$Draw$arrowToSvgCircular = F2(
 	function (_p34, _p33) {
 		var _p35 = _p34;
-		var _p45 = _p35.unit;
-		var _p44 = _p35.self_arrow;
-		var _p43 = _p35.radius;
-		var _p42 = _p35.center;
+		var _p56 = _p35.unit;
+		var _p55 = _p35.self_arrow;
+		var _p54 = _p35.radius;
+		var _p53 = _p35.center;
 		var _p36 = _p33;
-		var _p41 = _p36.num_tokens;
+		var _p52 = _p36.num_tokens;
 		var mkThrowCircular = function (_p37) {
 			var _p38 = _p37;
-			var ending_radius = _p43 - (_p45.h / 2);
-			var starting_radius = _p43 - (_p45.h / 2);
-			var in_theta = A2(
-				_elm_community$basics_extra$Basics_Extra$fmod,
-				((2 * _elm_lang$core$Basics$pi) / _elm_lang$core$Basics$toFloat(_p41)) * _elm_lang$core$Basics$toFloat(_p38.in_index),
-				2 * _elm_lang$core$Basics$pi);
-			var beta_x = _p42.x + (ending_radius * _elm_lang$core$Basics$sin(in_theta));
-			var beta_y = _p42.y - (ending_radius * _elm_lang$core$Basics$cos(in_theta));
-			var out_theta = A2(
-				_elm_community$basics_extra$Basics_Extra$fmod,
-				((2 * _elm_lang$core$Basics$pi) / _elm_lang$core$Basics$toFloat(_p41)) * _elm_lang$core$Basics$toFloat(_p38.out_index),
-				2 * _elm_lang$core$Basics$pi);
-			var alpha_x = _p42.x + (starting_radius * _elm_lang$core$Basics$sin(out_theta));
-			var alpha_y = _p42.y - (starting_radius * _elm_lang$core$Basics$cos(out_theta));
+			var _p49 = _p38.should_curtail_circular;
+			var r_b = 15.0;
+			var _p39 = function () {
+				var in_theta = A2(
+					_elm_community$basics_extra$Basics_Extra$fmod,
+					((2 * _elm_lang$core$Basics$pi) / _elm_lang$core$Basics$toFloat(_p52)) * _elm_lang$core$Basics$toFloat(_p38.in_index),
+					2 * _elm_lang$core$Basics$pi);
+				var ending_radius = _p54 - (_p56.h / 2);
+				return {
+					ctor: '_Tuple2',
+					_0: _p53.x + (ending_radius * _elm_lang$core$Basics$sin(in_theta)),
+					_1: _p53.y - (ending_radius * _elm_lang$core$Basics$cos(in_theta))
+				};
+			}();
+			var b_x = _p39._0;
+			var b_y = _p39._1;
+			var _p40 = function () {
+				var out_theta = A2(
+					_elm_community$basics_extra$Basics_Extra$fmod,
+					((2 * _elm_lang$core$Basics$pi) / _elm_lang$core$Basics$toFloat(_p52)) * _elm_lang$core$Basics$toFloat(_p38.out_index),
+					2 * _elm_lang$core$Basics$pi);
+				var starting_radius = _p54 - (_p56.h / 2);
+				return {
+					ctor: '_Tuple2',
+					_0: _p53.x + (starting_radius * _elm_lang$core$Basics$sin(out_theta)),
+					_1: _p53.y - (starting_radius * _elm_lang$core$Basics$cos(out_theta))
+				};
+			}();
+			var a_x = _p40._0;
+			var a_y = _p40._1;
+			var d_ab = _elm_lang$core$Basics$sqrt(
+				Math.pow(b_y - a_y, 2) + Math.pow(b_x - a_x, 2));
+			var r_c = d_ab / 1.25;
+			var rp_c = _elm_lang$core$Basics$sqrt(
+				Math.pow(r_c, 2) - Math.pow(d_ab / 2.0, 2));
+			var _p41 = function () {
+				var theta_ab = A2(_elm_lang$core$Basics$atan2, b_y - a_y, b_x - a_x);
+				var _p42 = {ctor: '_Tuple2', _0: (a_x + b_x) / 2.0, _1: (a_y + b_y) / 2.0};
+				var midpoint_ab_x = _p42._0;
+				var midpoint_ab_y = _p42._1;
+				var _p43 = {
+					ctor: '_Tuple2',
+					_0: midpoint_ab_x + (rp_c * _elm_lang$core$Basics$sin(theta_ab)),
+					_1: midpoint_ab_y - (rp_c * _elm_lang$core$Basics$cos(theta_ab))
+				};
+				var c_x_1 = _p43._0;
+				var c_y_1 = _p43._1;
+				var _p44 = {
+					ctor: '_Tuple2',
+					_0: midpoint_ab_x - (rp_c * _elm_lang$core$Basics$sin(theta_ab)),
+					_1: midpoint_ab_y + (rp_c * _elm_lang$core$Basics$cos(theta_ab))
+				};
+				var c_x_2 = _p44._0;
+				var c_y_2 = _p44._1;
+				return (_elm_lang$core$Native_Utils.cmp(
+					Math.pow(c_y_2 - _p53.y, 2) + Math.pow(c_x_2 - _p53.x, 2),
+					Math.pow(c_y_1 - _p53.y, 2) + Math.pow(c_x_1 - _p53.x, 2)) > 0) ? {ctor: '_Tuple2', _0: c_x_2, _1: c_y_2} : {ctor: '_Tuple2', _0: c_x_1, _1: c_y_1};
+			}();
+			var c_x = _p41._0;
+			var c_y = _p41._1;
+			var _p45 = function () {
+				var theta = function () {
+					var q = ((2 * Math.pow(r_c, 2)) - Math.pow(r_b, 2)) / (2 * r_c);
+					return _elm_lang$core$Basics$acos(q / r_c);
+				}();
+				var theta_cb = A2(_elm_lang$core$Basics$atan2, b_y - c_y, b_x - c_x);
+				var _p46 = {ctor: '_Tuple2', _0: theta_cb + theta, _1: theta_cb - theta};
+				var ang_1 = _p46._0;
+				var ang_2 = _p46._1;
+				var _p47 = {
+					ctor: '_Tuple2',
+					_0: c_x + ((1.0 * r_c) * _elm_lang$core$Basics$cos(ang_1)),
+					_1: c_y + ((1.0 * r_c) * _elm_lang$core$Basics$sin(ang_1))
+				};
+				var bp_x_1 = _p47._0;
+				var bp_y_1 = _p47._1;
+				var _p48 = {
+					ctor: '_Tuple2',
+					_0: c_x + ((1.0 * r_c) * _elm_lang$core$Basics$cos(ang_2)),
+					_1: c_y + ((1.0 * r_c) * _elm_lang$core$Basics$sin(ang_2))
+				};
+				var bp_x_2 = _p48._0;
+				var bp_y_2 = _p48._1;
+				return (_elm_lang$core$Native_Utils.cmp(
+					Math.pow(bp_x_2 - _p53.x, 2) + Math.pow(bp_y_2 - _p53.y, 2),
+					Math.pow(bp_x_1 - _p53.x, 2) + Math.pow(bp_y_1 - _p53.y, 2)) > 0) ? {ctor: '_Tuple2', _0: bp_x_1, _1: bp_y_1} : {ctor: '_Tuple2', _0: bp_x_2, _1: bp_y_2};
+			}();
+			var bp_x = _p45._0;
+			var bp_y = _p45._1;
+			var e_x = A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], _p49, bp_x)(b_x);
+			var e_y = A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], _p49, bp_y)(b_y);
+			var sweep_in = _p49 ? (_elm_lang$core$Native_Utils.cmp(((b_x - a_x) * (c_y - a_y)) - ((b_y - a_y) * (c_x - a_x)), 0) < 0) : (_elm_lang$core$Native_Utils.cmp(((b_x - a_x) * (_p53.y - a_y)) - ((b_y - a_y) * (_p53.x - a_x)), 0) > 0);
 			return A2(
 				_lukewestby$elm_template$Template$render,
 				A2(
@@ -11222,19 +11322,19 @@ var _ambuc$juggling_graph$Draw$arrowToSvgCircular = F2(
 																		_lukewestby$elm_template$Template_Infix_ops['<%'],
 																		_lukewestby$elm_template$Template$template('M '),
 																		function (_) {
-																			return _.alpha_x;
+																			return _.a_x;
 																		}),
 																	' '),
 																function (_) {
-																	return _.alpha_y;
+																	return _.a_y;
 																}),
 															' A '),
 														function (_) {
-															return _.radius;
+															return _.r_c;
 														}),
 													' '),
 												function (_) {
-													return _.radius;
+													return _.r_c;
 												}),
 											' 0 0 '),
 										function (_) {
@@ -11242,29 +11342,28 @@ var _ambuc$juggling_graph$Draw$arrowToSvgCircular = F2(
 										}),
 									' '),
 								function (_) {
-									return _.beta_x;
+									return _.e_x;
 								}),
 							' '),
 						function (_) {
-							return _.beta_y;
+							return _.e_y;
 						}),
 					''),
 				{
-					alpha_x: _elm_lang$core$Basics$toString(alpha_x),
-					alpha_y: _elm_lang$core$Basics$toString(alpha_y),
-					beta_x: _elm_lang$core$Basics$toString(beta_x),
-					beta_y: _elm_lang$core$Basics$toString(beta_y),
-					sweep_flag: (_elm_lang$core$Native_Utils.cmp(((beta_x - alpha_x) * (_p42.y - alpha_y)) - ((beta_y - alpha_y) * (_p42.x - alpha_x)), 0) > 0) ? '0' : '1',
-					radius: _elm_lang$core$Basics$toString(
-						_elm_lang$core$Basics$sqrt(
-							Math.pow(beta_y - alpha_y, 2) + Math.pow(beta_x - alpha_x, 2)))
+					a_x: _elm_lang$core$Basics$toString(a_x),
+					a_y: _elm_lang$core$Basics$toString(a_y),
+					e_x: _elm_lang$core$Basics$toString(e_x),
+					e_y: _elm_lang$core$Basics$toString(e_y),
+					sweep_flag: _elm_lang$core$Basics$toString(
+						A2(_rogeriochaves$elm_ternary$Ternary_ops['?'], sweep_in, 0)(1)),
+					r_c: _elm_lang$core$Basics$toString(r_c)
 				});
 		};
-		var mkLoopCircular = function (_p39) {
-			var _p40 = _p39;
+		var mkLoopCircular = function (_p50) {
+			var _p51 = _p50;
 			var out_theta = A2(
 				_elm_community$basics_extra$Basics_Extra$fmod,
-				((2 * _elm_lang$core$Basics$pi) / _elm_lang$core$Basics$toFloat(_p41)) * _elm_lang$core$Basics$toFloat(_p40.out_index),
+				((2 * _elm_lang$core$Basics$pi) / _elm_lang$core$Basics$toFloat(_p52)) * _elm_lang$core$Basics$toFloat(_p51.out_index),
 				2 * _elm_lang$core$Basics$pi);
 			return A2(
 				_lukewestby$elm_template$Template$render,
@@ -11334,14 +11433,14 @@ var _ambuc$juggling_graph$Draw$arrowToSvgCircular = F2(
 						}),
 					''),
 				{
-					o_x: _elm_lang$core$Basics$toString(_p42.x),
-					o_y: _elm_lang$core$Basics$toString((_p42.y - _p43) + (_p45.h / 2)),
-					x_1: _elm_lang$core$Basics$toString(_p42.x - _p44.w),
-					y_1: _elm_lang$core$Basics$toString(((_p42.y - _p43) + (_p45.h / 2)) + _p44.h),
-					x_2: _elm_lang$core$Basics$toString(_p42.x + _p44.w),
-					y_2: _elm_lang$core$Basics$toString(((_p42.y - _p43) + (_p45.h / 2)) + _p44.h),
-					f_x: _elm_lang$core$Basics$toString(_p42.x),
-					f_y: _elm_lang$core$Basics$toString((_p42.y - _p43) + (_p45.h / 2))
+					o_x: _elm_lang$core$Basics$toString(_p53.x),
+					o_y: _elm_lang$core$Basics$toString((_p53.y - _p54) + (_p56.h / 2)),
+					x_1: _elm_lang$core$Basics$toString(_p53.x - _p55.w),
+					y_1: _elm_lang$core$Basics$toString(((_p53.y - _p54) + (_p56.h / 2)) + _p55.h),
+					x_2: _elm_lang$core$Basics$toString(_p53.x + _p55.w),
+					y_2: _elm_lang$core$Basics$toString(((_p53.y - _p54) + (_p56.h / 2)) + _p55.h),
+					f_x: _elm_lang$core$Basics$toString(_p53.x),
+					f_y: _elm_lang$core$Basics$toString((_p53.y - _p54) + (_p56.h / 2))
 				});
 		};
 		return function (arr) {
@@ -11403,9 +11502,9 @@ var _ambuc$juggling_graph$Draw$arrowToSvgCircular = F2(
 															')'),
 														{
 															theta: _elm_lang$core$Basics$toString(
-																(360.0 / _elm_lang$core$Basics$toFloat(_p41)) * _elm_lang$core$Basics$toFloat(arr.out_index)),
-															center_x: _elm_lang$core$Basics$toString(_p42.x),
-															center_y: _elm_lang$core$Basics$toString(_p42.y)
+																(360.0 / _elm_lang$core$Basics$toFloat(_p52)) * _elm_lang$core$Basics$toFloat(arr.out_index)),
+															center_x: _elm_lang$core$Basics$toString(_p53.x),
+															center_y: _elm_lang$core$Basics$toString(_p53.y)
 														}) : ''),
 												_1: {ctor: '[]'}
 											}
@@ -11420,21 +11519,21 @@ var _ambuc$juggling_graph$Draw$arrowToSvgCircular = F2(
 		};
 	});
 var _ambuc$juggling_graph$Draw$arrowToSvgLinear = F2(
-	function (_p47, _p46) {
-		var _p48 = _p47;
-		var _p53 = _p48.y_delt;
-		var _p52 = _p48.unit;
-		var _p51 = _p48.self_arrow;
-		var _p49 = _p46;
-		var _p50 = _p49.canvas;
+	function (_p58, _p57) {
+		var _p59 = _p58;
+		var _p64 = _p59.y_delt;
+		var _p63 = _p59.unit;
+		var _p62 = _p59.self_arrow;
+		var _p60 = _p57;
+		var _p61 = _p60.canvas;
 		var in_coord = function (arr) {
-			return _elm_lang$core$Basics$toFloat(arr.in_index) * _p52.w;
+			return _elm_lang$core$Basics$toFloat(arr.in_index) * _p63.w;
 		};
 		var out_coord = function (arr) {
-			return _elm_lang$core$Basics$toFloat(arr.out_index) * _p52.w;
+			return _elm_lang$core$Basics$toFloat(arr.out_index) * _p63.w;
 		};
 		var mkLoopLinear = function (arr) {
-			var y_base = (_p50.w / 2.0) - _p52.h;
+			var y_base = (_p61.w / 2.0) - _p63.h;
 			var x_base = out_coord(arr);
 			return A2(
 				_lukewestby$elm_template$Template$render,
@@ -11506,10 +11605,10 @@ var _ambuc$juggling_graph$Draw$arrowToSvgLinear = F2(
 				{
 					o_x: _elm_lang$core$Basics$toString(x_base),
 					o_y: _elm_lang$core$Basics$toString(y_base),
-					x_1: _elm_lang$core$Basics$toString(x_base - _p51.w),
-					y_1: _elm_lang$core$Basics$toString(y_base - _p51.h),
-					x_2: _elm_lang$core$Basics$toString(x_base + _p51.w),
-					y_2: _elm_lang$core$Basics$toString(y_base - _p51.h),
+					x_1: _elm_lang$core$Basics$toString(x_base - _p62.w),
+					y_1: _elm_lang$core$Basics$toString(y_base - _p62.h),
+					x_2: _elm_lang$core$Basics$toString(x_base + _p62.w),
+					y_2: _elm_lang$core$Basics$toString(y_base - _p62.h),
 					f_x: _elm_lang$core$Basics$toString(x_base),
 					f_y: _elm_lang$core$Basics$toString(y_base)
 				});
@@ -11517,7 +11616,7 @@ var _ambuc$juggling_graph$Draw$arrowToSvgLinear = F2(
 		var mkThrowLinear = function (arr) {
 			var y_base = _elm_lang$core$Native_Utils.eq(
 				_ambuc$juggling_graph$Arrow$bias(arr),
-				_ambuc$juggling_graph$Lib$Above) ? ((_p50.w / 2.0) - _p52.h) : ((_p50.w / 2.0) + _p48.arrow_offset.y);
+				_ambuc$juggling_graph$Lib$Above) ? ((_p61.w / 2.0) - _p63.h) : ((_p61.w / 2.0) + _p59.arrow_offset.y);
 			var radius = _elm_lang$core$Basics$abs(
 				(out_coord(arr) - in_coord(arr)) / 2.0);
 			return A2(
@@ -11608,7 +11707,7 @@ var _ambuc$juggling_graph$Draw$arrowToSvgLinear = F2(
 						function () {
 							if (arr.should_curtail_linear) {
 								var dy = _elm_lang$core$Basics$sqrt(
-									Math.pow(radius, 2) - Math.pow(_p53, 2));
+									Math.pow(radius, 2) - Math.pow(_p64, 2));
 								var dx = (out_coord(arr) + in_coord(arr)) / 2.0;
 								return A2(
 									_rogeriochaves$elm_ternary$Ternary_ops['?'],
@@ -11623,7 +11722,7 @@ var _ambuc$juggling_graph$Draw$arrowToSvgLinear = F2(
 					dy: _elm_lang$core$Basics$toString(
 						arr.should_curtail_linear ? (_elm_lang$core$Native_Utils.eq(
 							_ambuc$juggling_graph$Arrow$bias(arr),
-							_ambuc$juggling_graph$Lib$Above) ? (y_base - _p53) : (y_base + _p53)) : y_base)
+							_ambuc$juggling_graph$Lib$Above) ? (y_base - _p64) : (y_base + _p64)) : y_base)
 				});
 		};
 		return function (arr) {
@@ -11668,11 +11767,11 @@ var _ambuc$juggling_graph$Draw$arrows = F2(
 			A2(
 				_elm_lang$core$List$map,
 				function () {
-					var _p54 = opts.view_opts;
-					if (_p54.ctor === 'Left') {
-						return A2(_ambuc$juggling_graph$Draw$arrowToSvgLinear, _p54._0, opts);
+					var _p65 = opts.view_opts;
+					if (_p65.ctor === 'Left') {
+						return A2(_ambuc$juggling_graph$Draw$arrowToSvgLinear, _p65._0, opts);
 					} else {
-						return A2(_ambuc$juggling_graph$Draw$arrowToSvgCircular, _p54._0, opts);
+						return A2(_ambuc$juggling_graph$Draw$arrowToSvgCircular, _p65._0, opts);
 					}
 				}(),
 				_ambuc$juggling_graph$Arrow$mkArrows(parseObject.tokens)));
@@ -11724,10 +11823,10 @@ var _ambuc$juggling_graph$Draw$arrowDefinition = A2(
 			{ctor: '[]'}),
 		_1: {ctor: '[]'}
 	});
-var _ambuc$juggling_graph$Draw$mkViewbox = function (_p55) {
-	var _p56 = _p55;
-	var _p58 = _p56.viewbox_offset;
-	var _p57 = _p56.canvas;
+var _ambuc$juggling_graph$Draw$mkViewbox = function (_p66) {
+	var _p67 = _p66;
+	var _p69 = _p67.viewbox_offset;
+	var _p68 = _p67.canvas;
 	return _elm_lang$svg$Svg_Attributes$viewBox(
 		A2(
 			_lukewestby$elm_template$Template$render,
@@ -11765,10 +11864,10 @@ var _ambuc$juggling_graph$Draw$mkViewbox = function (_p55) {
 					}),
 				''),
 			{
-				min_x: _elm_lang$core$Basics$toString(_p58.x),
-				min_y: _elm_lang$core$Basics$toString(_p58.y),
-				width: _elm_lang$core$Basics$toString(_p57.w),
-				height: _elm_lang$core$Basics$toString(_p57.h)
+				min_x: _elm_lang$core$Basics$toString(_p69.x),
+				min_y: _elm_lang$core$Basics$toString(_p69.y),
+				width: _elm_lang$core$Basics$toString(_p68.w),
+				height: _elm_lang$core$Basics$toString(_p68.h)
 			}));
 };
 

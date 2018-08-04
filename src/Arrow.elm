@@ -30,6 +30,7 @@ emptyArrow =
     { out_index = 0
     , in_index = 0
     , should_curtail_linear = False
+    , should_curtail_circular = False
     }
 
 
@@ -96,19 +97,20 @@ mkArrows tokens =
                     List.filter .is_catch tokens
     in
         addColors <|
-            addCurtailsLinear <|
-                List.concat <|
-                    List.map
-                        (\( idx, token ) ->
-                            case token.throw of
-                                Just throw ->
-                                    [ mkArrow idx token throw catch_points ]
+            addCurtailsCircular <|
+                addCurtailsLinear <|
+                    List.concat <|
+                        List.map
+                            (\( idx, token ) ->
+                                case token.throw of
+                                    Just throw ->
+                                        [ mkArrow idx token throw catch_points ]
 
-                                Nothing ->
-                                    []
-                        )
-                    <|
-                        List.indexedMap (,) tokens
+                                    Nothing ->
+                                        []
+                            )
+                        <|
+                            List.indexedMap (,) tokens
 
 
 {-| TODO(jbuckland) Implement colors
@@ -129,6 +131,18 @@ addCurtailsLinear arrs =
                         LE.remove arr arrs
     in
         List.map (\x -> { x | should_curtail_linear = not (hasConflict x) }) arrs
+
+
+addCurtailsCircular : List Arrow -> List Arrow
+addCurtailsCircular arrs =
+    let
+        hasConflict : Arrow -> Bool
+        hasConflict arr =
+            List.isEmpty <|
+                List.filter (\x -> arr.in_index == x.out_index || arr.in_index == x.in_index) <|
+                    LE.remove arr arrs
+    in
+        List.map (\x -> { x | should_curtail_circular = not (hasConflict x) }) arrs
 
 
 

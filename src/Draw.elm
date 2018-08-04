@@ -206,63 +206,126 @@ arrowToSvgCircular { center, radius, unit, self_arrow } { num_tokens } =
                     }
 
         mkThrowCircular : Arrow -> String
-        mkThrowCircular { out_index, in_index } =
+        mkThrowCircular { out_index, in_index, should_curtail_circular } =
             let
-                out_theta =
-                    fmod
-                        ((2 * pi) / (toFloat num_tokens) * (toFloat out_index))
-                        (2 * pi)
+                ( a_x, a_y ) =
+                    let
+                        starting_radius =
+                            radius - (unit.h / 2)
 
-                in_theta =
-                    fmod
-                        ((2 * pi) / (toFloat num_tokens) * (toFloat in_index))
-                        (2 * pi)
+                        out_theta =
+                            fmod ((2 * pi) / (toFloat num_tokens) * (toFloat out_index)) (2 * pi)
+                    in
+                        ( center.x + (starting_radius * sin out_theta)
+                        , center.y - (starting_radius * cos out_theta)
+                        )
 
-                starting_radius =
-                    radius - (unit.h / 2)
+                ( b_x, b_y ) =
+                    let
+                        ending_radius =
+                            radius - (unit.h / 2)
 
-                ending_radius =
-                    radius - (unit.h / 2)
+                        in_theta =
+                            fmod ((2 * pi) / (toFloat num_tokens) * (toFloat in_index)) (2 * pi)
+                    in
+                        ( center.x + (ending_radius * sin in_theta)
+                        , center.y - (ending_radius * cos in_theta)
+                        )
 
-                alpha_x =
-                    center.x + (starting_radius * sin out_theta)
+                d_ab =
+                    sqrt <| (b_y - a_y) ^ 2 + (b_x - a_x) ^ 2
 
-                alpha_y =
-                    center.y - (starting_radius * cos out_theta)
+                r_c =
+                    d_ab / 1.25
 
-                beta_x =
-                    center.x + (ending_radius * sin in_theta)
+                rp_c =
+                    sqrt <|
+                        (r_c ^ 2 - (d_ab / 2.0) ^ 2)
 
-                beta_y =
-                    center.y - (ending_radius * cos in_theta)
+                ( c_x, c_y ) =
+                    let
+                        ( midpoint_ab_x, midpoint_ab_y ) =
+                            ( (a_x + b_x) / 2.0
+                            , (a_y + b_y) / 2.0
+                            )
+
+                        theta_ab =
+                            atan2 (b_y - a_y) (b_x - a_x)
+
+                        ( c_x_1, c_y_1 ) =
+                            ( midpoint_ab_x + rp_c * sin theta_ab
+                            , midpoint_ab_y - rp_c * cos theta_ab
+                            )
+
+                        ( c_x_2, c_y_2 ) =
+                            ( midpoint_ab_x - rp_c * sin theta_ab
+                            , midpoint_ab_y + rp_c * cos theta_ab
+                            )
+                    in
+                        if (c_y_2 - center.y) ^ 2 + (c_x_2 - center.x) ^ 2 > (c_y_1 - center.y) ^ 2 + (c_x_1 - center.x) ^ 2 then
+                            ( c_x_2, c_y_2 )
+                        else
+                            ( c_x_1, c_y_1 )
+
+                r_b =
+                    15.0
+
+                ( bp_x, bp_y ) =
+                    let
+                        theta_cb =
+                            atan2 (b_y - c_y) (b_x - c_x)
+
+                        theta =
+                            let
+                                q =
+                                    (2 * r_c ^ 2 - r_b ^ 2) / (2 * r_c)
+                            in
+                                acos (q / r_c)
+
+                        ( ang_1, ang_2 ) =
+                            ( theta_cb + theta
+                            , theta_cb - theta
+                            )
+
+                        ( bp_x_1, bp_y_1 ) =
+                            ( c_x + 1.0 * r_c * cos ang_1
+                            , c_y + 1.0 * r_c * sin ang_1
+                            )
+
+                        ( bp_x_2, bp_y_2 ) =
+                            ( c_x + 1.0 * r_c * cos ang_2
+                            , c_y + 1.0 * r_c * sin ang_2
+                            )
+                    in
+                        if (bp_x_2 - center.x) ^ 2 + (bp_y_2 - center.y) ^ 2 > (bp_x_1 - center.x) ^ 2 + (bp_y_1 - center.y) ^ 2 then
+                            ( bp_x_1, bp_y_1 )
+                        else
+                            ( bp_x_2, bp_y_2 )
+
+                e_x =
+                    should_curtail_circular ? bp_x <| b_x
+
+                e_y =
+                    should_curtail_circular ? bp_y <| b_y
+
+                sweep_in =
+                    if should_curtail_circular then
+                        -- this is about the cross product of a->b with a->c
+                        ((b_x - a_x) * (c_y - a_y) - (b_y - a_y) * (c_x - a_x)) < 0
+                    else
+                        -- this is about the cross product of a->b with a->center.
+                        ((b_x - a_x) * (center.y - a_y) - (b_y - a_y) * (center.x - a_x)) > 0
             in
                 T.render
-                    (T.template "M " <% .alpha_x %> " " <% .alpha_y %> " A " <% .radius %> " " <% .radius %> " 0 0 " <% .sweep_flag %> " " <% .beta_x %> " " <% .beta_y %> "")
-                    { alpha_x = toString alpha_x
-                    , alpha_y = toString alpha_y
-                    , beta_x = toString beta_x
-                    , beta_y = toString beta_y
+                    (T.template "M " <% .a_x %> " " <% .a_y %> " A " <% .r_c %> " " <% .r_c %> " 0 0 " <% .sweep_flag %> " " <% .e_x %> " " <% .e_y %> "")
+                    { a_x = toString a_x
+                    , a_y = toString a_y
+                    , e_x = toString e_x
+                    , e_y = toString e_y
 
-                    -- this is about the cross prorduct of a->b with a->center.
-                    , sweep_flag =
-                        if
-                            ((beta_x - alpha_x)
-                                * (center.y - alpha_y)
-                                - (beta_y - alpha_y)
-                                * (center.x - alpha_x)
-                            )
-                                > 0
-                        then
-                            "0"
-                        else
-                            "1"
-                    , radius =
-                        toString <|
-                            sqrt <|
-                                (beta_y - alpha_y)
-                                    ^ 2
-                                    + (beta_x - alpha_x)
-                                    ^ 2
+                    -- this is about the cross product of a->b with a->center.
+                    , sweep_flag = toString <| sweep_in ? 0 <| 1
+                    , r_c = toString r_c
                     }
     in
         (\arr ->
@@ -348,11 +411,11 @@ boundsToMultiplexBoxCircular { center, radius, unit, multiplex_offset } opts =
             S.path
                 [ SA.d <|
                     T.render
-                        (T.template "M " <% .alpha_x %> " " <% .alpha_y %> " L " <% .betaa_x %> " " <% .betaa_y %> " A " <% .inner_r %> " " <% .inner_r %> " 0 " <% .large_arc_inner %> " 1 " <% .gamma_x %> " " <% .gamma_y %> " L " <% .delta_x %> " " <% .delta_y %> " A " <% .outer_r %> " " <% .outer_r %> " 0 " <% .large_arc_outer %> " 0 " <% .alpha_x %> " " <% .alpha_y %> " Z")
-                        { alpha_x = toString <| center.x
-                        , alpha_y = toString <| center.y - outer_r
-                        , betaa_x = toString <| center.x
-                        , betaa_y = toString <| center.y - inner_r
+                        (T.template "M " <% .a_x %> " " <% .a_y %> " L " <% .b_x %> " " <% .b_y %> " A " <% .inner_r %> " " <% .inner_r %> " 0 " <% .large_arc_inner %> " 1 " <% .gamma_x %> " " <% .gamma_y %> " L " <% .delta_x %> " " <% .delta_y %> " A " <% .outer_r %> " " <% .outer_r %> " 0 " <% .large_arc_outer %> " 0 " <% .a_x %> " " <% .a_y %> " Z")
+                        { a_x = toString <| center.x
+                        , a_y = toString <| center.y - outer_r
+                        , b_x = toString <| center.x
+                        , b_y = toString <| center.y - inner_r
                         , gamma_x = toString <| center.x + inner_r * sin d_th
                         , gamma_y = toString <| center.y - inner_r * cos d_th
                         , delta_x = toString <| center.x + outer_r * sin d_th
