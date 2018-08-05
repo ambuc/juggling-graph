@@ -104,7 +104,10 @@ mkArrows tokens =
                             (\( idx, token ) ->
                                 case token.throw of
                                     Just throw ->
-                                        [ mkArrow idx token throw catch_points ]
+                                        if throw.is_sink then
+                                            []
+                                        else
+                                            [ mkArrow idx token throw catch_points ]
 
                                     Nothing ->
                                         []

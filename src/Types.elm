@@ -65,6 +65,7 @@ type alias Throw =
     , hand : Hand
     , is_cross : Bool
     , is_valid : Bool
+    , is_sink : Bool
     , char : Char
     }
 
