@@ -7535,9 +7535,9 @@ var _ambuc$juggling_graph$Types$Opts = F5(
 	function (a, b, c, d, e) {
 		return {num_tokens: a, canvas: b, view: c, viewbox_offset: d, view_opts: e};
 	});
-var _ambuc$juggling_graph$Types$Throw = F5(
-	function (a, b, c, d, e) {
-		return {value: a, hand: b, is_cross: c, is_valid: d, $char: e};
+var _ambuc$juggling_graph$Types$Throw = F6(
+	function (a, b, c, d, e, f) {
+		return {value: a, hand: b, is_cross: c, is_valid: d, is_sink: e, $char: f};
 	});
 var _ambuc$juggling_graph$Types$Beat = F2(
 	function (a, b) {
@@ -7684,12 +7684,13 @@ var _ambuc$juggling_graph$Arrow$mkArrows = function (tokens) {
 						_elm_lang$core$List$map,
 						function (_p10) {
 							var _p11 = _p10;
-							var _p13 = _p11._1;
-							var _p12 = _p13.$throw;
+							var _p14 = _p11._1;
+							var _p12 = _p14.$throw;
 							if (_p12.ctor === 'Just') {
-								return {
+								var _p13 = _p12._0;
+								return _p13.is_sink ? {ctor: '[]'} : {
 									ctor: '::',
-									_0: A4(_ambuc$juggling_graph$Arrow$mkArrow, _p11._0, _p13, _p12._0, catch_points),
+									_0: A4(_ambuc$juggling_graph$Arrow$mkArrow, _p11._0, _p14, _p13, catch_points),
 									_1: {ctor: '[]'}
 								};
 							} else {
@@ -11749,66 +11750,62 @@ var _ambuc$juggling_graph$Examples$examples = {
 	_0: '([44x],[44x])',
 	_1: {
 		ctor: '::',
-		_0: '2[23]4[56]',
+		_0: '(6x,4)([42],2x)',
 		_1: {
 			ctor: '::',
-			_0: '(6x,4)([42],2x)',
+			_0: '([66x],2)(6x,2)(6x,2)*',
 			_1: {
 				ctor: '::',
-				_0: '([66x],2)(6x,2)(6x,2)*',
+				_0: '([66x],2)(6x,2x)(6,2)*',
 				_1: {
 					ctor: '::',
-					_0: '([66x],2)(6x,2x)(6,2)*',
+					_0: '([66x],2)(2,6)(6,2)*',
 					_1: {
 						ctor: '::',
-						_0: '([66x],2)(2,6)(6,2)*',
+						_0: '([66x],2)(6,2x)(6,2)*',
 						_1: {
 							ctor: '::',
-							_0: '([66x],2)(6,2x)(6,2)*',
+							_0: '([66x],2)(6,2)(6x,2)*',
 							_1: {
 								ctor: '::',
-								_0: '([66x],2)(6,2)(6x,2)*',
+								_0: '([66x],2)(2x,6x)(6x,2)*',
 								_1: {
 									ctor: '::',
-									_0: '([66x],2)(2x,6x)(6x,2)*',
+									_0: '([66x],4)(2,6)(4,2)*',
 									_1: {
 										ctor: '::',
-										_0: '([66x],4)(2,6)(4,2)*',
+										_0: '([66x],4x)(2x,6)(4,2)*',
 										_1: {
 											ctor: '::',
-											_0: '([66x],4x)(2x,6)(4,2)*',
+											_0: '([66x],4x)(2x,6x)(4x,2)*',
 											_1: {
 												ctor: '::',
-												_0: '([66x],4x)(2x,6x)(4x,2)*',
+												_0: '([66x],4)(2,6x)(4x,2)*',
 												_1: {
 													ctor: '::',
-													_0: '([66x],4)(2,6x)(4x,2)*',
+													_0: '([66x],4x)(6,2)(4x,2)*',
 													_1: {
 														ctor: '::',
-														_0: '([66x],4x)(6,2)(4x,2)*',
+														_0: '([66x],4)(6x,2x)(4,2)*',
 														_1: {
 															ctor: '::',
-															_0: '([66x],4)(6x,2x)(4,2)*',
+															_0: '([44x],6)(2,6)([66x],2x)(2,2)*',
 															_1: {
 																ctor: '::',
-																_0: '([44x],6)(2,6)([66x],2x)(2,2)*',
+																_0: '([44x],6)(2,6)([66x],2x)(2,2x)',
 																_1: {
 																	ctor: '::',
-																	_0: '([44x],6)(2,6)([66x],2x)(2,2x)',
+																	_0: '([44x],6x)(6x,2)(2x,[66x])(2,2)*',
 																	_1: {
 																		ctor: '::',
-																		_0: '([44x],6x)(6x,2)(2x,[66x])(2,2)*',
+																		_0: '([44x],6x)(6x,2)(2x,[66x])(2,2x)',
 																		_1: {
 																			ctor: '::',
-																			_0: '([44x],6x)(6x,2)(2x,[66x])(2,2x)',
+																			_0: '(2,6x)([66x],2x)(2x,6x)(4x,6x)*',
 																			_1: {
 																				ctor: '::',
-																				_0: '(2,6x)([66x],2x)(2x,6x)(4x,6x)*',
-																				_1: {
-																					ctor: '::',
-																					_0: '(2,6x)([66x],2x)(2x,6x)(4x,6)',
-																					_1: {ctor: '[]'}
-																				}
+																				_0: '(2,6x)([66x],2x)(2x,6x)(4x,6)',
+																				_1: {ctor: '[]'}
 																			}
 																		}
 																	}
@@ -13437,14 +13434,72 @@ var _ambuc$juggling_graph$StateMachine$emptyThrow = {
 	value: 0,
 	is_cross: false,
 	is_valid: true,
+	is_sink: false,
 	$char: _elm_lang$core$Native_Utils.chr(' '),
 	hand: _ambuc$juggling_graph$Types$Center
 };
+var _ambuc$juggling_graph$StateMachine$sinkThrow = _elm_lang$core$Native_Utils.update(
+	_ambuc$juggling_graph$StateMachine$emptyThrow,
+	{
+		$char: _elm_lang$core$Native_Utils.chr('_'),
+		is_sink: true
+	});
 var _ambuc$juggling_graph$StateMachine$invalidThrow = function (chr) {
 	return _elm_lang$core$Native_Utils.update(
 		_ambuc$juggling_graph$StateMachine$emptyThrow,
 		{value: 0, is_valid: false, $char: chr});
 };
+var _ambuc$juggling_graph$StateMachine$newThrow = F2(
+	function (hand, chr) {
+		if (_elm_lang$core$Native_Utils.eq(
+			chr,
+			_elm_lang$core$Native_Utils.chr('_'))) {
+			return _ambuc$juggling_graph$StateMachine$sinkThrow;
+		} else {
+			var _p2 = _ambuc$juggling_graph$StateMachine$charToInt(chr);
+			if (_p2.ctor === 'Just') {
+				return _elm_lang$core$Native_Utils.update(
+					_ambuc$juggling_graph$StateMachine$emptyThrow,
+					{value: _p2._0, $char: chr, hand: hand});
+			} else {
+				return _ambuc$juggling_graph$StateMachine$invalidThrow(chr);
+			}
+		}
+	});
+var _ambuc$juggling_graph$StateMachine$newBeat = F2(
+	function (hand, chr) {
+		return _elm_lang$core$Native_Utils.update(
+			_ambuc$juggling_graph$StateMachine$emptyBeat,
+			{
+				$throws: {
+					ctor: '::',
+					_0: A2(_ambuc$juggling_graph$StateMachine$newThrow, hand, chr),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _ambuc$juggling_graph$StateMachine$multiplexPush = F3(
+	function (hand, chr, beat) {
+		return _elm_lang$core$Native_Utils.update(
+			beat,
+			{
+				$throws: {
+					ctor: '::',
+					_0: A2(_ambuc$juggling_graph$StateMachine$newThrow, hand, chr),
+					_1: beat.$throws
+				}
+			});
+	});
+var _ambuc$juggling_graph$StateMachine$push_ = F2(
+	function (hand, x) {
+		return A2(
+			_elm_community$list_extra$List_Extra$updateAt,
+			0,
+			A2(
+				_elm_community$list_extra$List_Extra$updateAt,
+				0,
+				A2(_ambuc$juggling_graph$StateMachine$multiplexPush, hand, x)));
+	});
 var _ambuc$juggling_graph$StateMachine$invalidBeat = function (chr) {
 	return _elm_lang$core$Native_Utils.update(
 		_ambuc$juggling_graph$StateMachine$emptyBeat,
@@ -13457,72 +13512,15 @@ var _ambuc$juggling_graph$StateMachine$invalidBeat = function (chr) {
 			is_valid: false
 		});
 };
-var _ambuc$juggling_graph$StateMachine$newBeat = F2(
-	function (hand, chr) {
-		var _p2 = _ambuc$juggling_graph$StateMachine$charToInt(chr);
-		if (_p2.ctor === 'Just') {
-			return _elm_lang$core$Native_Utils.update(
-				_ambuc$juggling_graph$StateMachine$emptyBeat,
-				{
-					$throws: {
-						ctor: '::',
-						_0: _elm_lang$core$Native_Utils.update(
-							_ambuc$juggling_graph$StateMachine$emptyThrow,
-							{value: _p2._0, $char: chr, hand: hand}),
-						_1: {ctor: '[]'}
-					}
-				});
-		} else {
-			return _ambuc$juggling_graph$StateMachine$invalidBeat(chr);
-		}
-	});
-var _ambuc$juggling_graph$StateMachine$multiplexPush = F3(
-	function (hand, chr, beat) {
-		var _p3 = _ambuc$juggling_graph$StateMachine$charToInt(chr);
-		if (_p3.ctor === 'Just') {
-			return _elm_lang$core$Native_Utils.update(
-				beat,
-				{
-					$throws: {
-						ctor: '::',
-						_0: _elm_lang$core$Native_Utils.update(
-							_ambuc$juggling_graph$StateMachine$emptyThrow,
-							{value: _p3._0, $char: chr, hand: hand}),
-						_1: beat.$throws
-					}
-				});
-		} else {
-			return _elm_lang$core$Native_Utils.update(
-				beat,
-				{
-					$throws: {
-						ctor: '::',
-						_0: _ambuc$juggling_graph$StateMachine$invalidThrow(chr),
-						_1: beat.$throws
-					},
-					is_valid: false
-				});
-		}
-	});
-var _ambuc$juggling_graph$StateMachine$push_ = F2(
-	function (hand, x) {
-		return A2(
-			_elm_community$list_extra$List_Extra$updateAt,
-			0,
-			A2(
-				_elm_community$list_extra$List_Extra$updateAt,
-				0,
-				A2(_ambuc$juggling_graph$StateMachine$multiplexPush, hand, x)));
-	});
 var _ambuc$juggling_graph$StateMachine$is_beatmap_valid = function (bs) {
-	var _p4 = _elm_community$list_extra$List_Extra$uncons(bs);
-	if ((_p4.ctor === 'Just') && (_p4._0.ctor === '_Tuple2')) {
+	var _p3 = _elm_community$list_extra$List_Extra$uncons(bs);
+	if ((_p3.ctor === 'Just') && (_p3._0.ctor === '_Tuple2')) {
 		return A2(
 			_elm_lang$core$List$all,
 			function (_) {
 				return _.is_valid;
 			},
-			_p4._0._0) && _ambuc$juggling_graph$StateMachine$is_beatmap_valid(_p4._0._1);
+			_p3._0._0) && _ambuc$juggling_graph$StateMachine$is_beatmap_valid(_p3._0._1);
 	} else {
 		return true;
 	}
@@ -13543,51 +13541,51 @@ var _ambuc$juggling_graph$StateMachine$S_FIRST_BRACE = {ctor: 'S_FIRST_BRACE'};
 var _ambuc$juggling_graph$StateMachine$S_FIRST_BRACE_EMPTY = {ctor: 'S_FIRST_BRACE_EMPTY'};
 var _ambuc$juggling_graph$StateMachine$S_FIRST = {ctor: 'S_FIRST'};
 var _ambuc$juggling_graph$StateMachine$S_NORMAL = {ctor: 'S_NORMAL'};
-var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
+var _ambuc$juggling_graph$StateMachine$parse = function (_p4) {
 	parse:
 	while (true) {
-		var _p6 = _p5;
-		var _p28 = _p6._1;
-		var _p27 = _p6._2;
-		if (_elm_lang$core$String$isEmpty(_p28)) {
-			return _p27;
+		var _p5 = _p4;
+		var _p27 = _p5._1;
+		var _p26 = _p5._2;
+		if (_elm_lang$core$String$isEmpty(_p27)) {
+			return _p26;
 		} else {
-			if (!_ambuc$juggling_graph$StateMachine$is_beatmap_valid(_p27)) {
-				return _p27;
+			if (!_ambuc$juggling_graph$StateMachine$is_beatmap_valid(_p26)) {
+				return _p26;
 			} else {
-				var _p7 = function () {
-					var _p8 = _elm_lang$core$String$uncons(_p28);
-					if ((_p8.ctor === 'Just') && (_p8._0.ctor === '_Tuple2')) {
-						return {ctor: '_Tuple2', _0: _p8._0._0, _1: _p8._0._1};
+				var _p6 = function () {
+					var _p7 = _elm_lang$core$String$uncons(_p27);
+					if ((_p7.ctor === 'Just') && (_p7._0.ctor === '_Tuple2')) {
+						return {ctor: '_Tuple2', _0: _p7._0._0, _1: _p7._0._1};
 					} else {
 						return _elm_lang$core$Native_Utils.crashCase(
 							'StateMachine',
 							{
-								start: {line: 167, column: 17},
-								end: {line: 172, column: 74}
+								start: {line: 166, column: 17},
+								end: {line: 171, column: 74}
 							},
-							_p8)('I thought the string wasn\'t empty!!');
+							_p7)('I thought the string wasn\'t empty!!');
 					}
 				}();
-				var head = _p7._0;
-				var tail = _p7._1;
-				var _p10 = _p6._0;
-				switch (_p10.ctor) {
+				var head = _p6._0;
+				var tail = _p6._1;
+				var _p9 = _p5._0;
+				switch (_p9.ctor) {
 					case 'INIT':
-						var _p11 = head;
-						if (_p11.valueOf() === '(') {
-							var _v8 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_NORMAL, _1: _p28, _2: _p27};
-							_p5 = _v8;
+						var _p10 = head;
+						if (_p10.valueOf() === '(') {
+							var _v7 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_NORMAL, _1: _p27, _2: _p26};
+							_p4 = _v7;
 							continue parse;
 						} else {
-							var _v9 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$AS_NORMAL, _1: _p28, _2: _p27};
-							_p5 = _v9;
+							var _v8 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$AS_NORMAL, _1: _p27, _2: _p26};
+							_p4 = _v8;
 							continue parse;
 						}
 					case 'AS_NORMAL':
-						var _p12 = head;
-						if (_p12.valueOf() === '[') {
-							var _v11 = {
+						var _p11 = head;
+						if (_p11.valueOf() === '[') {
+							var _v10 = {
 								ctor: '_Tuple3',
 								_0: _ambuc$juggling_graph$StateMachine$AS_BRACE_EMPTY,
 								_1: tail,
@@ -13598,13 +13596,13 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 										_0: _ambuc$juggling_graph$StateMachine$emptyBeat,
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								}
 							};
-							_p5 = _v11;
+							_p4 = _v10;
 							continue parse;
 						} else {
-							var _v12 = {
+							var _v11 = {
 								ctor: '_Tuple3',
 								_0: _ambuc$juggling_graph$StateMachine$AS_NORMAL,
 								_1: tail,
@@ -13612,45 +13610,45 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 									ctor: '::',
 									_0: {
 										ctor: '::',
-										_0: A2(_ambuc$juggling_graph$StateMachine$newBeat, _ambuc$juggling_graph$Types$Center, _p12),
+										_0: A2(_ambuc$juggling_graph$StateMachine$newBeat, _ambuc$juggling_graph$Types$Center, _p11),
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								}
 							};
-							_p5 = _v12;
+							_p4 = _v11;
 							continue parse;
 						}
 					case 'AS_BRACE_EMPTY':
-						var _v13 = {
+						var _v12 = {
 							ctor: '_Tuple3',
 							_0: _ambuc$juggling_graph$StateMachine$AS_BRACE,
 							_1: tail,
-							_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$Center, head, _p27)
+							_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$Center, head, _p26)
 						};
-						_p5 = _v13;
+						_p4 = _v12;
 						continue parse;
 					case 'AS_BRACE':
-						var _p13 = head;
-						if (_p13.valueOf() === ']') {
-							var _v15 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$AS_NORMAL, _1: tail, _2: _p27};
-							_p5 = _v15;
+						var _p12 = head;
+						if (_p12.valueOf() === ']') {
+							var _v14 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$AS_NORMAL, _1: tail, _2: _p26};
+							_p4 = _v14;
 							continue parse;
 						} else {
-							var _v16 = {
+							var _v15 = {
 								ctor: '_Tuple3',
 								_0: _ambuc$juggling_graph$StateMachine$AS_BRACE,
 								_1: tail,
-								_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$Center, head, _p27)
+								_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$Center, head, _p26)
 							};
-							_p5 = _v16;
+							_p4 = _v15;
 							continue parse;
 						}
 					case 'S_NORMAL':
-						var _p14 = head;
-						switch (_p14.valueOf()) {
+						var _p13 = head;
+						switch (_p13.valueOf()) {
 							case '(':
-								var _v18 = {
+								var _v17 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST,
 									_1: tail,
@@ -13661,33 +13659,33 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 											_0: _ambuc$juggling_graph$StateMachine$emptyBeat,
 											_1: {ctor: '[]'}
 										},
-										_1: _p27
+										_1: _p26
 									}
 								};
-								_p5 = _v18;
+								_p4 = _v17;
 								continue parse;
 							case '*':
-								return _ambuc$juggling_graph$StateMachine$applyAsterisk(_p27);
+								return _ambuc$juggling_graph$StateMachine$applyAsterisk(_p26);
 							default:
 								return {
 									ctor: '::',
 									_0: {
 										ctor: '::',
-										_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p14),
+										_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p13),
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								};
 						}
 					case 'S_FIRST':
-						var _p15 = head;
-						switch (_p15.valueOf()) {
+						var _p14 = head;
+						switch (_p14.valueOf()) {
 							case '[':
-								var _v20 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_FIRST_BRACE_EMPTY, _1: tail, _2: _p27};
-								_p5 = _v20;
+								var _v19 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_FIRST_BRACE_EMPTY, _1: tail, _2: _p26};
+								_p4 = _v19;
 								continue parse;
 							case '0':
-								var _v21 = {
+								var _v20 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_COMMA,
 									_1: tail,
@@ -13695,9 +13693,9 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 										_ambuc$juggling_graph$StateMachine$push_,
 										_ambuc$juggling_graph$Types$LeftHand,
 										_elm_lang$core$Native_Utils.chr('0'),
-										_p27)
+										_p26)
 								};
-								_p5 = _v21;
+								_p4 = _v20;
 								continue parse;
 							case 'x':
 								return {
@@ -13708,23 +13706,23 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 											_elm_lang$core$Native_Utils.chr('x')),
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								};
 							default:
-								var _v22 = {
+								var _v21 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_X,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, _p15, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, _p14, _p26)
 								};
-								_p5 = _v22;
+								_p4 = _v21;
 								continue parse;
 						}
 					case 'S_FIRST_BRACE_EMPTY':
-						var _p16 = head;
-						switch (_p16.valueOf()) {
+						var _p15 = head;
+						switch (_p15.valueOf()) {
 							case '0':
-								var _v24 = {
+								var _v23 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_BRACE,
 									_1: tail,
@@ -13732,9 +13730,9 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 										_ambuc$juggling_graph$StateMachine$push_,
 										_ambuc$juggling_graph$Types$LeftHand,
 										_elm_lang$core$Native_Utils.chr('0'),
-										_p27)
+										_p26)
 								};
-								_p5 = _v24;
+								_p4 = _v23;
 								continue parse;
 							case 'x':
 								return {
@@ -13745,23 +13743,23 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 											_elm_lang$core$Native_Utils.chr('x')),
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								};
 							default:
-								var _v25 = {
+								var _v24 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, head, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, head, _p26)
 								};
-								_p5 = _v25;
+								_p4 = _v24;
 								continue parse;
 						}
 					case 'S_FIRST_BRACE':
-						var _p17 = head;
-						switch (_p17.valueOf()) {
+						var _p16 = head;
+						switch (_p16.valueOf()) {
 							case '0':
-								var _v27 = {
+								var _v26 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_BRACE,
 									_1: tail,
@@ -13769,13 +13767,13 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 										_ambuc$juggling_graph$StateMachine$push_,
 										_ambuc$juggling_graph$Types$LeftHand,
 										_elm_lang$core$Native_Utils.chr('0'),
-										_p27)
+										_p26)
 								};
-								_p5 = _v27;
+								_p4 = _v26;
 								continue parse;
 							case ']':
-								var _v28 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_COMMA, _1: tail, _2: _p27};
-								_p5 = _v28;
+								var _v27 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_COMMA, _1: tail, _2: _p26};
+								_p4 = _v27;
 								continue parse;
 							case 'x':
 								return {
@@ -13786,44 +13784,44 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 											_elm_lang$core$Native_Utils.chr('x')),
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								};
 							default:
-								var _v29 = {
+								var _v28 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, head, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, head, _p26)
 								};
-								_p5 = _v29;
+								_p4 = _v28;
 								continue parse;
 						}
 					case 'S_FIRST_X_OR_BRACE':
-						var _p18 = head;
-						switch (_p18.valueOf()) {
+						var _p17 = head;
+						switch (_p17.valueOf()) {
 							case ']':
-								var _v31 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_COMMA, _1: tail, _2: _p27};
-								_p5 = _v31;
+								var _v30 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_COMMA, _1: tail, _2: _p26};
+								_p4 = _v30;
 								continue parse;
 							case '0':
+								var _v31 = {
+									ctor: '_Tuple3',
+									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_BRACE,
+									_1: tail,
+									_2: A3(
+										_ambuc$juggling_graph$StateMachine$push_,
+										_ambuc$juggling_graph$Types$LeftHand,
+										_elm_lang$core$Native_Utils.chr('0'),
+										_p26)
+								};
+								_p4 = _v31;
+								continue parse;
+							case 'x':
 								var _v32 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_BRACE,
 									_1: tail,
 									_2: A3(
-										_ambuc$juggling_graph$StateMachine$push_,
-										_ambuc$juggling_graph$Types$LeftHand,
-										_elm_lang$core$Native_Utils.chr('0'),
-										_p27)
-								};
-								_p5 = _v32;
-								continue parse;
-							case 'x':
-								var _v33 = {
-									ctor: '_Tuple3',
-									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_BRACE,
-									_1: tail,
-									_2: A3(
 										_elm_community$list_extra$List_Extra$updateAt,
 										0,
 										A2(
@@ -13836,25 +13834,25 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 														$throws: A3(_elm_community$list_extra$List_Extra$updateAt, 0, _ambuc$juggling_graph$StateMachine$markAsCross, x.$throws)
 													});
 											}),
-										_p27)
+										_p26)
 								};
-								_p5 = _v33;
+								_p4 = _v32;
 								continue parse;
 							default:
-								var _v34 = {
+								var _v33 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_FIRST_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, head, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$LeftHand, head, _p26)
 								};
-								_p5 = _v34;
+								_p4 = _v33;
 								continue parse;
 						}
 					case 'S_FIRST_X':
-						var _p19 = head;
-						switch (_p19.valueOf()) {
+						var _p18 = head;
+						switch (_p18.valueOf()) {
 							case 'x':
-								var _v36 = {
+								var _v35 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_COMMA,
 									_1: tail,
@@ -13871,47 +13869,47 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 														$throws: A3(_elm_community$list_extra$List_Extra$updateAt, 0, _ambuc$juggling_graph$StateMachine$markAsCross, x.$throws)
 													});
 											}),
-										_p27)
+										_p26)
 								};
-								_p5 = _v36;
+								_p4 = _v35;
 								continue parse;
 							case ',':
-								var _v37 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_SECOND, _1: tail, _2: _p27};
-								_p5 = _v37;
+								var _v36 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_SECOND, _1: tail, _2: _p26};
+								_p4 = _v36;
 								continue parse;
 							default:
 								return {
 									ctor: '::',
 									_0: {
 										ctor: '::',
-										_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p19),
+										_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p18),
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								};
 						}
 					case 'S_COMMA':
-						var _p20 = head;
-						if (_p20.valueOf() === ',') {
-							var _v39 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_SECOND, _1: tail, _2: _p27};
-							_p5 = _v39;
+						var _p19 = head;
+						if (_p19.valueOf() === ',') {
+							var _v38 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_SECOND, _1: tail, _2: _p26};
+							_p4 = _v38;
 							continue parse;
 						} else {
 							return {
 								ctor: '::',
 								_0: {
 									ctor: '::',
-									_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p20),
+									_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p19),
 									_1: {ctor: '[]'}
 								},
-								_1: _p27
+								_1: _p26
 							};
 						}
 					case 'S_SECOND':
-						var _p21 = head;
-						switch (_p21.valueOf()) {
+						var _p20 = head;
+						switch (_p20.valueOf()) {
 							case '0':
-								var _v41 = {
+								var _v40 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_PAREN,
 									_1: tail,
@@ -13928,12 +13926,12 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 												_1: x
 											};
 										},
-										_p27)
+										_p26)
 								};
-								_p5 = _v41;
+								_p4 = _v40;
 								continue parse;
 							case '[':
-								var _v42 = {
+								var _v41 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_BRACE_EMPTY,
 									_1: tail,
@@ -13943,9 +13941,9 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 										function (x) {
 											return {ctor: '::', _0: _ambuc$juggling_graph$StateMachine$emptyBeat, _1: x};
 										},
-										_p27)
+										_p26)
 								};
-								_p5 = _v42;
+								_p4 = _v41;
 								continue parse;
 							case 'x':
 								return {
@@ -13956,10 +13954,10 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 											_elm_lang$core$Native_Utils.chr('x')),
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								};
 							default:
-								var _v43 = {
+								var _v42 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_X,
 									_1: tail,
@@ -13969,24 +13967,24 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 										function (x) {
 											return {
 												ctor: '::',
-												_0: A2(_ambuc$juggling_graph$StateMachine$newBeat, _ambuc$juggling_graph$Types$RightHand, _p21),
+												_0: A2(_ambuc$juggling_graph$StateMachine$newBeat, _ambuc$juggling_graph$Types$RightHand, _p20),
 												_1: x
 											};
 										},
-										_p27)
+										_p26)
 								};
-								_p5 = _v43;
+								_p4 = _v42;
 								continue parse;
 						}
 					case 'S_SECOND_X':
-						var _p22 = head;
-						switch (_p22.valueOf()) {
+						var _p21 = head;
+						switch (_p21.valueOf()) {
 							case ')':
-								var _v45 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_NORMAL, _1: tail, _2: _p27};
-								_p5 = _v45;
+								var _v44 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_NORMAL, _1: tail, _2: _p26};
+								_p4 = _v44;
 								continue parse;
 							case 'x':
-								var _v46 = {
+								var _v45 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_PAREN,
 									_1: tail,
@@ -14003,26 +14001,26 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 														$throws: A3(_elm_community$list_extra$List_Extra$updateAt, 0, _ambuc$juggling_graph$StateMachine$markAsCross, x.$throws)
 													});
 											}),
-										_p27)
+										_p26)
 								};
-								_p5 = _v46;
+								_p4 = _v45;
 								continue parse;
 							default:
 								return {
 									ctor: '::',
 									_0: {
 										ctor: '::',
-										_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p22),
+										_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p21),
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								};
 						}
 					case 'S_SECOND_BRACE_EMPTY':
-						var _p23 = head;
-						switch (_p23.valueOf()) {
+						var _p22 = head;
+						switch (_p22.valueOf()) {
 							case '0':
-								var _v48 = {
+								var _v47 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_BRACE,
 									_1: tail,
@@ -14030,9 +14028,9 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 										_ambuc$juggling_graph$StateMachine$push_,
 										_ambuc$juggling_graph$Types$RightHand,
 										_elm_lang$core$Native_Utils.chr('0'),
-										_p27)
+										_p26)
 								};
-								_p5 = _v48;
+								_p4 = _v47;
 								continue parse;
 							case 'x':
 								return {
@@ -14043,23 +14041,23 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 											_elm_lang$core$Native_Utils.chr('x')),
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								};
 							default:
-								var _v49 = {
+								var _v48 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$RightHand, _p23, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$RightHand, _p22, _p26)
 								};
-								_p5 = _v49;
+								_p4 = _v48;
 								continue parse;
 						}
 					case 'S_SECOND_BRACE':
-						var _p24 = head;
-						switch (_p24.valueOf()) {
+						var _p23 = head;
+						switch (_p23.valueOf()) {
 							case '0':
-								var _v51 = {
+								var _v50 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_BRACE,
 									_1: tail,
@@ -14067,13 +14065,13 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 										_ambuc$juggling_graph$StateMachine$push_,
 										_ambuc$juggling_graph$Types$RightHand,
 										_elm_lang$core$Native_Utils.chr('0'),
-										_p27)
+										_p26)
 								};
-								_p5 = _v51;
+								_p4 = _v50;
 								continue parse;
 							case ']':
-								var _v52 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_PAREN, _1: tail, _2: _p27};
-								_p5 = _v52;
+								var _v51 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_PAREN, _1: tail, _2: _p26};
+								_p4 = _v51;
 								continue parse;
 							case 'x':
 								return {
@@ -14084,23 +14082,23 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 											_elm_lang$core$Native_Utils.chr('x')),
 										_1: {ctor: '[]'}
 									},
-									_1: _p27
+									_1: _p26
 								};
 							default:
-								var _v53 = {
+								var _v52 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$RightHand, _p24, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$RightHand, _p23, _p26)
 								};
-								_p5 = _v53;
+								_p4 = _v52;
 								continue parse;
 						}
 					case 'S_SECOND_X_OR_BRACE':
-						var _p25 = head;
-						switch (_p25.valueOf()) {
+						var _p24 = head;
+						switch (_p24.valueOf()) {
 							case '0':
-								var _v55 = {
+								var _v54 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_BRACE,
 									_1: tail,
@@ -14108,12 +14106,12 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 										_ambuc$juggling_graph$StateMachine$push_,
 										_ambuc$juggling_graph$Types$RightHand,
 										_elm_lang$core$Native_Utils.chr('0'),
-										_p27)
+										_p26)
 								};
-								_p5 = _v55;
+								_p4 = _v54;
 								continue parse;
 							case 'x':
-								var _v56 = {
+								var _v55 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_BRACE,
 									_1: tail,
@@ -14130,39 +14128,39 @@ var _ambuc$juggling_graph$StateMachine$parse = function (_p5) {
 														$throws: A3(_elm_community$list_extra$List_Extra$updateAt, 0, _ambuc$juggling_graph$StateMachine$markAsCross, x.$throws)
 													});
 											}),
-										_p27)
+										_p26)
 								};
-								_p5 = _v56;
+								_p4 = _v55;
 								continue parse;
 							case ']':
-								var _v57 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_PAREN, _1: tail, _2: _p27};
-								_p5 = _v57;
+								var _v56 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_PAREN, _1: tail, _2: _p26};
+								_p4 = _v56;
 								continue parse;
 							default:
-								var _v58 = {
+								var _v57 = {
 									ctor: '_Tuple3',
 									_0: _ambuc$juggling_graph$StateMachine$S_SECOND_X_OR_BRACE,
 									_1: tail,
-									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$RightHand, _p25, _p27)
+									_2: A3(_ambuc$juggling_graph$StateMachine$push_, _ambuc$juggling_graph$Types$RightHand, _p24, _p26)
 								};
-								_p5 = _v58;
+								_p4 = _v57;
 								continue parse;
 						}
 					default:
-						var _p26 = head;
-						if (_p26.valueOf() === ')') {
-							var _v60 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_NORMAL, _1: tail, _2: _p27};
-							_p5 = _v60;
+						var _p25 = head;
+						if (_p25.valueOf() === ')') {
+							var _v59 = {ctor: '_Tuple3', _0: _ambuc$juggling_graph$StateMachine$S_NORMAL, _1: tail, _2: _p26};
+							_p4 = _v59;
 							continue parse;
 						} else {
 							return {
 								ctor: '::',
 								_0: {
 									ctor: '::',
-									_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p26),
+									_0: _ambuc$juggling_graph$StateMachine$invalidBeat(_p25),
 									_1: {ctor: '[]'}
 								},
-								_1: _p27
+								_1: _p26
 							};
 						}
 				}

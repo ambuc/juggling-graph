@@ -63,9 +63,15 @@ emptyThrow =
     { value = 0
     , is_cross = False
     , is_valid = True
+    , is_sink = False
     , char = ' '
     , hand = Center
     }
+
+
+sinkThrow : Throw
+sinkThrow =
+    { emptyThrow | char = '_', is_sink = True }
 
 
 markAsCross : Throw -> Throw
@@ -95,17 +101,22 @@ emptyBeat =
     }
 
 
+newThrow : Hand -> Char -> Throw
+newThrow hand chr =
+    if chr == '_' then
+        sinkThrow
+    else
+        case (charToInt chr) of
+            Just int ->
+                { emptyThrow | value = int, char = chr, hand = hand }
+
+            Nothing ->
+                invalidThrow chr
+
+
 newBeat : Hand -> Char -> Beat
 newBeat hand chr =
-    case (charToInt chr) of
-        Just int ->
-            { emptyBeat
-                | throws =
-                    [ { emptyThrow | value = int, char = chr, hand = hand } ]
-            }
-
-        Nothing ->
-            invalidBeat chr
+    { emptyBeat | throws = [ newThrow hand chr ] }
 
 
 invalidThrow : Char -> Throw
@@ -123,19 +134,7 @@ invalidBeat chr =
 
 multiplexPush : Hand -> Char -> Beat -> Beat
 multiplexPush hand chr beat =
-    case (charToInt chr) of
-        Just int ->
-            { beat
-                | throws =
-                    { emptyThrow | value = int, char = chr, hand = hand }
-                        :: beat.throws
-            }
-
-        Nothing ->
-            { beat
-                | throws = invalidThrow chr :: beat.throws
-                , is_valid = False
-            }
+    { beat | throws = (newThrow hand chr) :: beat.throws }
 
 
 
@@ -146,7 +145,7 @@ multiplexPush hand chr beat =
 
 push_ : Hand -> Char -> List (List Beat) -> List (List Beat)
 push_ hand x =
-    LE.updateAt 0 (LE.updateAt 0 (multiplexPush hand x))
+    LE.updateAt 0 <| LE.updateAt 0 <| multiplexPush hand x
 
 
 

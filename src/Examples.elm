@@ -4,7 +4,6 @@ module Examples exposing (examples)
 examples : List String
 examples =
     [ "([44x],[44x])"
-    , "2[23]4[56]"
     , "(6x,4)([42],2x)"
     , "([66x],2)(6x,2)(6x,2)*"
     , "([66x],2)(6x,2x)(6,2)*"
